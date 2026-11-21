@@ -2,7 +2,7 @@
 <div class="modal fade" id="modalSkriningGizi" tabindex="-1" aria-labelledby="modalSkriningGiziLabel" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
-            
+
             <!-- Modal Header Green -->
             <div class="modal-header text-white py-2 px-3 justify-content-between align-items-center" style="background: #198754;">
                 <div class="d-flex align-items-center gap-2">
@@ -16,7 +16,7 @@
 
             <!-- Modal Body -->
             <div class="modal-body p-3 bg-light">
-                
+
                 <!-- PATIENT BANNER CARD -->
                 <div class="card border-0 shadow-sm rounded-3 mb-3" style="background: #ffffff;">
                     <div class="card-body p-3 d-flex align-items-center gap-3">
@@ -35,7 +35,7 @@
                     <input type="hidden" id="skrining_no_rawat" name="no_rawat">
 
                     <div class="row g-3">
-                        
+
                         <!-- LEFT PANEL: Kategori (OBGYN / ANAK) -->
                         <div class="col-md-2">
                             <label class="form-label fw-bold text-success mb-2" style="font-size: 13px;">Kategori</label>
@@ -56,13 +56,13 @@
 
                         <!-- RIGHT PANEL: Form Inputs -->
                         <div class="col-md-10">
-                            
+
                             <!-- DATA ANTROPOMETRI -->
                             <div class="mb-3">
                                 <div class="row g-2">
                                     <div class="col-md-4" id="col_bb">
                                         <label class="form-label small mb-1">Berat Badan (Kg) <span class="text-danger">*</span></label>
-                                        <div class="input-group input-group-sm">
+                                        <div class="input-group">
                                             <span class="input-group-text bg-white"><i class="bi bi-speedometer2 text-muted"></i></span>
                                             <input type="number" step="0.1" class="form-control" id="skrining_bb" name="bb" required placeholder="0">
                                         </div>
@@ -70,7 +70,7 @@
 
                                     <div class="col-md-4" id="col_tb">
                                         <label class="form-label small mb-1">Tinggi Badan (cm) <span class="text-danger">*</span></label>
-                                        <div class="input-group input-group-sm">
+                                        <div class="input-group">
                                             <span class="input-group-text bg-white"><i class="bi bi-ruler text-muted"></i></span>
                                             <input type="number" step="0.1" class="form-control" id="skrining_tb" name="tb" required placeholder="0">
                                         </div>
@@ -78,7 +78,7 @@
 
                                     <div class="col-md-4" id="col_imt">
                                         <label class="form-label small mb-1">IMT</label>
-                                        <div class="input-group input-group-sm">
+                                        <div class="input-group">
                                             <span class="input-group-text bg-light"><i class="bi bi-calculator text-muted"></i></span>
                                             <input type="text" class="form-control bg-light" id="skrining_imt" name="imt" readonly placeholder="0">
                                         </div>
@@ -86,7 +86,7 @@
 
                                     <div class="col-md-3 d-none" id="wrapperLila">
                                         <label class="form-label small mb-1">LILA (cm)</label>
-                                        <div class="input-group input-group-sm">
+                                        <div class="input-group">
                                             <span class="input-group-text bg-white"><i class="bi bi-circle text-muted"></i></span>
                                             <input type="number" step="0.1" class="form-control" id="skrining_lila" name="lila" placeholder="0">
                                         </div>
@@ -106,7 +106,7 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label small mb-1 fw-semibold">HB</label>
-                                        <div class="input-group input-group-sm">
+                                        <div class="input-group">
                                             <span class="input-group-text bg-white"><i class="bi bi-pencil-square text-muted"></i></span>
                                             <input type="number" step="0.1" class="form-control" id="skrining_hb" name="hb" placeholder="Nilai HB...">
                                         </div>
@@ -170,10 +170,10 @@
 
                             <!-- PERTANYAAN SKRINING CONTAINER -->
                             <div class="card border-0 shadow-sm rounded-3 p-3 mb-3" style="background: #ffffff;">
-                                
+
                                 <!-- PANEL PERTANYAAN OBGYN -->
                                 <div id="panelPertanyaanObgyn" class="d-none">
-                                    
+
                                     <!-- 1. Apakah asupan makan berkurang... -->
                                     <div class="mb-3">
                                         <label class="form-label fw-semibold small text-dark mb-2">1. Apakah asupan makan berkurang karena kurang nafsu makan?</label>
@@ -256,16 +256,16 @@
 
                                         <div class="col-md-6 mb-2">
                                             <label class="form-label fw-semibold small text-dark mb-2">4. Nilai Hb < 11 g/dL atau HCT < 30%?</label>
-                                            <div class="d-flex gap-3 ms-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_4" id="q_obgyn_4_ya" value="Ya">
-                                                    <label class="form-check-label text-success fw-bold" for="q_obgyn_4_ya">Ya</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_4" id="q_obgyn_4_tidak" value="Tidak" checked>
-                                                    <label class="form-check-label text-secondary" for="q_obgyn_4_tidak">Tidak</label>
-                                                </div>
-                                            </div>
+                                                    <div class="d-flex gap-3 ms-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_4" id="q_obgyn_4_ya" value="Ya">
+                                                            <label class="form-check-label text-success fw-bold" for="q_obgyn_4_ya">Ya</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input q-obgyn-radio" type="radio" name="q_obgyn_4" id="q_obgyn_4_tidak" value="Tidak" checked>
+                                                            <label class="form-check-label text-secondary" for="q_obgyn_4_tidak">Tidak</label>
+                                                        </div>
+                                                    </div>
                                         </div>
                                     </div>
 
@@ -273,7 +273,7 @@
 
                                 <!-- PANEL PERTANYAAN ANAK -->
                                 <div id="panelPertanyaanAnak">
-                                    
+
                                     <!-- 1 & 2 Side by side -->
                                     <div class="row mb-3">
                                         <div class="col-md-6">
@@ -495,327 +495,345 @@
 </div>
 
 @push('script')
-<script>
-    let skriningOpenedFromDiet = false;
+    <script>
+        let skriningOpenedFromDiet = false;
 
-    // Open Modal Skrining Gizi
-    function showModalSkriningGizi(noRawat, fromDiet = false) {
-        if (!noRawat) return;
+        // Open Modal Skrining Gizi
+        function showModalSkriningGizi(noRawat, fromDiet = false) {
+            if (!noRawat) return;
 
-        skriningOpenedFromDiet = fromDiet;
-        $('#skrining_no_rawat').val(noRawat);
-        $('#btnCetakSkriningGizi').addClass('d-none');
-        $('#formSkriningGizi')[0].reset();
-        
-        getRegPeriksa(noRawat).done(function(res) {
-            const pasien = res?.pasien || {};
-            $('#skrining_info_nm_pasien').text(pasien.nm_pasien || '-');
-            $('#skrining_info_no_rawat').text(noRawat);
+            skriningOpenedFromDiet = fromDiet;
+            $('#skrining_no_rawat').val(noRawat);
+            $('#btnCetakSkriningGizi').addClass('d-none');
+            $('#formSkriningGizi')[0].reset();
 
-            // Load Existing Skrining Gizi Data
-            $.get(`/erm/ranap/skrining-gizi?no_rawat=${encodeURIComponent(noRawat)}`).done(function(resp) {
-                if (resp.success && resp.data) {
-                    $('#btnCetakSkriningGizi').removeClass('d-none');
-                    const d = resp.data;
-                    $('#skrining_bb').val(d.bb || '');
-                    $('#skrining_tb').val(d.tb || '');
-                    $('#skrining_imt').val(d.imt || '');
-                    $('#skrining_lila').val(d.lila || '');
-                    $('#skrining_diagnosa_medis').val(d.diagnosa_medis || '');
-                    $('#skrining_hb').val(d.hb || '');
-                    setRadioByNameCaseInsensitive('hiv', d.hiv || 'Tidak Periksa');
-                    setRadioByNameCaseInsensitive('hbsag', d.hbsag || 'Tidak Periksa');
-                    setRadioByNameCaseInsensitive('syphilis', d.syphilis || 'Tidak Periksa');
-                    $('#skrining_status_assesment_lanjut').val(d.status_assesment_lanjut || 'Belum');
-                    $('#skrining_keterangan').val(d.keterangan || '');
+            getRegPeriksa(noRawat).done(function(res) {
+                const pasien = res?.pasien || {};
+                $('#skrining_info_nm_pasien').text(pasien.nm_pasien || '-');
+                $('#skrining_info_no_rawat').text(noRawat);
 
-                    if (d.jenis_diet) {
-                        $(`input[name="jenis_diet"][value="${d.jenis_diet}"]`).prop('checked', true);
+                // Load Existing Skrining Gizi Data
+                $.get(`/erm/ranap/skrining-gizi?no_rawat=${encodeURIComponent(noRawat)}`).done(function(resp) {
+                    if (resp.success && resp.data) {
+                        $('#btnCetakSkriningGizi').removeClass('d-none');
+                        const d = resp.data;
+                        $('#skrining_bb').val(d.bb || '');
+                        $('#skrining_tb').val(d.tb || '');
+                        $('#skrining_imt').val(d.imt || '');
+                        $('#skrining_lila').val(d.lila || '');
+                        $('#skrining_diagnosa_medis').val(d.diagnosa_medis || '');
+                        $('#skrining_hb').val(d.hb || '');
+                        setRadioByNameCaseInsensitive('hiv', d.hiv || 'Tidak Periksa');
+                        setRadioByNameCaseInsensitive('hbsag', d.hbsag || 'Tidak Periksa');
+                        setRadioByNameCaseInsensitive('syphilis', d.syphilis || 'Tidak Periksa');
+                        $('#skrining_status_assesment_lanjut').val(d.status_assesment_lanjut || 'Belum');
+                        $('#skrining_keterangan').val(d.keterangan || '');
+
+                        if (d.jenis_diet) {
+                            $(`input[name="jenis_diet"][value="${d.jenis_diet}"]`).prop('checked', true);
+                        }
+
+                        const kat = d.kategori || 'ANAK';
+                        $(`input[name="kategori"][value="${kat}"]`).prop('checked', true).trigger('change');
+
+                        // Set OBGYN values
+                        if (kat === 'OBGYN') {
+                            const qArr = (d.q_obgyn || '').split(',');
+                            if (qArr[0]) setRadioByNameCaseInsensitive('q_obgyn_1', qArr[0]);
+                            if (qArr[1]) setRadioByNameCaseInsensitive('q_obgyn_3', qArr[1]);
+                            if (qArr[2]) setRadioByNameCaseInsensitive('q_obgyn_4', qArr[2]);
+
+                            $('.cb-obgyn').prop('checked', false);
+                            const cbObgyn = (d.cb_obgyn || '').split(',');
+                            cbObgyn.forEach(val => {
+                                const trimmed = val.trim();
+                                $(`.cb-obgyn[value="${trimmed}"]`).prop('checked', true);
+                            });
+                            if ($('.cb-obgyn:checked').length === 0) $('#cb_obgyn_tidak').prop('checked', true);
+                        } else {
+                            // Set ANAK values
+                            const qArr = (d.q_anak || '').split(',');
+                            if (qArr[0]) setRadioByNameCaseInsensitive('q_anak_1', qArr[0]);
+                            if (qArr[1]) setRadioByNameCaseInsensitive('q_anak_2', qArr[1]);
+
+                            $('.cb-anak1').prop('checked', false);
+                            const cbAnak1 = (d.cb_anak1 || '').split(',');
+                            cbAnak1.forEach(val => {
+                                const trimmed = val.trim();
+                                $(`.cb-anak1[value="${trimmed}"]`).prop('checked', true);
+                            });
+                            if ($('.cb-anak1:checked').length === 0) $('#cb_anak1_tidak').prop('checked', true);
+
+                            $('.cb-anak2').prop('checked', false);
+                            const cbAnak2 = (d.cb_anak2 || '').split(',');
+                            cbAnak2.forEach(val => {
+                                const trimmed = val.trim();
+                                $(`.cb-anak2[value="${trimmed}"]`).prop('checked', true);
+                            });
+                            if ($('.cb-anak2:checked').length === 0) $('#cb_anak2_tidak').prop('checked', true);
+                        }
+                    } else {
+                        $(`input[name="kategori"][value="ANAK"]`).prop('checked', true).trigger('change');
                     }
 
-                    const kat = d.kategori || 'ANAK';
-                    $(`input[name="kategori"][value="${kat}"]`).prop('checked', true).trigger('change');
+                    hitungImtDanSkorSkrining();
+                    $('#modalSkriningGizi').modal('show');
+                });
+            });
+        }
 
-                    // Set OBGYN values
-                    if (kat === 'OBGYN') {
-                        const qArr = (d.q_obgyn || '').split(',');
-                        if (qArr[0]) setRadioByNameCaseInsensitive('q_obgyn_1', qArr[0]);
-                        if (qArr[1]) setRadioByNameCaseInsensitive('q_obgyn_3', qArr[1]);
-                        if (qArr[2]) setRadioByNameCaseInsensitive('q_obgyn_4', qArr[2]);
+        function setRadioByNameCaseInsensitive(name, val) {
+            if (!val) return;
+            const target = val.trim().toUpperCase();
+            $(`input[name="${name}"]`).each(function() {
+                if ($(this).val().trim().toUpperCase() === target) {
+                    $(this).prop('checked', true);
+                }
+            });
+        }
 
-                        $('.cb-obgyn').prop('checked', false);
-                        const cbObgyn = (d.cb_obgyn || '').split(',');
-                        cbObgyn.forEach(val => {
-                            const trimmed = val.trim();
-                            $(`.cb-obgyn[value="${trimmed}"]`).prop('checked', true);
-                        });
-                        if ($('.cb-obgyn:checked').length === 0) $('#cb_obgyn_tidak').prop('checked', true);
-                    } else {
-                        // Set ANAK values
-                        const qArr = (d.q_anak || '').split(',');
-                        if (qArr[0]) setRadioByNameCaseInsensitive('q_anak_1', qArr[0]);
-                        if (qArr[1]) setRadioByNameCaseInsensitive('q_anak_2', qArr[1]);
+        // Checkbox "Tidak ada" exclusive toggle logic
+        $('.cb-obgyn').on('change', function() {
+            if ($(this).attr('id') === 'cb_obgyn_tidak' && $(this).is(':checked')) {
+                $('.cb-obgyn').not(this).prop('checked', false);
+            } else if ($(this).is(':checked')) {
+                $('#cb_obgyn_tidak').prop('checked', false);
+            }
+            hitungImtDanSkorSkrining();
+        });
 
-                        $('.cb-anak1').prop('checked', false);
-                        const cbAnak1 = (d.cb_anak1 || '').split(',');
-                        cbAnak1.forEach(val => {
-                            const trimmed = val.trim();
-                            $(`.cb-anak1[value="${trimmed}"]`).prop('checked', true);
-                        });
-                        if ($('.cb-anak1:checked').length === 0) $('#cb_anak1_tidak').prop('checked', true);
+        $('.cb-anak1').on('change', function() {
+            if ($(this).attr('id') === 'cb_anak1_tidak' && $(this).is(':checked')) {
+                $('.cb-anak1').not(this).prop('checked', false);
+            } else if ($(this).is(':checked')) {
+                $('#cb_anak1_tidak').prop('checked', false);
+            }
+            hitungImtDanSkorSkrining();
+        });
 
-                        $('.cb-anak2').prop('checked', false);
-                        const cbAnak2 = (d.cb_anak2 || '').split(',');
-                        cbAnak2.forEach(val => {
-                            const trimmed = val.trim();
-                            $(`.cb-anak2[value="${trimmed}"]`).prop('checked', true);
-                        });
-                        if ($('.cb-anak2:checked').length === 0) $('#cb_anak2_tidak').prop('checked', true);
+        $('.cb-anak2').on('change', function() {
+            if ($(this).attr('id') === 'cb_anak2_tidak' && $(this).is(':checked')) {
+                $('.cb-anak2').not(this).prop('checked', false);
+            } else if ($(this).is(':checked')) {
+                $('#cb_anak2_tidak').prop('checked', false);
+            }
+            hitungImtDanSkorSkrining();
+        });
+
+        // Toggle Kategori (ANAK / OBGYN)
+        $('input[name="kategori"]').on('change', function() {
+            const val = $(this).val();
+            if (val === 'OBGYN') {
+                $('#cardKategoriObgyn').addClass('border-success active').find('i').removeClass('text-secondary').addClass('text-success');
+                $('#cardKategoriAnak').removeClass('border-success active').find('i').removeClass('text-success').addClass('text-secondary');
+                $('#panelPertanyaanAnak').addClass('d-none');
+                $('#panelPertanyaanObgyn').removeClass('d-none');
+
+                // Tampilkan LILA untuk OBGYN (col-md-3)
+                $('#wrapperLila').removeClass('d-none');
+                $('#col_bb, #col_tb, #col_imt').removeClass('col-md-4').addClass('col-md-3');
+            } else {
+                $('#cardKategoriAnak').addClass('border-success active').find('i').removeClass('text-secondary').addClass('text-success');
+                $('#cardKategoriObgyn').removeClass('border-success active').find('i').removeClass('text-success').addClass('text-secondary');
+                $('#panelPertanyaanObgyn').addClass('d-none');
+                $('#panelPertanyaanAnak').removeClass('d-none');
+
+                // Sembunyikan LILA untuk ANAK (col-md-4)
+                $('#wrapperLila').addClass('d-none');
+                $('#skrining_lila').val('');
+                $('#col_bb, #col_tb, #col_imt').removeClass('col-md-3').addClass('col-md-4');
+            }
+            hitungImtDanSkorSkrining();
+        });
+
+        // Auto Calculate IMT & Skor
+        $('#skrining_bb, #skrining_tb, .q-obgyn-radio, .q-anak-radio').on('input change', function() {
+            hitungImtDanSkorSkrining();
+        });
+
+        function hitungImtDanSkorSkrining() {
+            const bb = parseFloat($('#skrining_bb').val()) || 0;
+            const tb = parseFloat($('#skrining_tb').val()) || 0;
+
+            let imt = 0;
+            if (bb > 0 && tb > 0) {
+                const tbM = tb / 100;
+                imt = (bb / (tbM * tbM)).toFixed(2);
+            }
+            $('#skrining_imt').val(imt);
+
+            const kat = $('input[name="kategori"]:checked').val();
+            let skor = 0;
+            let ket = 'Resiko Rendah';
+
+            if (kat === 'OBGYN') {
+                const q1 = $('input[name="q_obgyn_1"]:checked').val() || 'Tidak';
+                const q3 = $('input[name="q_obgyn_3"]:checked').val() || 'Tidak';
+                const q4 = $('input[name="q_obgyn_4"]:checked').val() || 'Tidak';
+
+                if (q1.toUpperCase() === 'YA') skor += 1;
+
+                let cbVals = [];
+                $('.cb-obgyn:checked').each(function() {
+                    const v = $(this).val();
+                    if (v !== 'Tidak ada') cbVals.push(v);
+                });
+                if (cbVals.length > 0) skor += 1;
+
+                if (q3.toUpperCase() === 'YA') skor += 1;
+                if (q4.toUpperCase() === 'YA') skor += 1;
+
+                // OBGYN: Jika skor >= 1 -> "Asesmen Lanjut oleh Ahli Gizi", jika 0 -> "Resiko Rendah"
+                ket = skor >= 1 ? 'Asesmen Lanjut oleh Ahli Gizi' : 'Resiko Rendah';
+
+                const allCb = [];
+                $('.cb-obgyn:checked').each(function() {
+                    allCb.push($(this).val());
+                });
+                $('#skrining_cb_obgyn').val(allCb.length > 0 ? allCb.join(', ') : '-');
+                $('#skrining_q_obgyn').val(`${q1.toUpperCase()},${q3.toUpperCase()},${q4.toUpperCase()}`);
+
+            } else {
+                // ANAK
+                const q1 = $('input[name="q_anak_1"]:checked').val() || 'Tidak';
+                const q2 = $('input[name="q_anak_2"]:checked').val() || 'Tidak';
+
+                if (q1.toUpperCase() === 'YA') skor += 1;
+                if (q2.toUpperCase() === 'YA') skor += 1;
+
+                let cb1Vals = [];
+                $('.cb-anak1:checked').each(function() {
+                    const v = $(this).val();
+                    if (v !== 'Tidak ada') cb1Vals.push(v);
+                });
+                if (cb1Vals.length > 0) skor += 1;
+
+                let cb2Vals = [];
+                $('.cb-anak2:checked').each(function() {
+                    const v = $(this).val();
+                    if (v !== 'Tidak ada') cb2Vals.push(v);
+                });
+                if (cb2Vals.length > 0) skor += 2;
+
+                // ANAK: 0 = Resiko Rendah, 1-3 = Resiko Sedang, >=4 = Resiko Tinggi
+                if (skor === 0) {
+                    ket = 'Resiko Rendah';
+                } else if (skor >= 1 && skor <= 3) {
+                    ket = 'Resiko Sedang';
+                } else {
+                    ket = 'Resiko Tinggi';
+                }
+
+                const allCb1 = [];
+                $('.cb-anak1:checked').each(function() {
+                    allCb1.push($(this).val());
+                });
+                $('#skrining_cb_anak1').val(allCb1.length > 0 ? allCb1.join(', ') : '-');
+
+                const allCb2 = [];
+                $('.cb-anak2:checked').each(function() {
+                    allCb2.push($(this).val());
+                });
+                $('#skrining_cb_anak2').val(allCb2.length > 0 ? allCb2.join(', ') : '-');
+
+                $('#skrining_q_anak').val(`${q1.toUpperCase()},${q2.toUpperCase()}`);
+            }
+
+            $('#skrining_skor_val').val(skor);
+            $('#skrining_skor_display').text(skor);
+            $('#skrining_keterangan_display').text(ket);
+            $('#skrining_keterangan').val(ket);
+
+            // Dynamic Color Styling based on Risk Level
+            const card = $('#cardSkorSkrining');
+            const titleLbl = $('#labelSkorTitle');
+            const numDisp = $('#skrining_skor_display');
+            const ketDisp = $('#skrining_keterangan_display');
+
+            if (ket === 'Resiko Tinggi') {
+                card.css({
+                    'background': '#ffebee',
+                    'border': '1px solid #ffcdd2'
+                });
+                titleLbl.css('color', '#dc3545');
+                numDisp.css('color', '#dc3545');
+                ketDisp.css('color', '#dc3545');
+            } else if (ket === 'Resiko Sedang') {
+                card.css({
+                    'background': '#fff8e1',
+                    'border': '1px solid #ffe082'
+                });
+                titleLbl.css('color', '#b78103');
+                numDisp.css('color', '#d97706');
+                ketDisp.css('color', '#b78103');
+            } else if (ket === 'Asesmen Lanjut oleh Ahli Gizi') {
+                card.css({
+                    'background': '#e0f2fe',
+                    'border': '1px solid #bae6fd'
+                });
+                titleLbl.css('color', '#0284c7');
+                numDisp.css('color', '#0284c7');
+                ketDisp.css('color', '#0284c7');
+            } else {
+                // Resiko Rendah
+                card.css({
+                    'background': '#e8f5e9',
+                    'border': '1px solid #c8e6c9'
+                });
+                titleLbl.css('color', '#198754');
+                numDisp.css('color', '#198754');
+                ketDisp.css('color', '#198754');
+            }
+        }
+
+        // Submit Simpan Skrining Gizi
+        $('#btnSimpanSkriningGizi').on('click', function(e) {
+            e.preventDefault();
+
+            const noRawat = $('#skrining_no_rawat').val();
+            const bb = $('#skrining_bb').val();
+            const tb = $('#skrining_tb').val();
+            const diagnosa = $('#skrining_diagnosa_medis').val();
+
+            if (!noRawat || !bb || !tb || !diagnosa) {
+                Swal.fire('Peringatan', 'Berat Badan, Tinggi Badan, dan Diagnosa Medis wajib diisi.', 'warning');
+                return;
+            }
+
+            const formData = $('#formSkriningGizi').serialize();
+
+            $.post('/erm/ranap/skrining-gizi', formData).done(function(res) {
+                if (res.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: res.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    $('#modalSkriningGizi').modal('hide');
+                    if (typeof tb_ranap !== 'undefined') {
+                        tb_ranap.draw(false);
+                    }
+
+                    if (skriningOpenedFromDiet) {
+                        setTimeout(function() {
+                            showModalPermintaanDiet(noRawat);
+                        }, 350);
                     }
                 } else {
-                    $(`input[name="kategori"][value="ANAK"]`).prop('checked', true).trigger('change');
+                    Swal.fire('Gagal', res.message || 'Gagal menyimpan data.', 'error');
                 }
-
-                hitungImtDanSkorSkrining();
-                $('#modalSkriningGizi').modal('show');
+            }).fail(function(xhr) {
+                const msg = xhr.responseJSON?.message || 'Terjadi kesalahan sistem.';
+                Swal.fire('Error', msg, 'error');
             });
         });
-    }
 
-    function setRadioByNameCaseInsensitive(name, val) {
-        if (!val) return;
-        const target = val.trim().toUpperCase();
-        $(`input[name="${name}"]`).each(function() {
-            if ($(this).val().trim().toUpperCase() === target) {
-                $(this).prop('checked', true);
-            }
-        });
-    }
-
-    // Checkbox "Tidak ada" exclusive toggle logic
-    $('.cb-obgyn').on('change', function() {
-        if ($(this).attr('id') === 'cb_obgyn_tidak' && $(this).is(':checked')) {
-            $('.cb-obgyn').not(this).prop('checked', false);
-        } else if ($(this).is(':checked')) {
-            $('#cb_obgyn_tidak').prop('checked', false);
+        function cetakSkriningGizi(noRawat) {
+            if (!noRawat) return;
+            const cleanNoRawat = noRawat.replaceAll('/', '-');
+            window.open(`${url}/ranap/skrining-gizi/cetak?no_rawat=${cleanNoRawat}`, '_blank');
         }
-        hitungImtDanSkorSkrining();
-    });
-
-    $('.cb-anak1').on('change', function() {
-        if ($(this).attr('id') === 'cb_anak1_tidak' && $(this).is(':checked')) {
-            $('.cb-anak1').not(this).prop('checked', false);
-        } else if ($(this).is(':checked')) {
-            $('#cb_anak1_tidak').prop('checked', false);
-        }
-        hitungImtDanSkorSkrining();
-    });
-
-    $('.cb-anak2').on('change', function() {
-        if ($(this).attr('id') === 'cb_anak2_tidak' && $(this).is(':checked')) {
-            $('.cb-anak2').not(this).prop('checked', false);
-        } else if ($(this).is(':checked')) {
-            $('#cb_anak2_tidak').prop('checked', false);
-        }
-        hitungImtDanSkorSkrining();
-    });
-
-    // Toggle Kategori (ANAK / OBGYN)
-    $('input[name="kategori"]').on('change', function() {
-        const val = $(this).val();
-        if (val === 'OBGYN') {
-            $('#cardKategoriObgyn').addClass('border-success active').find('i').removeClass('text-secondary').addClass('text-success');
-            $('#cardKategoriAnak').removeClass('border-success active').find('i').removeClass('text-success').addClass('text-secondary');
-            $('#panelPertanyaanAnak').addClass('d-none');
-            $('#panelPertanyaanObgyn').removeClass('d-none');
-
-            // Tampilkan LILA untuk OBGYN (col-md-3)
-            $('#wrapperLila').removeClass('d-none');
-            $('#col_bb, #col_tb, #col_imt').removeClass('col-md-4').addClass('col-md-3');
-        } else {
-            $('#cardKategoriAnak').addClass('border-success active').find('i').removeClass('text-secondary').addClass('text-success');
-            $('#cardKategoriObgyn').removeClass('border-success active').find('i').removeClass('text-success').addClass('text-secondary');
-            $('#panelPertanyaanObgyn').addClass('d-none');
-            $('#panelPertanyaanAnak').removeClass('d-none');
-
-            // Sembunyikan LILA untuk ANAK (col-md-4)
-            $('#wrapperLila').addClass('d-none');
-            $('#skrining_lila').val('');
-            $('#col_bb, #col_tb, #col_imt').removeClass('col-md-3').addClass('col-md-4');
-        }
-        hitungImtDanSkorSkrining();
-    });
-
-    // Auto Calculate IMT & Skor
-    $('#skrining_bb, #skrining_tb, .q-obgyn-radio, .q-anak-radio').on('input change', function() {
-        hitungImtDanSkorSkrining();
-    });
-
-    function hitungImtDanSkorSkrining() {
-        const bb = parseFloat($('#skrining_bb').val()) || 0;
-        const tb = parseFloat($('#skrining_tb').val()) || 0;
-        
-        let imt = 0;
-        if (bb > 0 && tb > 0) {
-            const tbM = tb / 100;
-            imt = (bb / (tbM * tbM)).toFixed(2);
-        }
-        $('#skrining_imt').val(imt);
-
-        const kat = $('input[name="kategori"]:checked').val();
-        let skor = 0;
-        let ket = 'Resiko Rendah';
-
-        if (kat === 'OBGYN') {
-            const q1 = $('input[name="q_obgyn_1"]:checked').val() || 'Tidak';
-            const q3 = $('input[name="q_obgyn_3"]:checked').val() || 'Tidak';
-            const q4 = $('input[name="q_obgyn_4"]:checked').val() || 'Tidak';
-
-            if (q1.toUpperCase() === 'YA') skor += 1;
-
-            let cbVals = [];
-            $('.cb-obgyn:checked').each(function() {
-                const v = $(this).val();
-                if (v !== 'Tidak ada') cbVals.push(v);
-            });
-            if (cbVals.length > 0) skor += 1;
-
-            if (q3.toUpperCase() === 'YA') skor += 1;
-            if (q4.toUpperCase() === 'YA') skor += 1;
-
-            // OBGYN: Jika skor >= 1 -> "Asesmen Lanjut oleh Ahli Gizi", jika 0 -> "Resiko Rendah"
-            ket = skor >= 1 ? 'Asesmen Lanjut oleh Ahli Gizi' : 'Resiko Rendah';
-
-            const allCb = [];
-            $('.cb-obgyn:checked').each(function() { allCb.push($(this).val()); });
-            $('#skrining_cb_obgyn').val(allCb.length > 0 ? allCb.join(', ') : '-');
-            $('#skrining_q_obgyn').val(`${q1.toUpperCase()},${q3.toUpperCase()},${q4.toUpperCase()}`);
-
-        } else {
-            // ANAK
-            const q1 = $('input[name="q_anak_1"]:checked').val() || 'Tidak';
-            const q2 = $('input[name="q_anak_2"]:checked').val() || 'Tidak';
-
-            if (q1.toUpperCase() === 'YA') skor += 1;
-            if (q2.toUpperCase() === 'YA') skor += 1;
-
-            let cb1Vals = [];
-            $('.cb-anak1:checked').each(function() {
-                const v = $(this).val();
-                if (v !== 'Tidak ada') cb1Vals.push(v);
-            });
-            if (cb1Vals.length > 0) skor += 1;
-
-            let cb2Vals = [];
-            $('.cb-anak2:checked').each(function() {
-                const v = $(this).val();
-                if (v !== 'Tidak ada') cb2Vals.push(v);
-            });
-            if (cb2Vals.length > 0) skor += 2;
-
-            // ANAK: 0 = Resiko Rendah, 1-3 = Resiko Sedang, >=4 = Resiko Tinggi
-            if (skor === 0) {
-                ket = 'Resiko Rendah';
-            } else if (skor >= 1 && skor <= 3) {
-                ket = 'Resiko Sedang';
-            } else {
-                ket = 'Resiko Tinggi';
-            }
-
-            const allCb1 = [];
-            $('.cb-anak1:checked').each(function() { allCb1.push($(this).val()); });
-            $('#skrining_cb_anak1').val(allCb1.length > 0 ? allCb1.join(', ') : '-');
-
-            const allCb2 = [];
-            $('.cb-anak2:checked').each(function() { allCb2.push($(this).val()); });
-            $('#skrining_cb_anak2').val(allCb2.length > 0 ? allCb2.join(', ') : '-');
-
-            $('#skrining_q_anak').val(`${q1.toUpperCase()},${q2.toUpperCase()}`);
-        }
-
-        $('#skrining_skor_val').val(skor);
-        $('#skrining_skor_display').text(skor);
-        $('#skrining_keterangan_display').text(ket);
-        $('#skrining_keterangan').val(ket);
-
-        // Dynamic Color Styling based on Risk Level
-        const card = $('#cardSkorSkrining');
-        const titleLbl = $('#labelSkorTitle');
-        const numDisp = $('#skrining_skor_display');
-        const ketDisp = $('#skrining_keterangan_display');
-
-        if (ket === 'Resiko Tinggi') {
-            card.css({ 'background': '#ffebee', 'border': '1px solid #ffcdd2' });
-            titleLbl.css('color', '#dc3545');
-            numDisp.css('color', '#dc3545');
-            ketDisp.css('color', '#dc3545');
-        } else if (ket === 'Resiko Sedang') {
-            card.css({ 'background': '#fff8e1', 'border': '1px solid #ffe082' });
-            titleLbl.css('color', '#b78103');
-            numDisp.css('color', '#d97706');
-            ketDisp.css('color', '#b78103');
-        } else if (ket === 'Asesmen Lanjut oleh Ahli Gizi') {
-            card.css({ 'background': '#e0f2fe', 'border': '1px solid #bae6fd' });
-            titleLbl.css('color', '#0284c7');
-            numDisp.css('color', '#0284c7');
-            ketDisp.css('color', '#0284c7');
-        } else {
-            // Resiko Rendah
-            card.css({ 'background': '#e8f5e9', 'border': '1px solid #c8e6c9' });
-            titleLbl.css('color', '#198754');
-            numDisp.css('color', '#198754');
-            ketDisp.css('color', '#198754');
-        }
-    }
-
-    // Submit Simpan Skrining Gizi
-    $('#btnSimpanSkriningGizi').on('click', function(e) {
-        e.preventDefault();
-
-        const noRawat = $('#skrining_no_rawat').val();
-        const bb = $('#skrining_bb').val();
-        const tb = $('#skrining_tb').val();
-        const diagnosa = $('#skrining_diagnosa_medis').val();
-
-        if (!noRawat || !bb || !tb || !diagnosa) {
-            Swal.fire('Peringatan', 'Berat Badan, Tinggi Badan, dan Diagnosa Medis wajib diisi.', 'warning');
-            return;
-        }
-
-        const formData = $('#formSkriningGizi').serialize();
-
-        $.post('/erm/ranap/skrining-gizi', formData).done(function(res) {
-            if (res.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: res.message,
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-                $('#modalSkriningGizi').modal('hide');
-                if (typeof tb_ranap !== 'undefined') {
-                    tb_ranap.draw(false);
-                }
-
-                if (skriningOpenedFromDiet) {
-                    setTimeout(function() {
-                        showModalPermintaanDiet(noRawat);
-                    }, 350);
-                }
-            } else {
-                Swal.fire('Gagal', res.message || 'Gagal menyimpan data.', 'error');
-            }
-        }).fail(function(xhr) {
-            const msg = xhr.responseJSON?.message || 'Terjadi kesalahan sistem.';
-            Swal.fire('Error', msg, 'error');
-        });
-    });
-
-    function cetakSkriningGizi(noRawat) {
-        if (!noRawat) return;
-        const cleanNoRawat = noRawat.replaceAll('/', '-');
-        window.open(`${url}/ranap/skrining-gizi/cetak?no_rawat=${cleanNoRawat}`, '_blank');
-    }
-</script>
+    </script>
 @endpush

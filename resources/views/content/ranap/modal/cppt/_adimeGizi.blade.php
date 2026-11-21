@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-lg-2 col-md-12">
                     <label for="tanggal">Tgl & Jam Pemeriksaan</label>
-                    <x-input-group class="input-group-sm">
+                    <x-input-group>
                         <x-input-group-text>
                             <i class="bi bi-calendar3"></i>
                         </x-input-group-text>
@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <label for="petugas">Petugas</label>
-                    <x-input-group class="input-group-sm">
+                    <x-input-group>
                         <x-input-group-text>
                             <i class="bi bi-person-fill"></i>
                         </x-input-group-text>
@@ -93,7 +93,7 @@
 
 @push('script')
     <script>
-        $('#btnSimpanAdimeGizi').on('click', function () {
+        $('#btnSimpanAdimeGizi').on('click', function() {
             const formAdimeGizi = $('#formAdimeGizi')
             const formInfoPasienResep = $('#formInfoPasienResep')
             const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
@@ -187,17 +187,21 @@
                     // 3. RE-INITIALIZE DATATABLE DENGAN FITUR SCROLL
                     $('#tableCatatanAdimeGizi').DataTable({
                         // Konfigurasi Scroll
-                        scrollY: '300px',      // Tinggi maksimal area vertikal (muncul scrollbar jika data penuh)
-                        scrollX: true,         // Aktifkan scrollbar horizontal jika kolom melebihi lebar layar
-                        scrollCollapse: true,         // Jika data sedikit, tinggi tabel otomatis mengecil mengikuti data
-                        paging: true,         // Tetap aktifkan pagination jika diinginkan
-                        pageLength: 5,            // Jumlah baris default per halaman
+                        scrollY: '300px', // Tinggi maksimal area vertikal (muncul scrollbar jika data penuh)
+                        scrollX: true, // Aktifkan scrollbar horizontal jika kolom melebihi lebar layar
+                        scrollCollapse: true, // Jika data sedikit, tinggi tabel otomatis mengecil mengikuti data
+                        paging: true, // Tetap aktifkan pagination jika diinginkan
+                        pageLength: 5, // Jumlah baris default per halaman
                         lengthMenu: [5, 10, 25, 50],
 
                         // Konfigurasi Tambahan (Opsional untuk estetika RM)
-                        order: [[0, 'desc']],         // Urutkan berdasarkan tanggal terbaru dahulu
-                        columnDefs: [
-                            { targets: [0, 7], className: 'text-center' } // Maksa kolom tanggal & NIP rata tengah
+                        order: [
+                            [0, 'desc']
+                        ], // Urutkan berdasarkan tanggal terbaru dahulu
+                        columnDefs: [{
+                                targets: [0, 7],
+                                className: 'text-center'
+                            } // Maksa kolom tanggal & NIP rata tengah
                         ]
                     });
 
@@ -230,7 +234,7 @@
                             no_rawat: no_rawat,
                             tanggal: tanggal
                         },
-                        success: function (response) {
+                        success: function(response) {
                             if (response.success) {
                                 Swal.fire({
                                     icon: 'success',
@@ -247,7 +251,7 @@
                                 });
                             }
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             console.error("Error: ", error);
                             Swal.fire({
                                 icon: 'error',
@@ -299,7 +303,7 @@
                 });
             });
         }
-        $('#btnUbahAdimeGizi').on('click', function () {
+        $('#btnUbahAdimeGizi').on('click', function() {
             const formAdimeGizi = $('#formAdimeGizi')
             const formInfoPasienResep = $('#formInfoPasienResep')
             const no_rawat = formInfoPasienResep.find('[name=no_rawat]').val();
@@ -317,7 +321,7 @@
                 url: '/erm/ranap/gizi/catatan-adime',
                 type: 'PUT',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     formAdimeGizi.trigger('reset');
                     $('#btnUbahAdimeGizi').addClass('d-none');
                     if (response.success) {
@@ -340,7 +344,7 @@
                         });
                     }
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.error("Error: ", xhr);
                     Swal.fire({
                         icon: 'error',
@@ -350,7 +354,5 @@
                 }
             })
         })
-
-
     </script>
 @endpush

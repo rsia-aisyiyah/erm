@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12 col-lg-3 col-sm-12">
-        <div class="input-group input-group-sm mb-3">
+        <div class="input-group mb-3">
             <input type="text" class="form-control form-control-sm tanggal tglSoap1_soap" value="{{ date('d-m-Y') }}">
             <span class="input-group-text" style="font-size:12px"><i class="bi bi-calendar3"></i></span>
             <input type="text" class="form-control form-control-sm tanggal tglSoap2_soap" value="{{ date('d-m-Y') }}">
@@ -166,13 +166,13 @@
                                 userNik === "direksi"
                             );
 
-                            const depStr = typeof row.petugas?.pegawai?.departemen === 'object' 
-                                ? JSON.stringify(row.petugas?.pegawai?.departemen || '').toLowerCase() 
-                                : String(row.petugas?.pegawai?.departemen || '').toLowerCase();
+                            const depStr = typeof row.petugas?.pegawai?.departemen === 'object' ?
+                                JSON.stringify(row.petugas?.pegawai?.departemen || '').toLowerCase() :
+                                String(row.petugas?.pegawai?.departemen || '').toLowerCase();
 
-                            const jbtnStr = typeof row.petugas?.pegawai?.jbtn === 'object'
-                                ? JSON.stringify(row.petugas?.pegawai?.jbtn || '').toLowerCase()
-                                : String(row.petugas?.pegawai?.jbtn || '').toLowerCase();
+                            const jbtnStr = typeof row.petugas?.pegawai?.jbtn === 'object' ?
+                                JSON.stringify(row.petugas?.pegawai?.jbtn || '').toLowerCase() :
+                                String(row.petugas?.pegawai?.jbtn || '').toLowerCase();
 
                             const namaPetugasStr = String(row.petugas?.nama || row.petugas?.pegawai?.nama || '').toLowerCase();
 
@@ -203,7 +203,8 @@
                             // ASO Button (Yellow/Green)
                             if (isSoapApoteker || row.aso) {
                                 if (row.aso) {
-                                    buttonHtml += `<button type="button" class="btn btn-warning btn-sm d-flex align-items-center justify-content-center text-dark position-relative" style="width:34px; height:34px; padding:0;" title="ASO Aktif (Di-stempel oleh ${row.aso.petugas?.nama || row.aso.nip_apoteker} pada ${formatTanggal(row.aso.tgl_aso)}) - Klik untuk batalkan" ${isUserApoteker ? `onclick="batalAso('${row.no_rawat}','${row.tgl_perawatan}','${row.jam_rawat}')"` : 'disabled'}><i class="bi bi-clock-history fs-6"></i><span class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle"><span class="visually-hidden">Aktif</span></span></button>`;
+                                    buttonHtml +=
+                                        `<button type="button" class="btn btn-warning btn-sm d-flex align-items-center justify-content-center text-dark position-relative" style="width:34px; height:34px; padding:0;" title="ASO Aktif (Di-stempel oleh ${row.aso.petugas?.nama || row.aso.nip_apoteker} pada ${formatTanggal(row.aso.tgl_aso)}) - Klik untuk batalkan" ${isUserApoteker ? `onclick="batalAso('${row.no_rawat}','${row.tgl_perawatan}','${row.jam_rawat}')"` : 'disabled'}><i class="bi bi-clock-history fs-6"></i><span class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle"><span class="visually-hidden">Aktif</span></span></button>`;
                                 } else if (isUserApoteker) {
                                     buttonHtml += `<button type="button" class="btn btn-outline-warning btn-sm d-flex align-items-center justify-content-center text-dark" style="width:34px; height:34px; padding:0;" title="Stempel Automatic Stop Order (ASO)" onclick="stempelAso('${row.no_rawat}','${row.tgl_perawatan}','${row.jam_rawat}')"><i class="bi bi-clock-history fs-6"></i></button>`;
                                 }
@@ -274,7 +275,8 @@
 
                             baris = `<tr><th width="5%">Petugas</th><td width="5%">:</td><td>${row.petugas.nama}</td></tr>`;
                             if (row.aso) {
-                                baris += `<tr><td colspan="3"><div class="alert alert-warning p-1.5 mb-1 border-warning border-2 rounded-2" style="font-size:11px;"><i class="bi bi-clock-history me-1 text-danger"></i> <strong>AUTOMATIC STOP ORDER (ASO)</strong> <span class="ms-1">Distempel oleh <b>${row.aso.petugas?.nama || row.aso.nip_apoteker}</b> pada <b>${formatTanggal(row.aso.tgl_aso)}</b></span>${row.aso.catatan_aso ? `<br><small class="fst-italic text-dark">Catatan: "${row.aso.catatan_aso}"</small>` : ''}</div></td></tr>`;
+                                baris +=
+                                    `<tr><td colspan="3"><div class="alert alert-warning p-1.5 mb-1 border-warning border-2 rounded-2" style="font-size:11px;"><i class="bi bi-clock-history me-1 text-danger"></i> <strong>AUTOMATIC STOP ORDER (ASO)</strong> <span class="ms-1">Distempel oleh <b>${row.aso.petugas?.nama || row.aso.nip_apoteker}</b> pada <b>${formatTanggal(row.aso.tgl_aso)}</b></span>${row.aso.catatan_aso ? `<br><small class="fst-italic text-dark">Catatan: "${row.aso.catatan_aso}"</small>` : ''}</div></td></tr>`;
                             }
                             baris += '<tr><th>Subjek </th><td>:</td><td>' + stringPemeriksaan(row.keluhan) + '</td></tr>'
                             baris += '<tr><th>Objek </th><td>:</td><td>' + stringPemeriksaan(row.pemeriksaan) + '</td></tr>'
@@ -454,14 +456,14 @@
                                                                                                                                                                                                                                                                                                                                 `;
 
             let konfirmasi = `${isConfirmed ? `<div class="alert alert-success p-2 mt-2" role="alert" style="font-size:10px">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <strong><i class="bi bi-circle-check"></i></strong>
-                                                                                                                                                                                                                                                                                                                                                                                                                            Telah Konfirmasi <br/>
-                                                                                                                                                                                                                                                                                                                                                                                                                            <strong>${data.petugas.nama}</strong>
-                                                                                                                                                                                                                                                                                                                                                                                                                            pada <br/>
-                                                                                                                                                                                                                                                                                                                                                                                                                            <strong>${formatTanggal(data.sbar.konfirmasi.tgl_konfirmasi
-                                                                                                            )} ${data.sbar.konfirmasi.jam_konfirmasi}</strong>
-                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                                                    `: ""}`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                <strong><i class="bi bi-circle-check"></i></strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                                Telah Konfirmasi <br/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                <strong>${data.petugas.nama}</strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                                pada <br/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                <strong>${formatTanggal(data.sbar.konfirmasi.tgl_konfirmasi
+                                                                                                                )} ${data.sbar.konfirmasi.jam_konfirmasi}</strong>
+                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                        `: ""}`;
 
             if (verified) {
 
@@ -582,14 +584,14 @@
                         isConfirmed
                             ? ''
                             : `
-                                                                                                                        <button
-                                                                                                                            type="button"
-                                                                                                                            class="btn btn-warning btn-sm ms-2"
-                                                                                                                            onclick="konfirmasiSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')">
-                                                                                                                            <i class="bi bi-check2-circle"></i>
-                                                                                                                            Konfirmasi
-                                                                                                                        </button>
-                                                                                                                    `
+                                                                                                                            <button
+                                                                                                                                type="button"
+                                                                                                                                class="btn btn-warning btn-sm ms-2"
+                                                                                                                                onclick="konfirmasiSbar('${data.no_rawat}', '${data.tgl_perawatan}', '${data.jam_rawat}')">
+                                                                                                                                <i class="bi bi-check2-circle"></i>
+                                                                                                                                Konfirmasi
+                                                                                                                            </button>
+                                                                                                                        `
                     )
                     : ''
                 }

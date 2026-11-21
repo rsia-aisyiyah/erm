@@ -1,8 +1,8 @@
 @push('style')
     <style>
         /* ==========================================
-                                                                                   DISCHARGE PLANNING - MODERN CLINICAL UI
-                                                                                ========================================== */
+                                                                                       DISCHARGE PLANNING - MODERN CLINICAL UI
+                                                                                    ========================================== */
 
         #modalDischargePlanning,
         #modalObatDischargePlanning {
@@ -353,8 +353,8 @@
         }
 
         /* ==========================================
-                                                                                   RESPONSIVE TABLET
-                                                                                ========================================== */
+                                                                                       RESPONSIVE TABLET
+                                                                                    ========================================== */
 
         @media (max-width: 991.98px) {
 
@@ -370,8 +370,8 @@
         }
 
         /* ==========================================
-                                                                                   RESPONSIVE MOBILE
-                                                                                ========================================== */
+                                                                                       RESPONSIVE MOBILE
+                                                                                    ========================================== */
 
         @media (max-width: 575.98px) {
 
@@ -533,7 +533,7 @@
                     <div class="row gy-2 sectionMonitoring">
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="petugas" class="form-label">Petugas</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="nip" name="nip" value="{{ session()->get('pegawai')->nik }}" readonly style="border-top-right-radius:0px;border-bottom-right-radius:0px" />
                                 <x-input id="petugas" name="petugas" value="{{ session()->get('pegawai')->nama }}" class="w-25" readonly style="border-top-left-radius:0px;border-bottom-left-radius:0px" />
                             </x-input-group>

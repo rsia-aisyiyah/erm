@@ -64,7 +64,7 @@
 
                     <!-- Tab Content -->
                     <div class="tab-content" id="tabGeriatriContent">
-                        
+
                         <!-- TAB 1: DATA AWAL PERAWAT -->
                         <div class="tab-pane fade show active" id="tab-perawat" role="tabpanel">
                             <div class="card mb-3">
@@ -214,7 +214,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label small fw-bold">Penanggung Jawab / Telepon</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <input type="text" class="form-control" name="nama_penanggung_jawab" placeholder="Nama PJ">
                                                 <input type="text" class="form-control" name="no_telepon_penanggung_jawab" placeholder="No. HP/Telp">
                                             </div>
@@ -229,7 +229,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label small fw-bold">Perubahan BB (6 Bulan Terakhir)</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <select class="form-select" name="perubahan_bb" style="max-width: 100px;">
                                                     <option value="Tidak">Tidak</option>
                                                     <option value="Ya">Ya</option>
@@ -239,7 +239,7 @@
                                         </div>
                                         <div class="col-md-12">
                                             <label class="form-label small fw-bold">Riwayat Alergi</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <select class="form-select" name="riwayat_alergi" style="max-width: 100px;">
                                                     <option value="Tidak">Tidak</option>
                                                     <option value="Ya">Ya</option>
@@ -272,7 +272,7 @@
                                     <div class="row g-2 mt-1">
                                         <div class="col-md-3">
                                             <label class="form-label small fw-bold">GCS (E V M)</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <input type="text" class="form-control" name="gcs_e" placeholder="E">
                                                 <input type="text" class="form-control" name="gcs_v" placeholder="V">
                                                 <input type="text" class="form-control" name="gcs_m" placeholder="M">
@@ -442,7 +442,7 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label small mb-0">Nyeri Tekan / Lokasi</label>
-                                                    <div class="input-group input-group-sm">
+                                                    <div class="input-group">
                                                         <select class="form-select" name="abdomen_nyeri_tekan" style="max-width:70px;">
                                                             <option value="-">-</option>
                                                             <option value="+">+</option>
@@ -452,14 +452,14 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label small mb-0">Hepar / Lien</label>
-                                                    <div class="input-group input-group-sm">
+                                                    <div class="input-group">
                                                         <input type="text" class="form-control" name="abdomen_hepar" placeholder="Hepar">
                                                         <input type="text" class="form-control" name="abdomen_lien" placeholder="Lien">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label small mb-0">Ekstremitas (Suhu & Oedema)</label>
-                                                    <div class="input-group input-group-sm">
+                                                    <div class="input-group">
                                                         <select class="form-select" name="ekstremitas_suhu" style="max-width:90px;">
                                                             <option value="Hangat">Hangat</option>
                                                             <option value="Dingin">Dingin</option>
@@ -512,13 +512,13 @@
                                                 <div class="col-6">
                                                     <select class="form-select form-select-sm" name="mna_penapisan">
                                                         <option value="Normal (>=12)">Normal (>=12)</option>
-                                                        <option value="Kemungkinan Malnutrisi (<=11)">Kemungkinan Malnutrisi (<=11)</option>
+                                                        <option value="Kemungkinan Malnutrisi (<=11)">Kemungkinan Malnutrisi (<=11)< /option>
                                                     </select>
                                                 </div>
                                                 <div class="col-6">
                                                     <select class="form-select form-select-sm" name="mna_pengkajian">
                                                         <option value="Risiko Malnutrisi (17-23.5)">Risiko Malnutrisi (17-23.5)</option>
-                                                        <option value="Malnutrisi (<17)">Malnutrisi (<17)</option>
+                                                        <option value="Malnutrisi (<17)">Malnutrisi (<17)< /option>
                                                     </select>
                                                 </div>
                                                 <div class="col-6 mt-1">
@@ -534,7 +534,7 @@
                                             <select class="form-select form-select-sm" name="mmse">
                                                 <option value="Normal (24-30)">Normal (24-30)</option>
                                                 <option value="Gangguan Kognitif Ringan (MCI) (17-23)">Gangguan Kognitif Ringan (MCI) (17-23)</option>
-                                                <option value="Gangguan Kognitif Pasti (<=16)">Gangguan Kognitif Pasti (<=16)</option>
+                                                <option value="Gangguan Kognitif Pasti (<=16)">Gangguan Kognitif Pasti (<=16)< /option>
                                                 <option value="Belum Dapat Dievaluasi">Belum Dapat Dievaluasi</option>
                                             </select>
                                         </div>
@@ -554,7 +554,7 @@
                                         <div class="col-md-6">
                                             <label class="form-label small fw-bold">7. Prediksi Klinis Wells (DVT & Emboli Paru)</label>
                                             <select class="form-select form-select-sm" name="wells_dvt">
-                                                <option value="Risiko Rendah (<1)">Risiko Rendah (<1)</option>
+                                                <option value="Risiko Rendah (<1)">Risiko Rendah (<1)< /option>
                                                 <option value="Risiko Sedang (1-2)">Risiko Sedang (1-2)</option>
                                                 <option value="Risiko Tinggi (>3)">Risiko Tinggi (>3)</option>
                                             </select>
@@ -564,7 +564,7 @@
                                             <select class="form-select form-select-sm" name="norton_ulkus">
                                                 <option value="Risiko Rendah (>14)">Risiko Rendah (>14)</option>
                                                 <option value="Risiko Sedang (12-13)">Risiko Sedang (12-13)</option>
-                                                <option value="Risiko Tinggi (<12)">Risiko Tinggi (<12)</option>
+                                                <option value="Risiko Tinggi (<12)">Risiko Tinggi (<12)< /option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
@@ -673,83 +673,87 @@
 </div>
 
 @push('script')
-<script>
-    function showModalAsesmenGeriatri(no_rawat) {
-        $('#formAsesmenGeriatri')[0].reset();
-        $('#alertAsesmenGeriatri').addClass('d-none');
-        $('#btnCetakAsesmenGeriatri').attr('disabled', true).off('click');
+    <script>
+        function showModalAsesmenGeriatri(no_rawat) {
+            $('#formAsesmenGeriatri')[0].reset();
+            $('#alertAsesmenGeriatri').addClass('d-none');
+            $('#btnCetakAsesmenGeriatri').attr('disabled', true).off('click');
 
-        $.ajax({
-            url: `${url}/asesmen-geriatri`,
-            type: 'GET',
-            data: { no_rawat: no_rawat },
-            success: function(response) {
-                $('#modalAsesmenGeriatri').modal('show');
-                $('#ag_no_rawat').val(no_rawat);
+            $.ajax({
+                url: `${url}/asesmen-geriatri`,
+                type: 'GET',
+                data: {
+                    no_rawat: no_rawat
+                },
+                success: function(response) {
+                    $('#modalAsesmenGeriatri').modal('show');
+                    $('#ag_no_rawat').val(no_rawat);
 
-                if (response && response.no_rawat) {
-                    $('#alertAsesmenGeriatri').removeClass('d-none');
-                    $('#ag_tgl_input').text(formatTanggal(response.tanggal));
+                    if (response && response.no_rawat) {
+                        $('#alertAsesmenGeriatri').removeClass('d-none');
+                        $('#ag_tgl_input').text(formatTanggal(response.tanggal));
 
-                    // Fill Form Fields
-                    $.each(response, function(key, val) {
-                        const input = $(`#formAsesmenGeriatri [name="${key}"]`);
-                        if (input.length) {
-                            input.val(val);
-                        }
-                    });
-
-                    // Set Patient Banner Info
-                    if (response.reg_periksa) {
-                        $('#ag_nm_pasien').val(response.reg_periksa.pasien?.nm_pasien || '-');
-                        $('#ag_no_rkm_medis').val(response.reg_periksa.pasien?.no_rkm_medis || '-');
-                        $('#ag_tgl_lahir_jk').val(`${response.reg_periksa.pasien?.tgl_lahir || '-'} (${response.reg_periksa.pasien?.jk || '-'})`);
-                        $('#ag_dokter_dpjp').val(response.reg_periksa.dokter?.nm_dokter || '-');
-                    }
-
-                    // Enable Print Button
-                    $('#btnCetakAsesmenGeriatri').attr('disabled', false).on('click', function() {
-                        window.open(`${url}/asesmen-geriatri/print?no_rawat=${no_rawat}`, '_blank');
-                    });
-                } else {
-                    // Fetch Basic Registration Info if no existing Geriatri record
-                    $.ajax({
-                        url: `${url}/registrasi/ambil`,
-                        type: 'GET',
-                        data: { no_rawat: no_rawat },
-                        success: function(reg) {
-                            if (reg) {
-                                $('#ag_nm_pasien').val(reg.pasien?.nm_pasien || '-');
-                                $('#ag_no_rkm_medis').val(reg.pasien?.no_rkm_medis || '-');
-                                $('#ag_tgl_lahir_jk').val(`${reg.pasien?.tgl_lahir || '-'} (${reg.pasien?.jk || '-'})`);
-                                $('#ag_dokter_dpjp').val(reg.dokter?.nm_dokter || '-');
+                        // Fill Form Fields
+                        $.each(response, function(key, val) {
+                            const input = $(`#formAsesmenGeriatri [name="${key}"]`);
+                            if (input.length) {
+                                input.val(val);
                             }
+                        });
+
+                        // Set Patient Banner Info
+                        if (response.reg_periksa) {
+                            $('#ag_nm_pasien').val(response.reg_periksa.pasien?.nm_pasien || '-');
+                            $('#ag_no_rkm_medis').val(response.reg_periksa.pasien?.no_rkm_medis || '-');
+                            $('#ag_tgl_lahir_jk').val(`${response.reg_periksa.pasien?.tgl_lahir || '-'} (${response.reg_periksa.pasien?.jk || '-'})`);
+                            $('#ag_dokter_dpjp').val(response.reg_periksa.dokter?.nm_dokter || '-');
                         }
-                    });
-                }
-            }
-        });
-    }
 
-    $('#btnSimpanAsesmenGeriatri').on('click', function() {
-        const formData = $('#formAsesmenGeriatri').serialize();
-
-        $.ajax({
-            url: `${url}/asesmen-geriatri`,
-            type: 'POST',
-            data: formData,
-            success: function(res) {
-                if (res.status === 'success' || res.status === 'success update') {
-                    alertSuccessAjax('Data Asesmen Awal Geriatri berhasil disimpan');
-                    $('#modalAsesmenGeriatri').modal('hide');
-                } else {
-                    alertErrorAjax(res);
+                        // Enable Print Button
+                        $('#btnCetakAsesmenGeriatri').attr('disabled', false).on('click', function() {
+                            window.open(`${url}/asesmen-geriatri/print?no_rawat=${no_rawat}`, '_blank');
+                        });
+                    } else {
+                        // Fetch Basic Registration Info if no existing Geriatri record
+                        $.ajax({
+                            url: `${url}/registrasi/ambil`,
+                            type: 'GET',
+                            data: {
+                                no_rawat: no_rawat
+                            },
+                            success: function(reg) {
+                                if (reg) {
+                                    $('#ag_nm_pasien').val(reg.pasien?.nm_pasien || '-');
+                                    $('#ag_no_rkm_medis').val(reg.pasien?.no_rkm_medis || '-');
+                                    $('#ag_tgl_lahir_jk').val(`${reg.pasien?.tgl_lahir || '-'} (${reg.pasien?.jk || '-'})`);
+                                    $('#ag_dokter_dpjp').val(reg.dokter?.nm_dokter || '-');
+                                }
+                            }
+                        });
+                    }
                 }
-            },
-            error: function(err) {
-                alertErrorAjax(err);
-            }
+            });
+        }
+
+        $('#btnSimpanAsesmenGeriatri').on('click', function() {
+            const formData = $('#formAsesmenGeriatri').serialize();
+
+            $.ajax({
+                url: `${url}/asesmen-geriatri`,
+                type: 'POST',
+                data: formData,
+                success: function(res) {
+                    if (res.status === 'success' || res.status === 'success update') {
+                        alertSuccessAjax('Data Asesmen Awal Geriatri berhasil disimpan');
+                        $('#modalAsesmenGeriatri').modal('hide');
+                    } else {
+                        alertErrorAjax(res);
+                    }
+                },
+                error: function(err) {
+                    alertErrorAjax(err);
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush

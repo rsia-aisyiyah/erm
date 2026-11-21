@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="">Pasien</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <input type="text" class="form-control form-control-sm" id="no_rkm_medis"
                                 name="no_rkm_medis" placeholder="" readonly>
                             <input type="text" class="form-control form-control-sm w-50" id="pasien" name="pasien"
@@ -33,14 +33,14 @@
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="">Kamar</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input id="kamar" name="kamar" readonly class="w-50" />
                             <x-input id="lama" name="lama" readonly />
                         </x-input-group>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <label for="">Pebiayaan</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input id="penjab" name="penjab" readonly class="w-50" />
                             <x-input id="no_kartu" name="no_kartu" readonly />
                         </x-input-group>
@@ -420,7 +420,7 @@
             })
         }
 
-        $('button[data-bs-toggle="tab"][data-bs-target="#tab-tabel-pane"]').on('shown.bs.tab', function () {
+        $('button[data-bs-toggle="tab"][data-bs-target="#tab-tabel-pane"]').on('shown.bs.tab', function() {
             const no_rawat = $('#formSoapUgd input[name="no_rawat"]').val()
             tbSoapRanap(no_rawat);
         });
@@ -431,12 +431,14 @@
             box-shadow: 0 4px 10px rgba(220, 38, 38, 0.35) !important;
             transform: translateY(-1px);
         }
+
         .btn-ssrme-reguler:hover {
             background-color: #00877a !important;
             color: #ffffff !important;
             box-shadow: 0 4px 10px rgba(0, 135, 122, 0.25) !important;
             transform: translateY(-1px);
         }
+
         .btn-ssrme-reguler:hover i {
             color: #ffffff !important;
         }

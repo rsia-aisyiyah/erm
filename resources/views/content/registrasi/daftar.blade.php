@@ -78,21 +78,21 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Nama Pasien</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-input id="tgl_lahir" name="no_rkm_medis" readonly></x-input>
                                     <x-input id="umurdaftar" name="nm_pasien" readonly class="w-50"></x-input>
                                 </x-input-group>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Tgl. Lahir/Umur</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-input id="tgl_lahir" name="tgl_lahir" readonly></x-input>
                                     <x-input id="umurdaftar" name="umurdaftar" readonly class="w-25"></x-input>
                                 </x-input-group>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Penanggung Jawab</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-input id="hubunganpj" name="hubunganpj"></x-input>
                                     <x-input id="p_jawab" name="p_jawab" readonly class="w-50" readonly></x-input>
                                 </x-input-group>
@@ -273,13 +273,10 @@
             </div>
         </div>
     </div>
-
-
 @endsection
 
 
 @push('script')
-
     <script>
         // ==========================================================
         // GLOBAL
@@ -292,9 +289,9 @@
         // ==========================================================
         // INIT
         // ==========================================================
-        window.onload = function () {
+        window.onload = function() {
 
-            wgssSignatureSDK = new WacomGSS_SignatureSDK(function () {
+            wgssSignatureSDK = new WacomGSS_SignatureSDK(function() {
 
                 if (!wgssSignatureSDK.running) {
                     alert("Service SigCaptX tidak berjalan.");
@@ -314,7 +311,7 @@
         // ==========================================================
         function initSigCtl() {
 
-            sigCtl = new wgssSignatureSDK.SigCtl(function (sigCtlV, status) {
+            sigCtl = new wgssSignatureSDK.SigCtl(function(sigCtlV, status) {
 
                 if (status !== wgssSignatureSDK.ResponseStatus.OK) {
                     console.error("SigCtl gagal dibuat", status);
@@ -325,18 +322,20 @@
 
                 console.log("SigCtl OK");
 
-                sigCtl.PutLicence("eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3YmM5Y2IxYWIxMGE0NmUxODI2N2E5MTJkYTA2ZTI3NiIsImV4cCI6MjE0NzQ4MzY0NywiaWF0IjoxNTYwOTUwMjcyLCJyaWdodHMiOlsiU0lHX1NES19DT1JFIiwiU0lHQ0FQVFhfQUNDRVNTIl0sImRldmljZXMiOlsiV0FDT01fQU5ZIl0sInR5cGUiOiJwcm9kIiwibGljX25hbWUiOiJTaWduYXR1cmUgU0RLIiwid2Fjb21faWQiOiI3YmM5Y2IxYWIxMGE0NmUxODI2N2E5MTJkYTA2ZTI3NiIsImxpY191aWQiOiJiODUyM2ViYi0xOGI3LTQ3OGEtYTlkZS04NDlmZTIyNmIwMDIiLCJhcHBzX3dpbmRvd3MiOltdLCJhcHBzX2lvcyI6W10sImFwcHNfYW5kcm9pZCI6W10sIm1hY2hpbmVfaWRzIjpbXX0.ONy3iYQ7lC6rQhou7rz4iJT_OJ20087gWz7GtCgYX3uNtKjmnEaNuP3QkjgxOK_vgOrTdwzD-nm-ysiTDs2GcPlOdUPErSp_bcX8kFBZVmGLyJtmeInAW6HuSp2-57ngoGFivTH_l1kkQ1KMvzDKHJbRglsPpd4nVHhx9WkvqczXyogldygvl0LRidyPOsS5H2GYmaPiyIp9In6meqeNQ1n9zkxSHo7B11mp_WXJXl0k1pek7py8XYCedCNW5qnLi4UCNlfTd6Mk9qz31arsiWsesPeR9PN121LBJtiPi023yQU8mgb9piw_a-ccciviJuNsEuRDN3sGnqONG3dMSA", function (sigCtlV, status) {
+                sigCtl.PutLicence(
+                    "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3YmM5Y2IxYWIxMGE0NmUxODI2N2E5MTJkYTA2ZTI3NiIsImV4cCI6MjE0NzQ4MzY0NywiaWF0IjoxNTYwOTUwMjcyLCJyaWdodHMiOlsiU0lHX1NES19DT1JFIiwiU0lHQ0FQVFhfQUNDRVNTIl0sImRldmljZXMiOlsiV0FDT01fQU5ZIl0sInR5cGUiOiJwcm9kIiwibGljX25hbWUiOiJTaWduYXR1cmUgU0RLIiwid2Fjb21faWQiOiI3YmM5Y2IxYWIxMGE0NmUxODI2N2E5MTJkYTA2ZTI3NiIsImxpY191aWQiOiJiODUyM2ViYi0xOGI3LTQ3OGEtYTlkZS04NDlmZTIyNmIwMDIiLCJhcHBzX3dpbmRvd3MiOltdLCJhcHBzX2lvcyI6W10sImFwcHNfYW5kcm9pZCI6W10sIm1hY2hpbmVfaWRzIjpbXX0.ONy3iYQ7lC6rQhou7rz4iJT_OJ20087gWz7GtCgYX3uNtKjmnEaNuP3QkjgxOK_vgOrTdwzD-nm-ysiTDs2GcPlOdUPErSp_bcX8kFBZVmGLyJtmeInAW6HuSp2-57ngoGFivTH_l1kkQ1KMvzDKHJbRglsPpd4nVHhx9WkvqczXyogldygvl0LRidyPOsS5H2GYmaPiyIp9In6meqeNQ1n9zkxSHo7B11mp_WXJXl0k1pek7py8XYCedCNW5qnLi4UCNlfTd6Mk9qz31arsiWsesPeR9PN121LBJtiPi023yQU8mgb9piw_a-ccciviJuNsEuRDN3sGnqONG3dMSA",
+                    function(sigCtlV, status) {
 
-                    if (status !== wgssSignatureSDK.ResponseStatus.OK) {
-                        console.error("Licence gagal", status);
-                        return;
-                    }
+                        if (status !== wgssSignatureSDK.ResponseStatus.OK) {
+                            console.error("Licence gagal", status);
+                            return;
+                        }
 
-                    console.log("Licence OK");
+                        console.log("Licence OK");
 
-                    initDynamicCapture();
+                        initDynamicCapture();
 
-                });
+                    });
 
             });
 
@@ -347,7 +346,7 @@
         // ==========================================================
         function initDynamicCapture() {
 
-            dynCapt = new wgssSignatureSDK.DynamicCapture(function (dynCaptV, status) {
+            dynCapt = new wgssSignatureSDK.DynamicCapture(function(dynCaptV, status) {
 
                 if (status !== wgssSignatureSDK.ResponseStatus.OK) {
                     console.error("DynamicCapture gagal dibuat", status);
@@ -358,7 +357,7 @@
 
                 dynCapt = dynCaptV;
 
-                sigCtl.GetSignature(function (sigCtlV, sigObjV, status) {
+                sigCtl.GetSignature(function(sigCtlV, sigObjV, status) {
 
                     if (status !== wgssSignatureSDK.ResponseStatus.OK) {
                         console.error("GetSignature gagal", status);
@@ -391,7 +390,7 @@
 
             dynCapt.Capture(
                 sigCtl, nama, alasan, null, null,
-                function (dynCaptV, sigObjV, status) {
+                function(dynCaptV, sigObjV, status) {
                     console.log("Capture callback :", status);
                     if (status === wgssSignatureSDK.DynamicCaptureResult.DynCaptOK) {
                         const flags = wgssSignatureSDK.RBFlags.RenderOutputBase64 |
@@ -401,7 +400,7 @@
 
                         sigObjV.RenderBitmap(
                             "png", 400, 180, 0.6, 0x00000000, 0x00FFFFFF, flags, 0, 0,
-                            function (sigObj, bmpObj, renderStatus) {
+                            function(sigObj, bmpObj, renderStatus) {
                                 if (renderStatus === wgssSignatureSDK.ResponseStatus.OK) {
                                     $(".signature_base64").val(bmpObj);
                                     $(".previewSignature").attr("src", "data:image/png;base64," + bmpObj).removeClass('d-none');
@@ -425,7 +424,7 @@
 
             const img = new Image();
 
-            img.onload = function () {
+            img.onload = function() {
 
                 const canvas = document.createElement("canvas");
                 const ctx = canvas.getContext("2d");
@@ -478,15 +477,15 @@
         const tabPersetujuanUmum = $('a[href="#umum"]');
 
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             tbDaftarPasien();
 
-            $('#btnFilter').click(function () {
+            $('#btnFilter').click(function() {
                 tbPasien.ajax.reload();
             });
 
-            $('#tgl_registrasi,#kd_poli,#kd_dokter').change(function () {
+            $('#tgl_registrasi,#kd_poli,#kd_dokter').change(function() {
                 localStorage.setItem('tgl_registrasi', $('#tgl_registrasi').val());
             });
 
@@ -494,7 +493,7 @@
 
         });
 
-        $('#modalGeneralConsent').on('hidden.bs.modal', function () {
+        $('#modalGeneralConsent').on('hidden.bs.modal', function() {
             $('#formInfoAdministrasiPasien')[0].reset();
             $('#tabAdministrasiPendaftaran a[href="#umum"]').tab('show'); // Kembalikan ke tab awal
             $('#pdfFrame').attr('src', '');
@@ -505,7 +504,7 @@
             tbPasien.ajax.reload(null, false);
         });
 
-        $('#btnFilter').click(function () {
+        $('#btnFilter').click(function() {
             tbPasien.ajax.reload();
         });
 
@@ -516,12 +515,12 @@
         }
 
         // 2. Reset state otomatis setiap kali modal ditutup
-        $('#modalSignature').on('hidden.bs.modal', function () {
+        $('#modalSignature').on('hidden.bs.modal', function() {
             resetSignatureState();
         });
 
 
-        $('#btnCapture').off('click').on('click', function () {
+        $('#btnCapture').off('click').on('click', function() {
             $('#modalSignature').modal('show');
             let tabActive = $('#tabAdministrasiPendaftaran').find('.nav-link.active');
             $('.lblReason').text(tabActive.text());
@@ -530,13 +529,17 @@
         });
 
         // 6. Perbaikan bagian Simpan Data
-        $('#btnSaveSignature').off('click').on('click', function () {
+        $('#btnSaveSignature').off('click').on('click', function() {
             const no_rawat = $('#formInfoAdministrasiPasien').find('#no_rawat').val();
             const signatureBase64 = $(".signature_base64").val();
             const signedAt = $('#signed_at').val();
 
             if (!signatureBase64) {
-                Swal.fire({ icon: 'warning', title: 'Perhatian', text: 'Tanda tangan belum diambil.' });
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Perhatian',
+                    text: 'Tanda tangan belum diambil.'
+                });
                 return;
             }
 
@@ -545,20 +548,26 @@
                 html: 'Mohon tunggu sebentar',
                 allowOutsideClick: false,
                 showConfirmButton: false,
-                didOpen: () => { Swal.showLoading(); }
+                didOpen: () => {
+                    Swal.showLoading();
+                }
             });
 
             $.ajax({
-                url: "{{ route('persetujuan-umum.save') }}",
-                method: "POST",
-                data: {
-                    signature: signatureBase64,
-                    no_rawat: no_rawat,
-                    signed_at: signedAt,
-                }
-            })
-                .done(function (response) {
-                    Swal.fire({ icon: 'success', title: 'Berhasil', text: response.message });
+                    url: "{{ route('persetujuan-umum.save') }}",
+                    method: "POST",
+                    data: {
+                        signature: signatureBase64,
+                        no_rawat: no_rawat,
+                        signed_at: signedAt,
+                    }
+                })
+                .done(function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: response.message
+                    });
 
                     $('.previewPersetujuanUmum').addClass('d-none');
                     // Reload atau update src iframe agar file baru muncul
@@ -570,8 +579,12 @@
                     // Cukup reload datatable, tidak perlu di-destroy lalu dirender ulang dari 0
                     $('#tb_daftar_pasien').DataTable().ajax.reload(null, false);
                 })
-                .fail(function (xhr) {
-                    Swal.fire({ icon: 'error', title: 'Gagal', text: xhr.responseJSON?.message ?? 'Terjadi kesalahan.' });
+                .fail(function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: xhr.responseJSON?.message ?? 'Terjadi kesalahan.'
+                    });
                 });
         });
 
@@ -589,7 +602,7 @@
 
                 ajax: {
                     url: "registrasi/ambil/table",
-                    data: function (d) {
+                    data: function(d) {
                         const tanggal = localStorage.getItem('tgl_registrasi') ? localStorage.getItem('tgl_registrasi') : $('#tgl_registrasi').val();
                         d.tgl_registrasi = tanggal;
                         d.kd_poli = $('#kd_poli').val();
@@ -598,15 +611,14 @@
                     }
                 },
 
-                columns: [
-                    {
+                columns: [{
                         data: 'no_rawat',
                         title: 'No. Rawat'
                     },
                     {
                         data: null,
                         title: 'Pasien',
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             return `
                                 <div class="d-flex align-items-center">
                                             ${setIconGender(row.pasien.jk)}
@@ -637,7 +649,7 @@
                         data: null,
                         title: 'Persetujuan',
                         className: 'text-center',
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
 
                             if (row.general_consent?.ttd) {
                                 return '<span class="badge bg-success">Selesai</span>';
@@ -676,12 +688,12 @@
                     loket: loket,
                 },
                 async: false,
-                success: function (response) {
+                success: function(response) {
                     // console.log('Cek Proses', response);
                     hasil = response;
 
                 },
-                error: function (request, status, error) {
+                error: function(request, status, error) {
                     swal.fire(
                         'Peringatan',
                         request.responseJSON.message,
@@ -701,7 +713,7 @@
                     no_rawat: no_rawat,
                 },
                 method: 'DELETE',
-                success: function (response) {
+                success: function(response) {
                     $('#tb_daftar_pasien').DataTable().destroy();
                     tbDaftarPasien()
                 }
@@ -723,11 +735,11 @@
                         nik: nik,
                         loket: loket,
                     },
-                    success: function (response) {
+                    success: function(response) {
                         $('#tb_daftar_pasien').DataTable().destroy();
                         tbDaftarPasien()
                     },
-                    error: function (request, status, error) {
+                    error: function(request, status, error) {
                         swal.fire(
                             'Gagal',
                             request.responseJSON.message,
@@ -743,15 +755,16 @@
                 )
             }
         }
+
         function modalGeneralConsent(no_rawat) {
 
             getRegPeriksa(no_rawat).done((response) => {
                 const formInfoAdministrasiPasien = $('#formInfoAdministrasiPasien');
                 const objUmurDaftar = hitungUmurDaftar(response.pasien.tgl_lahir, response.tgl_registrasi);
 
-                const umurDaftar = objUmurDaftar
-                    ? `${objUmurDaftar.tahun} Thn ${objUmurDaftar.bulan} Bln ${objUmurDaftar.hari} Hr`
-                    : '';
+                const umurDaftar = objUmurDaftar ?
+                    `${objUmurDaftar.tahun} Thn ${objUmurDaftar.bulan} Bln ${objUmurDaftar.hari} Hr` :
+                    '';
 
                 console.log(formInfoAdministrasiPasien);
 
@@ -793,7 +806,7 @@
                 data: {
                     no_rawat: no_rawat
                 },
-                success: function (response) {
+                success: function(response) {
 
                     if (response.exists && response.file_url) {
 
@@ -812,11 +825,11 @@
                     }
 
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     console.error(xhr);
                     alert('Gagal memuat data.');
                 },
-                complete: function () {
+                complete: function() {
                     $('#loadingPersetujuan').addClass('d-none');
                 }
             });
@@ -829,14 +842,14 @@
             ajax: {
                 url: "{{ route('poliklinik.get') }}",
                 dataType: 'JSON',
-                data: function (params) {
+                data: function(params) {
                     return {
                         params: params.term
                     };
                 },
-                processResults: function (data) {
+                processResults: function(data) {
                     return {
-                        results: $.map(data, function (item) {
+                        results: $.map(data, function(item) {
                             return {
                                 id: item.kd_poli,
                                 text: item.nm_poli
@@ -852,14 +865,14 @@
             ajax: {
                 url: "{{ route('dokter.cari') }}",
                 dataType: 'JSON',
-                data: function (params) {
+                data: function(params) {
                     return {
                         nm_dokter: params.term
                     };
                 },
-                processResults: function (data) {
+                processResults: function(data) {
                     return {
-                        results: $.map(data, function (item) {
+                        results: $.map(data, function(item) {
                             return {
                                 id: item.kd_dokter,
                                 text: item.nm_dokter
@@ -869,7 +882,5 @@
                 }
             }
         })
-
-
     </script>
 @endpush

@@ -1,131 +1,157 @@
 @extends('index')
 
 @push('style')
-<style>
-    @keyframes pulseNewItem {
-        0% { background-color: rgba(25, 135, 84, 0.25); }
-        50% { background-color: rgba(255, 193, 7, 0.35); }
-        100% { background-color: transparent; }
-    }
-    .row-highlight-baru {
-        animation: pulseNewItem 4s ease-out;
-    }
-    .btn-notif-control {
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        font-weight: 500;
-    }
-    .btn-notif-control:hover {
-        transform: translateY(-1.5px);
-    }
-    .pill-select-control {
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid #ced4da;
-    }
-    .pill-select-control:hover, .pill-select-control:focus-within {
-        border-color: #0d6efd;
-        box-shadow: 0 2px 8px rgba(13, 110, 253, 0.15) !important;
-    }
+    <style>
+        @keyframes pulseNewItem {
+            0% {
+                background-color: rgba(25, 135, 84, 0.25);
+            }
 
-    /* MODERN TOAST NOTIFICATION STYLING */
-    .swal2-container.swal2-top-end,
-    .swal2-container.swal2-top-right {
-        top: 65px !important;
-        right: 20px !important;
-        padding: 0 !important;
-    }
-    .swal2-farmasi-toast {
-        background: #ffffff !important;
-        border-radius: 14px !important;
-        box-shadow: 0 18px 45px -8px rgba(15, 23, 42, 0.2), 0 4px 12px -2px rgba(15, 23, 42, 0.08) !important;
-        padding: 16px 20px !important;
-        border: 1px solid rgba(226, 232, 240, 0.95) !important;
-        width: 430px !important;
-        max-width: calc(100vw - 36px) !important;
-        overflow: hidden !important;
-        position: relative !important;
-        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-    }
-    .swal2-farmasi-toast:hover {
-        transform: translateY(-2px) scale(1.01) !important;
-        box-shadow: 0 22px 48px -6px rgba(15, 23, 42, 0.25) !important;
-    }
-    .swal2-farmasi-toast .swal2-title,
-    .swal2-farmasi-toast .swal2-html-container {
-        padding: 0 !important;
-        margin: 0 !important;
-        text-align: left !important;
-        width: 100% !important;
-    }
-    .swal2-farmasi-toast .swal2-close {
-        position: absolute !important;
-        top: 12px !important;
-        right: 12px !important;
-        width: 26px !important;
-        height: 26px !important;
-        font-size: 16px !important;
-        color: #94a3b8 !important;
-        border-radius: 50% !important;
-        transition: all 0.15s ease !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background: #f8fafc !important;
-        border: 1px solid #e2e8f0 !important;
-        z-index: 10 !important;
-    }
-    .swal2-farmasi-toast .swal2-close:hover {
-        background: #e2e8f0 !important;
-        color: #0f172a !important;
-    }
-    .swal2-farmasi-toast .swal2-timer-progress-bar {
-        height: 4px !important;
-        border-radius: 0 !important;
-        bottom: 0 !important;
-    }
+            50% {
+                background-color: rgba(255, 193, 7, 0.35);
+            }
 
-    /* Type-specific vertical accent strip & gradient progress bar */
-    .toast-border-ralan {
-        border-left: 4.5px solid #198754 !important;
-    }
-    .toast-border-ralan .swal2-timer-progress-bar {
-        background: linear-gradient(90deg, #198754, #20c997) !important;
-    }
+            100% {
+                background-color: transparent;
+            }
+        }
 
-    .toast-border-ranap {
-        border-left: 4.5px solid #6f42c1 !important;
-    }
-    .toast-border-ranap .swal2-timer-progress-bar {
-        background: linear-gradient(90deg, #6f42c1, #a855f7) !important;
-    }
+        .row-highlight-baru {
+            animation: pulseNewItem 4s ease-out;
+        }
 
-    .toast-border-udd {
-        border-left: 4.5px solid #0d6efd !important;
-    }
-    .toast-border-udd .swal2-timer-progress-bar {
-        background: linear-gradient(90deg, #0d6efd, #38bdf8) !important;
-    }
+        .btn-notif-control {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
 
-    .toast-border-pulang {
-        border-left: 4.5px solid #d63384 !important;
-    }
-    .toast-border-pulang .swal2-timer-progress-bar {
-        background: linear-gradient(90deg, #d63384, #f43f5e) !important;
-    }
+        .btn-notif-control:hover {
+            transform: translateY(-1.5px);
+        }
 
-    .toast-border-warning {
-        border-left: 4.5px solid #f59e0b !important;
-    }
-    .toast-border-warning .swal2-timer-progress-bar {
-        background: linear-gradient(90deg, #f59e0b, #fbbf24) !important;
-    }
+        .pill-select-control {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #ced4da;
+        }
 
-    .toast-border-retur {
-        border-left: 4.5px solid #0d6efd !important;
-    }
-    .toast-border-retur .swal2-timer-progress-bar {
-        background: linear-gradient(90deg, #0d6efd, #38bdf8) !important;
-    }
-</style>
+        .pill-select-control:hover,
+        .pill-select-control:focus-within {
+            border-color: #0d6efd;
+            box-shadow: 0 2px 8px rgba(13, 110, 253, 0.15) !important;
+        }
+
+        /* MODERN TOAST NOTIFICATION STYLING */
+        .swal2-container.swal2-top-end,
+        .swal2-container.swal2-top-right {
+            top: 65px !important;
+            right: 20px !important;
+            padding: 0 !important;
+        }
+
+        .swal2-farmasi-toast {
+            background: #ffffff !important;
+            border-radius: 14px !important;
+            box-shadow: 0 18px 45px -8px rgba(15, 23, 42, 0.2), 0 4px 12px -2px rgba(15, 23, 42, 0.08) !important;
+            padding: 16px 20px !important;
+            border: 1px solid rgba(226, 232, 240, 0.95) !important;
+            width: 430px !important;
+            max-width: calc(100vw - 36px) !important;
+            overflow: hidden !important;
+            position: relative !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+
+        .swal2-farmasi-toast:hover {
+            transform: translateY(-2px) scale(1.01) !important;
+            box-shadow: 0 22px 48px -6px rgba(15, 23, 42, 0.25) !important;
+        }
+
+        .swal2-farmasi-toast .swal2-title,
+        .swal2-farmasi-toast .swal2-html-container {
+            padding: 0 !important;
+            margin: 0 !important;
+            text-align: left !important;
+            width: 100% !important;
+        }
+
+        .swal2-farmasi-toast .swal2-close {
+            position: absolute !important;
+            top: 12px !important;
+            right: 12px !important;
+            width: 26px !important;
+            height: 26px !important;
+            font-size: 16px !important;
+            color: #94a3b8 !important;
+            border-radius: 50% !important;
+            transition: all 0.15s ease !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            z-index: 10 !important;
+        }
+
+        .swal2-farmasi-toast .swal2-close:hover {
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+
+        .swal2-farmasi-toast .swal2-timer-progress-bar {
+            height: 4px !important;
+            border-radius: 0 !important;
+            bottom: 0 !important;
+        }
+
+        /* Type-specific vertical accent strip & gradient progress bar */
+        .toast-border-ralan {
+            border-left: 4.5px solid #198754 !important;
+        }
+
+        .toast-border-ralan .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #198754, #20c997) !important;
+        }
+
+        .toast-border-ranap {
+            border-left: 4.5px solid #6f42c1 !important;
+        }
+
+        .toast-border-ranap .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #6f42c1, #a855f7) !important;
+        }
+
+        .toast-border-udd {
+            border-left: 4.5px solid #0d6efd !important;
+        }
+
+        .toast-border-udd .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #0d6efd, #38bdf8) !important;
+        }
+
+        .toast-border-pulang {
+            border-left: 4.5px solid #d63384 !important;
+        }
+
+        .toast-border-pulang .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #d63384, #f43f5e) !important;
+        }
+
+        .toast-border-warning {
+            border-left: 4.5px solid #f59e0b !important;
+        }
+
+        .toast-border-warning .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24) !important;
+        }
+
+        .toast-border-retur {
+            border-left: 4.5px solid #0d6efd !important;
+        }
+
+        .toast-border-retur .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #0d6efd, #38bdf8) !important;
+        }
+    </style>
 @endpush
 
 @section('contents')
@@ -199,7 +225,7 @@
     </ul>
 
     <div class="tab-content" id="pills-farmasi-tabContent">
-        
+
         <!-- TAB 1: RESEP RAWAT JALAN (RALAN) -->
         <div class="tab-pane fade show active" id="tab-farmasi-ralan" role="tabpanel">
             <div class="row gy-2">
@@ -1256,11 +1282,30 @@
                 const runSynth = () => {
                     const now = ctx.currentTime;
                     // Nada Bandara Klasik Persis: D5 (587 Hz) -> F#5 (740 Hz) -> A5 (880 Hz) -> D6 (1175 Hz)
-                    const notes = [
-                        { freq: 587.33, time: now + 0.00, dur: 0.35, gain: 0.75 },
-                        { freq: 739.99, time: now + 0.18, dur: 0.35, gain: 0.75 },
-                        { freq: 880.00, time: now + 0.36, dur: 0.35, gain: 0.80 },
-                        { freq: 1174.66, time: now + 0.54, dur: 0.90, gain: 0.85 }
+                    const notes = [{
+                            freq: 587.33,
+                            time: now + 0.00,
+                            dur: 0.35,
+                            gain: 0.75
+                        },
+                        {
+                            freq: 739.99,
+                            time: now + 0.18,
+                            dur: 0.35,
+                            gain: 0.75
+                        },
+                        {
+                            freq: 880.00,
+                            time: now + 0.36,
+                            dur: 0.35,
+                            gain: 0.80
+                        },
+                        {
+                            freq: 1174.66,
+                            time: now + 0.54,
+                            dur: 0.90,
+                            gain: 0.85
+                        }
                     ];
 
                     notes.forEach(n => {
@@ -1329,6 +1374,7 @@
         // Flash title browser saat tab tidak aktif
         let originalDocTitle = document.title || 'Resep - ERM';
         let titleFlashTimer = null;
+
         function flashDocTitle(alertText) {
             if (titleFlashTimer) clearInterval(titleFlashTimer);
             let state = false;
@@ -1498,7 +1544,7 @@
                     borderClass: 'toast-border-warning',
                     btnClass: 'btn-outline-warning text-dark'
                 }
-            }[item.type] || {
+            } [item.type] || {
                 badge: 'bg-secondary text-white',
                 iconBg: 'rgba(108, 117, 125, 0.12)',
                 iconColor: '#6c757d',
@@ -1526,7 +1572,7 @@
             Toast.fire({
                 html: `
                     <div class="d-flex align-items-start" style="gap: 16px;" data-tab-id="${item.tabId}" data-subtab-id="${item.subTabId || ''}">
-                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
                              style="width: 44px; height: 44px; min-width: 44px; border-radius: 12px; background: ${typeConfig.iconBg}; color: ${typeConfig.iconColor}; border: 1px solid rgba(0,0,0,0.06);">
                             <i class="bi ${item.icon} fs-5"></i>
                         </div>
@@ -1590,7 +1636,7 @@
             Toast.fire({
                 html: `
                     <div class="d-flex align-items-start" style="gap: 16px;" data-tab-id="${firstTab}">
-                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
                              style="width: 44px; height: 44px; min-width: 44px; border-radius: 12px; background: rgba(220, 53, 69, 0.12); color: #dc3545; border: 1px solid rgba(0,0,0,0.06);">
                             <i class="bi bi-stack fs-5"></i>
                         </div>
@@ -1653,7 +1699,7 @@
             Toast.fire({
                 html: `
                     <div class="d-flex align-items-start" style="gap: 16px;" data-tab-id="${primaryTab}">
-                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
                              style="width: 44px; height: 44px; min-width: 44px; border-radius: 12px; background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid rgba(0,0,0,0.06);">
                             <i class="bi bi-bell-fill fs-5"></i>
                         </div>
@@ -1698,11 +1744,24 @@
 
             $.when(
                 $.get("{{ url('resep/ambil/sekarang') }}"),
-                $.get("{{ route('farmasi.resep-ranap.data') }}", { tgl_awal: today, tgl_akhir: today }),
-                $.get("{{ route('farmasi.permintaan-ranap.data') }}", { tgl_awal: today, tgl_akhir: today }),
-                $.get("{{ route('farmasi.resep-pulang.permintaan') }}", { tgl_awal: today, tgl_akhir: today }),
-                $.get("{{ route('retur-obat.daftar') }}", { status: 'Menunggu Validasi' }),
-                $.get("{{ route('retur-stok-udd.daftar') }}", { status: 'Menunggu Diterima' })
+                $.get("{{ route('farmasi.resep-ranap.data') }}", {
+                    tgl_awal: today,
+                    tgl_akhir: today
+                }),
+                $.get("{{ route('farmasi.permintaan-ranap.data') }}", {
+                    tgl_awal: today,
+                    tgl_akhir: today
+                }),
+                $.get("{{ route('farmasi.resep-pulang.permintaan') }}", {
+                    tgl_awal: today,
+                    tgl_akhir: today
+                }),
+                $.get("{{ route('retur-obat.daftar') }}", {
+                    status: 'Menunggu Validasi'
+                }),
+                $.get("{{ route('retur-stok-udd.daftar') }}", {
+                    status: 'Menunggu Diterima'
+                })
             ).done(function(resRalan, resRanap, resUdd, resPulang, resRetur, resReturUdd) {
                 const dataRalan = (resRalan && resRalan[0]) ? resRalan[0] : [];
                 const dataRanap = (resRanap && resRanap[0]) ? resRanap[0] : [];
@@ -2085,7 +2144,9 @@
                         }
                     };
                 `;
-                const blob = new Blob([workerScript], { type: 'application/javascript' });
+                const blob = new Blob([workerScript], {
+                    type: 'application/javascript'
+                });
                 const worker = new Worker(URL.createObjectURL(blob));
                 worker.onmessage = function(e) {
                     if (e.data === 'sync_tick') {
@@ -2161,15 +2222,14 @@
                         $(row).addClass('row-highlight-baru');
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
                             const penjab = row.reg_periksa.kd_pj == 'A03' ? '<b><span class="text-danger">(UMUM)</span></b>' : '<b><span class="text-success">(BPJS)</span></b>';
                             const isTelaah = !!row.telaah_farmasi;
-                            const badgeTelaah = isTelaah
-                                ? '<span class="badge bg-success-subtle text-success border border-success-subtle ms-1" style="font-size: 10px;" title="Sudah Ditelaah Farmasi"><i class="bi bi-shield-check me-1"></i>Sudah Telaah</span>'
-                                : '<span class="badge bg-danger-subtle text-danger border border-danger-subtle ms-1" style="font-size: 10px;" title="Belum Ditelaah Farmasi"><i class="bi bi-shield-exclamation me-1"></i>Belum Telaah</span>';
+                            const badgeTelaah = isTelaah ?
+                                '<span class="badge bg-success-subtle text-success border border-success-subtle ms-1" style="font-size: 10px;" title="Sudah Ditelaah Farmasi"><i class="bi bi-shield-check me-1"></i>Sudah Telaah</span>' :
+                                '<span class="badge bg-danger-subtle text-danger border border-danger-subtle ms-1" style="font-size: 10px;" title="Belum Ditelaah Farmasi"><i class="bi bi-shield-exclamation me-1"></i>Belum Telaah</span>';
 
                             let html = `<span class="font-monospace fw-bold text-primary">${row.no_resep}</span> ${badgeTelaah}<br/>`;
                             html += `<h6 style="margin:0px">${row.reg_periksa.pasien.nm_pasien}</h6>`;
@@ -2200,9 +2260,9 @@
                             let safeKdPoli = safeJsStr(row.reg_periksa?.kd_poli);
 
                             const isTelaah = !!row.telaah_farmasi;
-                            const btnTelaah = isTelaah
-                                ? `<button onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeNmPoli}')" class="btn btn-sm text-white mb-1" style="background-color: #0f766e; width:110px;" type="button" title="Sudah Ditelaah Farmasi (Klik untuk melihat/mengubah)"><i class="bi bi-shield-check me-1"></i> TELAAH <i class="bi bi-check-lg fw-bold"></i></button><br/>`
-                                : `<button onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeNmPoli}')" class="btn btn-sm btn-outline-danger mb-1 fw-bold" style="width:110px;" type="button" title="Belum Ditelaah Farmasi (Klik untuk menelaah)"><i class="bi bi-shield-exclamation me-1"></i> BLM TELAAH</button><br/>`;
+                            const btnTelaah = isTelaah ?
+                                `<button onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeNmPoli}')" class="btn btn-sm text-white mb-1" style="background-color: #0f766e; width:110px;" type="button" title="Sudah Ditelaah Farmasi (Klik untuk melihat/mengubah)"><i class="bi bi-shield-check me-1"></i> TELAAH <i class="bi bi-check-lg fw-bold"></i></button><br/>` :
+                                `<button onclick="bukaModalTelaahFarmasi('${safeNoResep}', '${safeNoRawat}', '${safeNmPasien}', '${safeNmPoli}')" class="btn btn-sm btn-outline-danger mb-1 fw-bold" style="width:110px;" type="button" title="Belum Ditelaah Farmasi (Klik untuk menelaah)"><i class="bi bi-shield-exclamation me-1"></i> BLM TELAAH</button><br/>`;
 
                             let statusBtnClass = 'btn-primary';
                             let statusBtnText = 'BELUM';
@@ -2347,17 +2407,17 @@
                     const safeNoPermintaan = safeJsStr(row.no_permintaan);
                     const safeNoRawat = safeJsStr(row.no_rawat);
 
-                    const penjabText = (row.reg_periksa?.penjab?.png_jawab || '').includes('BPJS')
-                        ? '<span class="badge bg-success-subtle text-success border border-success">BPJS</span>'
-                        : '<span class="badge bg-danger-subtle text-danger border border-danger">UMUM</span>';
+                    const penjabText = (row.reg_periksa?.penjab?.png_jawab || '').includes('BPJS') ?
+                        '<span class="badge bg-success-subtle text-success border border-success">BPJS</span>' :
+                        '<span class="badge bg-danger-subtle text-danger border border-danger">UMUM</span>';
 
-                    const statusBadge = row.status === 'Sudah'
-                        ? '<span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-check-circle"></i> Sudah Disiapkan</span>'
-                        : '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-hourglass-split"></i> Menunggu Farmasi</span>';
+                    const statusBadge = row.status === 'Sudah' ?
+                        '<span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-check-circle"></i> Sudah Disiapkan</span>' :
+                        '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-hourglass-split"></i> Menunggu Farmasi</span>';
 
-                    const telaahBadge = row.telaah_farmasi
-                        ? `<span class="badge text-white px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="background-color: #0f766e; font-size: 11.5px;"><i class="bi bi-shield-check"></i> Sudah Ditelaah</span>`
-                        : `<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-shield"></i> Belum Ditelaah</span>`;
+                    const telaahBadge = row.telaah_farmasi ?
+                        `<span class="badge text-white px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="background-color: #0f766e; font-size: 11.5px;"><i class="bi bi-shield-check"></i> Sudah Ditelaah</span>` :
+                        `<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-shield"></i> Belum Ditelaah</span>`;
 
                     const isHighlighted = recentlyAlertedIds.has(row.no_permintaan) ? 'row-highlight-baru' : '';
                     const tr = `
@@ -2405,9 +2465,9 @@
                 $('#fDetKamar').text(kamar);
 
                 // Badge Status Kesiapan Stok
-                $('#fDetStatusBadge').html(res.status === 'Sudah'
-                    ? '<span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11px;"><i class="bi bi-check-circle"></i> Sudah Disiapkan</span>'
-                    : '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11px;"><i class="bi bi-hourglass-split"></i> Menunggu Farmasi</span>');
+                $('#fDetStatusBadge').html(res.status === 'Sudah' ?
+                    '<span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11px;"><i class="bi bi-check-circle"></i> Sudah Disiapkan</span>' :
+                    '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11px;"><i class="bi bi-hourglass-split"></i> Menunggu Farmasi</span>');
 
                 // Badge & Tombol Telaah Farmasi
                 const isTelaah = !!res.telaah_farmasi;
@@ -2574,7 +2634,13 @@
                             no_permintaan: noPermintaan
                         },
                         beforeSend: function() {
-                            Swal.fire({ title: 'Memvalidasi Stok...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+                            Swal.fire({
+                                title: 'Memvalidasi Stok...',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
                         },
                         success: function(resp) {
                             Swal.fire('Berhasil!', resp.message || 'Obat berhasil disiapkan dan divalidasi ke stok pasien.', 'success');
@@ -2630,9 +2696,9 @@
                 if (keyword) {
                     items = items.filter(function(it) {
                         return (it.pasien || '').toLowerCase().includes(keyword) ||
-                               (it.nama_brng || '').toLowerCase().includes(keyword) ||
-                               (it.no_rawat || '').toLowerCase().includes(keyword) ||
-                               (it.kamar || '').toLowerCase().includes(keyword);
+                            (it.nama_brng || '').toLowerCase().includes(keyword) ||
+                            (it.no_rawat || '').toLowerCase().includes(keyword) ||
+                            (it.kamar || '').toLowerCase().includes(keyword);
                     });
                 }
 
@@ -2646,7 +2712,7 @@
                     // Breakdown jam pemberian obat
                     let rincianHtml = '';
                     if (item.rincian_pemberian && item.rincian_pemberian.length > 0) {
-                        const badges = item.rincian_pemberian.map(r => 
+                        const badges = item.rincian_pemberian.map(r =>
                             `<span class="badge bg-light text-dark border me-1 mb-1 font-monospace" style="font-size: 9.5px;" title="Petugas: ${r.perawat || '-'}${r.keterangan ? ' | Ket: ' + r.keterangan : ''}">${r.jam}: <b>${r.dosis}</b> ${item.satuan}</span>`
                         ).join('');
                         rincianHtml = `<div class="d-flex flex-wrap mt-1 justify-content-center">${badges}</div>`;
@@ -2665,11 +2731,11 @@
                         `;
                     }
 
-                    const inputBilling = item.status_billing === 'Sudah Dibilkan'
-                        ? `<strong class="text-success fs-6">${item.suggested_billing}</strong> <small class="text-muted">${item.satuan}</small>`
-                        : `
+                    const inputBilling = item.status_billing === 'Sudah Dibilkan' ?
+                        `<strong class="text-success fs-6">${item.suggested_billing}</strong> <small class="text-muted">${item.satuan}</small>` :
+                        `
                             <div class="d-flex flex-column align-items-center">
-                                <div class="input-group input-group-sm" style="width: 145px; max-width: 100%;">
+                                <div class="input-group" style="width: 145px; max-width: 100%;">
                                     <input type="number" step="any" min="0.01" class="form-control text-center fw-bold text-primary px-1" id="input_rekon_bill_${idx}" value="${item.suggested_billing}" style="min-width: 55px;" oninput="updateEstimasiBiayaRekon(${idx}, ${item.biaya_satuan})">
                                     <span class="input-group-text px-2 text-truncate" style="max-width: 90px;" title="${item.satuan}">${item.satuan}</span>
                                 </div>
@@ -2749,7 +2815,13 @@
                             no_faktur: faktur
                         },
                         beforeSend: function() {
-                            Swal.fire({ title: 'Menerbitkan billing...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+                            Swal.fire({
+                                title: 'Menerbitkan billing...',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
                         },
                         success: function(resp) {
                             Swal.fire('Berhasil!', resp.message || 'Billing E-MAR berhasil diterbitkan ke rincian rawat inap.', 'success');
@@ -2819,18 +2891,18 @@
                     const safeNoResep = safeJsStr(row.no_resep);
                     const safeNoRawat = safeJsStr(row.no_rawat);
 
-                    const penjabText = (row.reg_periksa?.penjab?.png_jawab || '').includes('BPJS')
-                        ? '<span class="badge bg-success-subtle text-success border border-success">BPJS</span>'
-                        : '<span class="badge bg-danger-subtle text-danger border border-danger">UMUM</span>';
+                    const penjabText = (row.reg_periksa?.penjab?.png_jawab || '').includes('BPJS') ?
+                        '<span class="badge bg-success-subtle text-success border border-success">BPJS</span>' :
+                        '<span class="badge bg-danger-subtle text-danger border border-danger">UMUM</span>';
 
                     const isSelesai = row.tgl_perawatan !== '0000-00-00';
-                    const statusBadge = isSelesai
-                        ? `<span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-check-circle"></i> Terlayani (${row.tgl_perawatan})</span>`
-                        : `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-hourglass-split"></i> Belum Terlayani</span>`;
+                    const statusBadge = isSelesai ?
+                        `<span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-check-circle"></i> Terlayani (${row.tgl_perawatan})</span>` :
+                        `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-hourglass-split"></i> Belum Terlayani</span>`;
 
-                    const telaahBadge = row.telaah_farmasi
-                        ? `<span class="badge text-white px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="background-color: #0f766e; font-size: 11.5px;"><i class="bi bi-shield-check"></i> Sudah Ditelaah</span>`
-                        : `<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-shield"></i> Belum Ditelaah</span>`;
+                    const telaahBadge = row.telaah_farmasi ?
+                        `<span class="badge text-white px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="background-color: #0f766e; font-size: 11.5px;"><i class="bi bi-shield-check"></i> Sudah Ditelaah</span>` :
+                        `<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-shield"></i> Belum Ditelaah</span>`;
 
                     const btnClass = isSelesai ? 'btn-success' : 'btn-primary';
                     const btnLabel = isSelesai ? 'SELESAI' : 'RESEP';
@@ -2924,19 +2996,19 @@
                     const kamarText = getKamarFormat(row.reg_periksa);
                     const safeNoPermintaan = safeJsStr(row.no_permintaan);
 
-                    const penjabText = (row.reg_periksa?.penjab?.png_jawab || '').includes('BPJS')
-                        ? '<span class="badge bg-success-subtle text-success border border-success">BPJS</span>'
-                        : '<span class="badge bg-danger-subtle text-danger border border-danger">UMUM</span>';
+                    const penjabText = (row.reg_periksa?.penjab?.png_jawab || '').includes('BPJS') ?
+                        '<span class="badge bg-success-subtle text-success border border-success">BPJS</span>' :
+                        '<span class="badge bg-danger-subtle text-danger border border-danger">UMUM</span>';
 
                     const hasRacikan = (row.detail || []).some(d => (d.dosis || '').startsWith('[Racikan:')) || (row.racikan && row.racikan.length > 0);
-                    const racikanBadge = hasRacikan 
-                        ? '<span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1" style="font-size: 10px;"><i class="bi bi-mortar-pestle me-1"></i>Ada Racikan</span>' 
-                        : '';
+                    const racikanBadge = hasRacikan ?
+                        '<span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1" style="font-size: 10px;"><i class="bi bi-mortar-pestle me-1"></i>Ada Racikan</span>' :
+                        '';
 
                     const isSudah = row.status === 'Sudah';
-                    const statusBadge = isSudah
-                        ? `<span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-check-circle"></i> Sudah Divalidasi</span>`
-                        : `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-hourglass-split"></i> Menunggu Farmasi</span>`;
+                    const statusBadge = isSudah ?
+                        `<span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-check-circle"></i> Sudah Divalidasi</span>` :
+                        `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill fw-semibold text-nowrap d-inline-flex align-items-center gap-1" style="font-size: 11.5px;"><i class="bi bi-hourglass-split"></i> Menunggu Farmasi</span>`;
 
                     const btnClass = isSudah ? 'btn-outline-success' : 'btn-primary';
 
@@ -3026,9 +3098,9 @@
                     `;
 
                     const isRacikanLegacy = (item.dosis || '').startsWith('[Racikan:');
-                    const dosisHtml = isRacikanLegacy 
-                        ? `<span class="badge bg-primary text-white me-1" style="font-size: 10px;"><i class="bi bi-mortar-pestle me-1"></i>Racikan</span><strong>${item.dosis}</strong>` 
-                        : (item.dosis || '-');
+                    const dosisHtml = isRacikanLegacy ?
+                        `<span class="badge bg-primary text-white me-1" style="font-size: 10px;"><i class="bi bi-mortar-pestle me-1"></i>Racikan</span><strong>${item.dosis}</strong>` :
+                        (item.dosis || '-');
 
                     const btnEditDosis = isValidated ? '' : `
                         <button type="button" class="btn btn-outline-primary btn-sm py-0 px-1 ms-1 shadow-none" onclick="editAturanPakaiResepPulang('${safeKodeBrng}', '${safeJsStr(item.dosis || '')}', 'non_racik', '${safeJsStr(item.nama_brng)}')" title="Ubah Aturan Pakai">
@@ -3112,7 +3184,7 @@
                                     <strong class="text-dark fs-6">${r.nama_racik}</strong>
                                     <span class="badge bg-secondary">${r.jml_dr} ${r.kd_racik}</span>
                                     <span class="text-muted ms-2 d-inline-flex align-items-center">
-                                        <i class="bi bi-clock-history me-1"></i>Aturan Pakai: 
+                                        <i class="bi bi-clock-history me-1"></i>Aturan Pakai:
                                         <strong class="text-dark ms-1">${r.aturan_pakai}</strong>
                                         ${btnEditAturanRacik}
                                     </span>
@@ -3172,7 +3244,9 @@
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
-                        return { q: params.term };
+                        return {
+                            q: params.term
+                        };
                     },
                     processResults: function(data) {
                         return {
@@ -3296,7 +3370,10 @@
                 input: 'text',
                 inputValue: currentVal || '',
                 inputPlaceholder: 'Contoh: 3 x 1 tablet sesudah makan',
-                inputAttributes: { autocapitalize: 'off', autocomplete: 'off' },
+                inputAttributes: {
+                    autocapitalize: 'off',
+                    autocomplete: 'off'
+                },
                 showCancelButton: true,
                 confirmButtonText: '<i class="bi bi-check-lg me-1"></i> Simpan',
                 cancelButtonText: 'Batal',
@@ -3359,7 +3436,13 @@
                             no_permintaan: noPermintaan
                         },
                         beforeSend: function() {
-                            Swal.fire({ title: 'Memvalidasi Resep Pulang...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+                            Swal.fire({
+                                title: 'Memvalidasi Resep Pulang...',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
                         },
                         success: function(resp) {
                             Swal.fire('Berhasil!', resp.message || 'Resep pulang berhasil divalidasi ke billing pasien.', 'success');
@@ -3461,11 +3544,11 @@
                         const details = row.details || [];
                         const detailsHtml = details.map(d => `<span class="badge bg-light text-dark border me-1 mb-1" style="font-size:10.5px;">${d.barang?.nama_brng || d.kode_brng} (<b>${d.jml_diajukan}</b> ${d.kode_sat || ''})</span>`).slice(0, 3).join('') + (details.length > 3 ? `<span class="badge bg-secondary-subtle text-secondary border" style="font-size:9.5px;">+${details.length - 3} lainnya</span>` : '');
 
-                        const btnValidasi = isMenunggu
-                            ? `<button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1 py-1 px-2.5 shadow-sm" onclick="bukaModalValidasiReturFarmasi('${safeNoPengajuan}')" title="Review & Validasi Pengajuan Retur">
+                        const btnValidasi = isMenunggu ?
+                            `<button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1 py-1 px-2.5 shadow-sm" onclick="bukaModalValidasiReturFarmasi('${safeNoPengajuan}')" title="Review & Validasi Pengajuan Retur">
                                 <i class="bi bi-shield-check"></i> <span>Validasi</span>
-                               </button>`
-                            : `<button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 py-1 px-2.5" onclick="bukaModalValidasiReturFarmasi('${safeNoPengajuan}')" title="Lihat Detail Validasi">
+                               </button>` :
+                            `<button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 py-1 px-2.5" onclick="bukaModalValidasiReturFarmasi('${safeNoPengajuan}')" title="Lihat Detail Validasi">
                                 <i class="bi bi-eye"></i> <span>Detail</span>
                                </button>`;
 
@@ -3606,11 +3689,11 @@
                         const details = row.details || [];
                         const detailsHtml = details.map(d => `<span class="badge bg-light text-dark border me-1 mb-1" style="font-size:10.5px;">${d.barang?.nama_brng || d.kode_brng} (<b>${d.jml_retur}</b>)</span>`).slice(0, 3).join('') + (details.length > 3 ? `<span class="badge bg-secondary-subtle text-secondary border" style="font-size:9.5px;">+${details.length - 3} lainnya</span>` : '');
 
-                        const btnAksi = isMenunggu
-                            ? `<button type="button" class="btn btn-sm btn-warning text-dark fw-semibold d-inline-flex align-items-center gap-1 py-1 px-2.5 shadow-sm" onclick="bukaModalVerifikasiReturUdd('${safeNoRetur}')" title="Periksa Fisik & Terima ke Depo">
+                        const btnAksi = isMenunggu ?
+                            `<button type="button" class="btn btn-sm btn-warning text-dark fw-semibold d-inline-flex align-items-center gap-1 py-1 px-2.5 shadow-sm" onclick="bukaModalVerifikasiReturUdd('${safeNoRetur}')" title="Periksa Fisik & Terima ke Depo">
                                 <i class="bi bi-box-arrow-in-down-left"></i> <span>Verifikasi</span>
-                               </button>`
-                            : `<button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 py-1 px-2.5" onclick="bukaModalVerifikasiReturUdd('${safeNoRetur}')" title="Lihat Rincian Penerimaan">
+                               </button>` :
+                            `<button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 py-1 px-2.5" onclick="bukaModalVerifikasiReturUdd('${safeNoRetur}')" title="Lihat Rincian Penerimaan">
                                 <i class="bi bi-eye"></i> <span>Detail</span>
                                </button>`;
 
@@ -3689,13 +3772,13 @@
 
                     details.forEach(function(d, idx) {
                         const jmlDiterimaVal = (data.status === 'Diterima') ? d.jml_diterima : d.jml_retur;
-                        const inputJml = isMenunggu
-                            ? `<input type="number" step="0.01" min="0" max="${d.jml_retur}" class="form-control form-control-sm text-center fw-bold v-item-diterima" data-id="${d.id}" value="${jmlDiterimaVal}">`
-                            : `<strong class="text-success">${jmlDiterimaVal}</strong>`;
+                        const inputJml = isMenunggu ?
+                            `<input type="number" step="0.01" min="0" max="${d.jml_retur}" class="form-control form-control-sm text-center fw-bold v-item-diterima" data-id="${d.id}" value="${jmlDiterimaVal}">` :
+                            `<strong class="text-success">${jmlDiterimaVal}</strong>`;
 
-                        const inputKet = isMenunggu
-                            ? `<input type="text" class="form-control form-control-sm v-item-ket" data-id="${d.id}" value="${d.keterangan || ''}" placeholder="Kondisi kemasan...">`
-                            : `<span>${d.keterangan || '-'}</span>`;
+                        const inputKet = isMenunggu ?
+                            `<input type="text" class="form-control form-control-sm v-item-ket" data-id="${d.id}" value="${d.keterangan || ''}" placeholder="Kondisi kemasan...">` :
+                            `<span>${d.keterangan || '-'}</span>`;
 
                         const tr = `
                             <tr>

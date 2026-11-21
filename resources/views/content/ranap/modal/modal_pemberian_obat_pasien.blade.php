@@ -7,21 +7,25 @@
         max-width: 320px !important;
         border-radius: 8px !important;
     }
+
     .swal2-popup.swal2-toast .swal2-title {
         font-size: 11.5px !important;
         margin: 0 !important;
         font-weight: 600 !important;
     }
+
     .swal2-popup.swal2-toast .swal2-html-container {
         font-size: 11px !important;
         margin: 0 !important;
     }
+
     .swal2-popup.swal2-toast .swal2-icon {
         width: 1.25rem !important;
         height: 1.25rem !important;
         min-width: 1.25rem !important;
         margin: 0 8px 0 0 !important;
     }
+
     .swal2-popup.swal2-toast .swal2-icon .swal2-icon-content {
         font-size: 0.85rem !important;
     }
@@ -29,7 +33,7 @@
 <div class="modal fade" id="modalPemberianObatRanap" tabindex="-1" aria-labelledby="modalPemberianObatRanapLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
-            
+
             <!-- Modal Header -->
             <div class="modal-header text-white py-2 px-3 justify-content-between align-items-center" style="background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);">
                 <div class="d-flex align-items-center gap-2">
@@ -59,7 +63,7 @@
 
             <!-- Modal Body -->
             <div class="modal-body p-3 bg-light">
-                
+
                 <!-- PATIENT INFO BANNER -->
                 <div class="card border-0 shadow-sm rounded-3 mb-3 bg-white">
                     <div class="card-body p-2.5">
@@ -302,7 +306,7 @@
                     <div class="row g-2 align-items-end mb-2">
                         <div class="col-md-6 col-12">
                             <label class="form-label small fw-bold mb-1" style="font-size: 11px;">Dosis / Jumlah Diberikan</label>
-                            <div class="input-group input-group-sm">
+                            <div class="input-group">
                                 <input type="number" class="form-control form-control-sm text-center fw-bold" id="eksekusi_jml" value="1" min="0.0001" step="any" style="height: 31px; font-size: 12px;">
                                 <span class="input-group-text fw-semibold" id="lblEksekusiSatuan" style="height: 31px; font-size: 11.5px; min-width: 65px; justify-content: center;">Sat</span>
                             </div>
@@ -331,7 +335,7 @@
                                     <label class="form-label mb-1 fw-semibold text-muted" style="font-size: 10.5px;" title="Kapasitas total kemasan obat utuh (misal: 100 ml, 500 ml, 500 mg)">
                                         Kapasitas Sediaan (Kps)
                                     </label>
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <input type="number" step="any" min="0" class="form-control form-control-sm text-center px-1" id="kalk_kps" placeholder="Contoh: 500" style="height: 31px; font-size: 11.5px;">
                                         <select class="form-select form-select-sm ps-2 pe-3" id="kalk_satuan_kps" style="max-width: 72px; min-width: 68px; font-size: 11px; height: 31px; background-position: right 6px center;">
                                             <option value="ml">ml</option>
@@ -347,7 +351,7 @@
                                     <label class="form-label mb-1 fw-semibold text-success" style="font-size: 10.5px;" title="Jumlah dosis atau volume yang dibutuhkan pasien">
                                         Dosis Diminta <span class="badge bg-success-subtle text-success py-0 px-1 font-monospace" id="lblKalkSatuanKebutuhan">ml</span>
                                     </label>
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <input type="number" step="any" min="0" class="form-control form-control-sm text-center px-1 fw-bold border-success text-success" id="kalk_dosis_diminta" placeholder="Contoh: 100" style="height: 31px; font-size: 11.5px;">
                                         <button class="btn btn-outline-success btn-sm px-1.5" type="button" id="btnApplyKalkulator" title="Terapkan ke Jumlah Diberikan" style="height: 31px;">
                                             <i class="bi bi-check-lg"></i>
@@ -358,7 +362,7 @@
                                     <label class="form-label mb-1 fw-semibold text-primary" style="font-size: 10.5px;" title="Pecahan bagian sediaan seperti metode racikan (contoh: 1/2)">
                                         P1 / P2 (Pecahan)
                                     </label>
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <input type="number" step="any" min="0" class="form-control form-control-sm text-center px-1 fw-bold text-primary" id="kalk_p1" placeholder="P1" value="1" style="height: 31px; font-size: 11.5px;">
                                         <span class="input-group-text px-1 fw-bold bg-white text-muted" style="height: 31px;">/</span>
                                         <input type="number" step="any" min="1" class="form-control form-control-sm text-center px-1 fw-bold text-primary" id="kalk_p2" placeholder="P2" value="1" style="height: 31px; font-size: 11.5px;">
@@ -413,130 +417,130 @@
 </div>
 
 @push('script')
-<script>
-    // Helper Normalisasi Format Tanggal ISO (YYYY-MM-DD)
-    function normalkanTanggalIso(tglStr) {
-        if (!tglStr) return moment().format('YYYY-MM-DD');
-        const clean = tglStr.toString().trim().replace(/\//g, '-');
-        const m = moment(clean, ['YYYY-MM-DD', 'DD-MM-YYYY', 'D-M-YYYY']);
-        return m.isValid() ? m.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-    }
-
-    // Buka Modal E-MAR Pemberian Obat Ranap
-    function modalPemberianObatRanap(noRawat) {
-        if (!noRawat) {
-            Swal.fire('Peringatan', 'No. Rawat tidak valid.', 'warning');
-            return;
+    <script>
+        // Helper Normalisasi Format Tanggal ISO (YYYY-MM-DD)
+        function normalkanTanggalIso(tglStr) {
+            if (!tglStr) return moment().format('YYYY-MM-DD');
+            const clean = tglStr.toString().trim().replace(/\//g, '-');
+            const m = moment(clean, ['YYYY-MM-DD', 'DD-MM-YYYY', 'D-M-YYYY']);
+            return m.isValid() ? m.format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
         }
 
-        const safeNoRawat = (noRawat || '').trim();
-        const tglHariIni = moment().format('YYYY-MM-DD');
-
-        $('#emar_info_no_rawat').text(safeNoRawat);
-        $('#eksekusi_no_rawat').val(safeNoRawat);
-        $('#emar_filter_tanggal').val(tglHariIni);
-
-        // Reset container sebelum memuat agar bersih
-        $('#containerListEmarObat').html('<div class="text-center text-muted py-4"><i class="bi bi-hourglass-split fs-3 d-block mb-1"></i> Memuat data E-MAR...</div>');
-        $('#tbodyLogPemberianEmar').html('<tr><td colspan="9" class="text-center text-muted py-3">Memuat data log pemberian...</td></tr>');
-
-        // Load data pasien & kamar
-        getRegPeriksa(safeNoRawat).done(function(res) {
-            const pasien = res?.pasien || {};
-            const kamarList = res?.kamar_inap || [];
-
-            let kamarNama = '-';
-            if (kamarList.length > 0) {
-                const activeKamar = kamarList.find(k => k.stts_pulang === '-') || kamarList[0];
-                kamarNama = activeKamar?.kamar?.bangsal?.nm_bangsal || activeKamar?.kd_kamar || '-';
+        // Buka Modal E-MAR Pemberian Obat Ranap
+        function modalPemberianObatRanap(noRawat) {
+            if (!noRawat) {
+                Swal.fire('Peringatan', 'No. Rawat tidak valid.', 'warning');
+                return;
             }
 
-            $('#emar_info_no_rkm_medis').text(pasien?.no_rkm_medis || '-');
-            $('#emar_info_nm_pasien').text(pasien?.nm_pasien || '-');
-            $('#emar_info_kamar').text(kamarNama);
+            const safeNoRawat = (noRawat || '').trim();
+            const tglHariIni = moment().format('YYYY-MM-DD');
 
-            // Alergi
-            const alergi = res?.alergi || '-';
-            $('#emar_info_alergi').text(alergi && alergi !== '-' ? alergi : 'Tidak Ada');
-            if (alergi && alergi !== '-' && alergi !== 'Tidak Ada') {
-                $('#emar_info_alergi').removeClass('bg-light text-dark').addClass('bg-danger text-white');
-            } else {
-                $('#emar_info_alergi').removeClass('bg-danger text-white').addClass('bg-light text-dark');
+            $('#emar_info_no_rawat').text(safeNoRawat);
+            $('#eksekusi_no_rawat').val(safeNoRawat);
+            $('#emar_filter_tanggal').val(tglHariIni);
+
+            // Reset container sebelum memuat agar bersih
+            $('#containerListEmarObat').html('<div class="text-center text-muted py-4"><i class="bi bi-hourglass-split fs-3 d-block mb-1"></i> Memuat data E-MAR...</div>');
+            $('#tbodyLogPemberianEmar').html('<tr><td colspan="9" class="text-center text-muted py-3">Memuat data log pemberian...</td></tr>');
+
+            // Load data pasien & kamar
+            getRegPeriksa(safeNoRawat).done(function(res) {
+                const pasien = res?.pasien || {};
+                const kamarList = res?.kamar_inap || [];
+
+                let kamarNama = '-';
+                if (kamarList.length > 0) {
+                    const activeKamar = kamarList.find(k => k.stts_pulang === '-') || kamarList[0];
+                    kamarNama = activeKamar?.kamar?.bangsal?.nm_bangsal || activeKamar?.kd_kamar || '-';
+                }
+
+                $('#emar_info_no_rkm_medis').text(pasien?.no_rkm_medis || '-');
+                $('#emar_info_nm_pasien').text(pasien?.nm_pasien || '-');
+                $('#emar_info_kamar').text(kamarNama);
+
+                // Alergi
+                const alergi = res?.alergi || '-';
+                $('#emar_info_alergi').text(alergi && alergi !== '-' ? alergi : 'Tidak Ada');
+                if (alergi && alergi !== '-' && alergi !== 'Tidak Ada') {
+                    $('#emar_info_alergi').removeClass('bg-light text-dark').addClass('bg-danger text-white');
+                } else {
+                    $('#emar_info_alergi').removeClass('bg-danger text-white').addClass('bg-light text-dark');
+                }
+            });
+
+            // Set default tab kembali ke tab 1 (Matriks Jam Harian)
+            $('#tab-matriks-harian-link').tab('show');
+
+            $('#modalPemberianObatRanap').modal('show');
+            loadEmarPasien(safeNoRawat, tglHariIni);
+        }
+
+        // Pastikan data dimuat otomatis saat modal selesai tampil penuh
+        $('#modalPemberianObatRanap').on('shown.bs.modal', function() {
+            const noRawat = ($('#emar_info_no_rawat').text() || '').trim();
+            if (noRawat && noRawat !== '-') {
+                loadEmarPasien(noRawat);
             }
         });
 
-        // Set default tab kembali ke tab 1 (Matriks Jam Harian)
-        $('#tab-matriks-harian-link').tab('show');
+        // Load data E-MAR Pasien (Stok obat + matriks 24 jam)
+        function loadEmarPasien(targetNoRawat = null, targetTanggal = null) {
+            const noRawat = (targetNoRawat || $('#emar_info_no_rawat').text() || '').trim();
+            const rawTgl = targetTanggal || $('#emar_filter_tanggal').val();
+            const tanggal = normalkanTanggalIso(rawTgl);
+            if (!noRawat || noRawat === '-') return;
 
-        $('#modalPemberianObatRanap').modal('show');
-        loadEmarPasien(safeNoRawat, tglHariIni);
-    }
+            $('#emar_filter_tanggal').val(tanggal);
+            $('#badgeTanggalEmar').html(`<i class="bi bi-calendar3 me-1"></i> ${tanggal}`);
 
-    // Pastikan data dimuat otomatis saat modal selesai tampil penuh
-    $('#modalPemberianObatRanap').on('shown.bs.modal', function() {
-        const noRawat = ($('#emar_info_no_rawat').text() || '').trim();
-        if (noRawat && noRawat !== '-') {
-            loadEmarPasien(noRawat);
-        }
-    });
+            const $container = $('#containerListEmarObat');
+            $container.html('<div class="text-center text-muted py-4"><i class="bi bi-hourglass-split fs-3 d-block mb-1"></i> Memuat data E-MAR...</div>');
 
-    // Load data E-MAR Pasien (Stok obat + matriks 24 jam)
-    function loadEmarPasien(targetNoRawat = null, targetTanggal = null) {
-        const noRawat = (targetNoRawat || $('#emar_info_no_rawat').text() || '').trim();
-        const rawTgl = targetTanggal || $('#emar_filter_tanggal').val();
-        const tanggal = normalkanTanggalIso(rawTgl);
-        if (!noRawat || noRawat === '-') return;
+            $.get("{{ route('ranap.pemberian-obat.stok') }}", {
+                no_rawat: noRawat,
+                tanggal: tanggal,
+                _t: new Date().getTime()
+            }).done(function(resp) {
+                const items = resp?.data || [];
+                $container.empty();
 
-        $('#emar_filter_tanggal').val(tanggal);
-        $('#badgeTanggalEmar').html(`<i class="bi bi-calendar3 me-1"></i> ${tanggal}`);
+                $('#lblCountObatEmar').text(`${items.length} jenis obat`);
 
-        const $container = $('#containerListEmarObat');
-        $container.html('<div class="text-center text-muted py-4"><i class="bi bi-hourglass-split fs-3 d-block mb-1"></i> Memuat data E-MAR...</div>');
-
-        $.get("{{ route('ranap.pemberian-obat.stok') }}", {
-            no_rawat: noRawat,
-            tanggal: tanggal,
-            _t: new Date().getTime()
-        }).done(function(resp) {
-            const items = resp?.data || [];
-            $container.empty();
-
-            $('#lblCountObatEmar').text(`${items.length} jenis obat`);
-
-            if (items.length === 0) {
-                $container.html(`
+                if (items.length === 0) {
+                    $container.html(`
                     <div class="text-center text-muted py-4">
                         <i class="bi bi-exclamation-circle fs-2 text-warning d-block mb-2"></i>
                         <strong>Belum ada stok obat pasien untuk rawat inap ini.</strong>
                         <p class="small mb-0 text-secondary">Silahkan buat permintaan obat terlebih dahulu melalui menu <b>Permintaan Obat Pasien</b> agar disiapkan oleh Farmasi.</p>
                     </div>
                 `);
-                loadLogPemberianHariIni(noRawat, tanggal);
-                return;
-            }
+                    loadLogPemberianHariIni(noRawat, tanggal);
+                    return;
+                }
 
-            window.emarItemsMap = window.emarItemsMap || {};
-            items.forEach(function(item, idx) {
-                window.emarItemsMap[item.kode_brng] = item;
-                // Buat 24 kotak jam
-                let timelineBoxes = '';
-                for (let h = 0; h <= 23; h++) {
-                    const pad = String(h).padStart(2, '0');
-                    const jamKey = `jam${pad}`;
-                    const isDijadwalkan = item.jadwal_jam[jamKey] === true;
+                window.emarItemsMap = window.emarItemsMap || {};
+                items.forEach(function(item, idx) {
+                    window.emarItemsMap[item.kode_brng] = item;
+                    // Buat 24 kotak jam
+                    let timelineBoxes = '';
+                    for (let h = 0; h <= 23; h++) {
+                        const pad = String(h).padStart(2, '0');
+                        const jamKey = `jam${pad}`;
+                        const isDijadwalkan = item.jadwal_jam[jamKey] === true;
 
-                    // Cek apakah di jam range ini sudah ada pemberian
-                    // Range jam h:00:00 s/d h:59:59
-                    const pemberianJam = item.pemberian_hari_ini?.find(p => {
-                        const pHour = parseInt(p.jam.split(':')[0], 10);
-                        return pHour === h;
-                    });
+                        // Cek apakah di jam range ini sudah ada pemberian
+                        // Range jam h:00:00 s/d h:59:59
+                        const pemberianJam = item.pemberian_hari_ini?.find(p => {
+                            const pHour = parseInt(p.jam.split(':')[0], 10);
+                            return pHour === h;
+                        });
 
-                    if (pemberianJam) {
-                        // Sudah Diberikan
-                        const dosisTampil = (pemberianJam.dosis_klinis !== undefined) ? pemberianJam.dosis_klinis : (pemberianJam.jml || '');
-                        const ketText = pemberianJam.keterangan ? ` (${pemberianJam.keterangan})` : '';
-                        timelineBoxes += `
+                        if (pemberianJam) {
+                            // Sudah Diberikan
+                            const dosisTampil = (pemberianJam.dosis_klinis !== undefined) ? pemberianJam.dosis_klinis : (pemberianJam.jml || '');
+                            const ketText = pemberianJam.keterangan ? ` (${pemberianJam.keterangan})` : '';
+                            timelineBoxes += `
                             <div class="p-1 text-center" style="flex: 1 0 4%; min-width: 38px;">
                                 <div class="bg-success text-white rounded p-1 shadow-sm" style="font-size: 9.5px; cursor: default;" title="Sudah diberikan: ${dosisTampil} ${item.satuan} pada ${pemberianJam.jam}${ketText} (${pemberianJam.status_billing || ''})">
                                     <span class="d-block fw-bold">${pad}:00</span>
@@ -545,10 +549,10 @@
                                 </div>
                             </div>
                         `;
-                    } else if (isDijadwalkan) {
-                        if (item.sisa_stok <= 0) {
-                            // Dijadwalkan tapi Stok Pasien Sudah Habis
-                            timelineBoxes += `
+                        } else if (isDijadwalkan) {
+                            if (item.sisa_stok <= 0) {
+                                // Dijadwalkan tapi Stok Pasien Sudah Habis
+                                timelineBoxes += `
                                 <div class="p-1 text-center" style="flex: 1 0 4%; min-width: 38px;">
                                     <button type="button" class="btn btn-secondary btn-sm p-1 w-100 opacity-50 shadow-sm" style="font-size: 9.5px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch || ''}', '${item.no_faktur || ''}', '${item.kd_bangsal || ''}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '${pad}:00:00', '${item.sumber || 'permintaan_harian'}', '${item.no_resep || ''}', ${item.kapasitas || 0})" title="Stok pasien habis (0 ${item.satuan})">
                                         <span class="d-block fw-bold">${pad}:00</span>
@@ -557,9 +561,9 @@
                                     </button>
                                 </div>
                             `;
-                        } else {
-                            // Dijadwalkan tapi Belum Diberikan
-                            timelineBoxes += `
+                            } else {
+                                // Dijadwalkan tapi Belum Diberikan
+                                timelineBoxes += `
                                 <div class="p-1 text-center" style="flex: 1 0 4%; min-width: 38px;">
                                     <button type="button" class="btn btn-warning btn-sm p-1 w-100 shadow-sm" style="font-size: 9.5px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch || ''}', '${item.no_faktur || ''}', '${item.kd_bangsal || ''}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '${pad}:00:00', '${item.sumber || 'permintaan_harian'}', '${item.no_resep || ''}', ${item.kapasitas || 0})" title="Klik untuk catat pemberian jam ${pad}:00">
                                         <span class="d-block fw-bold">${pad}:00</span>
@@ -568,10 +572,10 @@
                                     </button>
                                 </div>
                             `;
-                        }
-                    } else {
-                        // Tidak Dijadwalkan
-                        timelineBoxes += `
+                            }
+                        } else {
+                            // Tidak Dijadwalkan
+                            timelineBoxes += `
                             <div class="p-1 text-center" style="flex: 1 0 4%; min-width: 38px;">
                                 <div class="bg-light text-muted border rounded p-1" style="font-size: 9.5px;" title="Tidak dijadwalkan">
                                     <span class="d-block">${pad}:00</span>
@@ -579,32 +583,32 @@
                                 </div>
                             </div>
                         `;
+                        }
                     }
-                }
 
-                const sisaBadgeClass = item.sisa_stok > 0 ? 'bg-success' : 'bg-danger';
+                    const sisaBadgeClass = item.sisa_stok > 0 ? 'bg-success' : 'bg-danger';
 
-                const btnCatatHtml = item.sisa_stok > 0
-                    ? `<button type="button" class="btn btn-outline-success btn-sm py-1 px-2.5 shadow-sm" style="font-size: 11px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch || ''}', '${item.no_faktur || ''}', '${item.kd_bangsal || ''}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '', '${item.sumber || 'permintaan_harian'}', '${item.no_resep || ''}', ${item.kapasitas || 0})">
+                    const btnCatatHtml = item.sisa_stok > 0 ?
+                        `<button type="button" class="btn btn-outline-success btn-sm py-1 px-2.5 shadow-sm" style="font-size: 11px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch || ''}', '${item.no_faktur || ''}', '${item.kd_bangsal || ''}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '', '${item.sumber || 'permintaan_harian'}', '${item.no_resep || ''}', ${item.kapasitas || 0})">
                            <i class="bi bi-plus-lg me-1"></i> Catat Pemberian
-                       </button>`
-                    : `<button type="button" class="btn btn-secondary btn-sm py-1 px-2.5 opacity-75 shadow-sm" style="font-size: 11px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch || ''}', '${item.no_faktur || ''}', '${item.kd_bangsal || ''}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '', '${item.sumber || 'permintaan_harian'}', '${item.no_resep || ''}', ${item.kapasitas || 0})" title="Stok obat pasien habis">
+                       </button>` :
+                        `<button type="button" class="btn btn-secondary btn-sm py-1 px-2.5 opacity-75 shadow-sm" style="font-size: 11px;" onclick="bukaDialogBeriObat('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${item.satuan}', '${item.no_batch || ''}', '${item.no_faktur || ''}', '${item.kd_bangsal || ''}', '${item.aturan_pakai.replace(/'/g, "\\'")}', ${item.sisa_stok}, '', '${item.sumber || 'permintaan_harian'}', '${item.no_resep || ''}', ${item.kapasitas || 0})" title="Stok obat pasien habis">
                            <i class="bi bi-x-circle me-1"></i> Stok Habis
                        </button>`;
 
-                const sumberBadge = item.sumber === 'resep_dokter'
-                    ? `<span class="badge bg-primary-subtle text-primary border border-primary px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-prescription2 me-1"></i> Resep DPJP Ranap (${item.no_resep || '-'})</span>`
-                    : `<span class="badge bg-info-subtle text-dark border border-info px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-box-seam me-1"></i> Permintaan Harian / BHP</span>`;
+                    const sumberBadge = item.sumber === 'resep_dokter' ?
+                        `<span class="badge bg-primary-subtle text-primary border border-primary px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-prescription2 me-1"></i> Resep DPJP Ranap (${item.no_resep || '-'})</span>` :
+                        `<span class="badge bg-info-subtle text-dark border border-info px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-box-seam me-1"></i> Permintaan Harian / BHP</span>`;
 
-                let substitusiBadge = '';
-                let substitusiAlert = '';
-                if (item.substitusi) {
-                    substitusiBadge = `
+                    let substitusiBadge = '';
+                    let substitusiAlert = '';
+                    if (item.substitusi) {
+                        substitusiBadge = `
                         <span class="badge bg-warning text-dark border border-warning px-1.5 py-0.5 rounded-pill" style="font-size: 9.5px;" title="Obat ini menggantikan ${item.substitusi.nama_brng_asal}">
                             <i class="bi bi-arrow-left-right me-0.5"></i> Substitusi
                         </span>
                     `;
-                    substitusiAlert = `
+                        substitusiAlert = `
                         <div class="alert alert-warning py-1 px-2 mt-1 mb-1 d-flex align-items-center gap-1.5 rounded-2" style="font-size: 11px; background-color: #fff9db; border-left: 3px solid #f59f00;">
                             <i class="bi bi-shield-check-fill text-warning fs-6"></i>
                             <div>
@@ -612,9 +616,9 @@
                             </div>
                         </div>
                     `;
-                }
+                    }
 
-                const cardHtml = `
+                    const cardHtml = `
                     <div class="card border rounded-3 mb-2 shadow-sm bg-white">
                         <div class="card-body p-2.5">
                             <div class="row g-2 align-items-center mb-2">
@@ -655,48 +659,48 @@
                         </div>
                     </div>
                 `;
-                $container.append(cardHtml);
+                    $container.append(cardHtml);
+                });
+
+                loadLogPemberianHariIni(noRawat, tanggal);
             });
+        }
 
-            loadLogPemberianHariIni(noRawat, tanggal);
-        });
-    }
+        // Load Log Riwayat Pemberian Hari Ini
+        function loadLogPemberianHariIni(noRawat, tanggal) {
+            const safeTanggal = normalkanTanggalIso(tanggal);
+            const $tbody = $('#tbodyLogPemberianEmar');
+            $tbody.html('<tr><td colspan="9" class="text-center text-muted py-3">Memuat data log pemberian...</td></tr>');
 
-    // Load Log Riwayat Pemberian Hari Ini
-    function loadLogPemberianHariIni(noRawat, tanggal) {
-        const safeTanggal = normalkanTanggalIso(tanggal);
-        const $tbody = $('#tbodyLogPemberianEmar');
-        $tbody.html('<tr><td colspan="9" class="text-center text-muted py-3">Memuat data log pemberian...</td></tr>');
+            $.get("{{ route('ranap.pemberian-obat.riwayat') }}", {
+                no_rawat: noRawat,
+                tanggal: safeTanggal,
+                _t: new Date().getTime()
+            }).done(function(data) {
+                $tbody.empty();
+                if (!data || data.length === 0) {
+                    $tbody.html('<tr><td colspan="9" class="text-center text-muted py-3"><i>Belum ada pemberian obat yang dicatat pada tanggal ini.</i></td></tr>');
+                    $('#lblTotalBillingEmar').text('Total Pemberian: 0 item');
+                    return;
+                }
 
-        $.get("{{ route('ranap.pemberian-obat.riwayat') }}", {
-            no_rawat: noRawat,
-            tanggal: safeTanggal,
-            _t: new Date().getTime()
-        }).done(function(data) {
-            $tbody.empty();
-            if (!data || data.length === 0) {
-                $tbody.html('<tr><td colspan="9" class="text-center text-muted py-3"><i>Belum ada pemberian obat yang dicatat pada tanggal ini.</i></td></tr>');
-                $('#lblTotalBillingEmar').text('Total Pemberian: 0 item');
-                return;
-            }
+                let totalRp = 0;
+                data.forEach(function(row, idx) {
+                    totalRp += (parseFloat(row.total_biaya || row.total) || 0);
+                    const sat = row.satuan || row.data_barang?.kode_satuan?.satuan || row.data_barang?.kode_sat || '-';
+                    const aturan = row.aturan_pakai?.aturan || row.aturan_pakai || '-';
+                    const namaObat = row.nama_brng || row.data_barang?.nama_brng || row.kode_brng;
+                    const dosis = (row.dosis_klinis !== undefined) ? row.dosis_klinis : row.jml;
 
-            let totalRp = 0;
-            data.forEach(function(row, idx) {
-                totalRp += (parseFloat(row.total_biaya || row.total) || 0);
-                const sat = row.satuan || row.data_barang?.kode_satuan?.satuan || row.data_barang?.kode_sat || '-';
-                const aturan = row.aturan_pakai?.aturan || row.aturan_pakai || '-';
-                const namaObat = row.nama_brng || row.data_barang?.nama_brng || row.kode_brng;
-                const dosis = (row.dosis_klinis !== undefined) ? row.dosis_klinis : row.jml;
+                    const sumberBadge = (row.sumber === 'resep_dokter') ?
+                        '<span class="badge bg-primary-subtle text-primary border border-primary px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-prescription2 me-1"></i> Resep DPJP</span>' :
+                        '<span class="badge bg-info-subtle text-dark border border-info px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-box-seam me-1"></i> Permintaan Harian</span>';
 
-                const sumberBadge = (row.sumber === 'resep_dokter')
-                    ? '<span class="badge bg-primary-subtle text-primary border border-primary px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-prescription2 me-1"></i> Resep DPJP</span>'
-                    : '<span class="badge bg-info-subtle text-dark border border-info px-2 py-0.5 rounded-pill" style="font-size: 10px;"><i class="bi bi-box-seam me-1"></i> Permintaan Harian</span>';
+                    const statusBillingBadge = (row.status_billing === 'Sudah Dibilkan') ?
+                        `<span class="badge bg-success-subtle text-success border border-success px-2 py-0.5 rounded-pill" style="font-size: 10px;" title="Sudah Masuk Billing Ranap Khanza"><i class="bi bi-check-circle-fill me-1"></i> Ter-Billing</span>` :
+                        `<span class="badge bg-warning-subtle text-dark border border-warning px-2 py-0.5 rounded-pill" style="font-size: 10px;" title="Dosis pecahan menunggu verifikasi pembulatan Farmasi"><i class="bi bi-clock-fill text-warning me-1"></i> Menunggu Verifikasi</span>`;
 
-                const statusBillingBadge = (row.status_billing === 'Sudah Dibilkan')
-                    ? `<span class="badge bg-success-subtle text-success border border-success px-2 py-0.5 rounded-pill" style="font-size: 10px;" title="Sudah Masuk Billing Ranap Khanza"><i class="bi bi-check-circle-fill me-1"></i> Ter-Billing</span>`
-                    : `<span class="badge bg-warning-subtle text-dark border border-warning px-2 py-0.5 rounded-pill" style="font-size: 10px;" title="Dosis pecahan menunggu verifikasi pembulatan Farmasi"><i class="bi bi-clock-fill text-warning me-1"></i> Menunggu Verifikasi</span>`;
-
-                const tr = `
+                    const tr = `
                     <tr>
                         <td class="text-center">${idx + 1}</td>
                         <td class="text-center fw-bold text-primary font-monospace">${row.jam}</td>
@@ -716,589 +720,673 @@
                         </td>
                     </tr>
                 `;
-                $tbody.append(tr);
+                    $tbody.append(tr);
+                });
+
+                $('#lblTotalBillingEmar').html(`Total: <b>${data.length} pemberian</b>`);
             });
-
-            $('#lblTotalBillingEmar').html(`Total: <b>${data.length} pemberian</b>`);
-        });
-    }
-
-    /**
-     * Sederhanakan Pecahan Rasio (Metode Racikan)
-     */
-    function sederhanakanPecahan(val1, val2) {
-        if (!val1 || !val2 || val2 === 0) return { p1: 1, p2: 1 };
-        const ratio = val1 / val2;
-        const known = [
-            { r: 0.1,   p1: 1, p2: 10 },
-            { r: 0.125, p1: 1, p2: 8 },
-            { r: 0.167, p1: 1, p2: 6 },
-            { r: 0.2,   p1: 1, p2: 5 },
-            { r: 0.25,  p1: 1, p2: 4 },
-            { r: 0.333, p1: 1, p2: 3 },
-            { r: 0.4,   p1: 2, p2: 5 },
-            { r: 0.5,   p1: 1, p2: 2 },
-            { r: 0.6,   p1: 3, p2: 5 },
-            { r: 0.667, p1: 2, p2: 3 },
-            { r: 0.75,  p1: 3, p2: 4 },
-            { r: 0.8,   p1: 4, p2: 5 },
-            { r: 1.0,   p1: 1, p2: 1 },
-            { r: 1.5,   p1: 3, p2: 2 },
-            { r: 2.0,   p1: 2, p2: 1 },
-        ];
-
-        for (let k of known) {
-            if (Math.abs(ratio - k.r) < 0.02) {
-                return { p1: k.p1, p2: k.p2 };
-            }
         }
 
-        function gcd(x, y) {
-            x = Math.round(Math.abs(x) * 100);
-            y = Math.round(Math.abs(y) * 100);
-            while (y) {
-                let t = y;
-                y = x % y;
-                x = t;
-            }
-            return x;
-        }
-
-        const divisor = gcd(val1, val2);
-        if (divisor > 0) {
-            let p1 = Math.round((val1 * 100) / divisor);
-            let p2 = Math.round((val2 * 100) / divisor);
-            if (p1 > 0 && p2 > 0 && p1 < 100 && p2 < 100) {
-                return { p1: p1, p2: p2 };
-            }
-        }
-
-        return {
-            p1: Math.round(val1 * 100) / 100,
-            p2: Math.round(val2 * 100) / 100
-        };
-    }
-
-    /**
-     * Parse Kapasitas & Satuan Otomatis dari Nama Obat
-     */
-    function parseKapasitasDariNama(namaObat) {
-        if (!namaObat) return { kapasitas: 0, satuan: 'ml' };
-        const clean = namaObat.toUpperCase();
-
-        const matchMl = clean.match(/(\d+(?:[.,]\d+)?)\s*(ML|CC)/i);
-        if (matchMl) {
-            return {
-                kapasitas: parseFloat(matchMl[1].replace(',', '.')),
-                satuan: 'ml'
+        /**
+         * Sederhanakan Pecahan Rasio (Metode Racikan)
+         */
+        function sederhanakanPecahan(val1, val2) {
+            if (!val1 || !val2 || val2 === 0) return {
+                p1: 1,
+                p2: 1
             };
-        }
+            const ratio = val1 / val2;
+            const known = [{
+                    r: 0.1,
+                    p1: 1,
+                    p2: 10
+                },
+                {
+                    r: 0.125,
+                    p1: 1,
+                    p2: 8
+                },
+                {
+                    r: 0.167,
+                    p1: 1,
+                    p2: 6
+                },
+                {
+                    r: 0.2,
+                    p1: 1,
+                    p2: 5
+                },
+                {
+                    r: 0.25,
+                    p1: 1,
+                    p2: 4
+                },
+                {
+                    r: 0.333,
+                    p1: 1,
+                    p2: 3
+                },
+                {
+                    r: 0.4,
+                    p1: 2,
+                    p2: 5
+                },
+                {
+                    r: 0.5,
+                    p1: 1,
+                    p2: 2
+                },
+                {
+                    r: 0.6,
+                    p1: 3,
+                    p2: 5
+                },
+                {
+                    r: 0.667,
+                    p1: 2,
+                    p2: 3
+                },
+                {
+                    r: 0.75,
+                    p1: 3,
+                    p2: 4
+                },
+                {
+                    r: 0.8,
+                    p1: 4,
+                    p2: 5
+                },
+                {
+                    r: 1.0,
+                    p1: 1,
+                    p2: 1
+                },
+                {
+                    r: 1.5,
+                    p1: 3,
+                    p2: 2
+                },
+                {
+                    r: 2.0,
+                    p1: 2,
+                    p2: 1
+                },
+            ];
 
-        const matchMgMl = clean.match(/(\d+(?:[.,]\d+)?)\s*MG\s*\/\s*(\d+(?:[.,]\d+)?)\s*ML/i);
-        if (matchMgMl) {
-            return {
-                kapasitas: parseFloat(matchMgMl[2].replace(',', '.')),
-                satuan: 'ml'
-            };
-        }
-
-        const matchMg = clean.match(/(\d+(?:[.,]\d+)?)\s*MG/i);
-        if (matchMg) {
-            return {
-                kapasitas: parseFloat(matchMg[1].replace(',', '.')),
-                satuan: 'mg'
-            };
-        }
-
-        const matchGr = clean.match(/(\d+(?:[.,]\d+)?)\s*(GR|GRAM)/i);
-        if (matchGr) {
-            return {
-                kapasitas: parseFloat(matchGr[1].replace(',', '.')),
-                satuan: 'gr'
-            };
-        }
-
-        const matchIu = clean.match(/(\d+(?:[.,]\d+)?)\s*IU/i);
-        if (matchIu) {
-            return {
-                kapasitas: parseFloat(matchIu[1].replace(',', '.')),
-                satuan: 'iu'
-            };
-        }
-
-        return { kapasitas: 0, satuan: 'ml' };
-    }
-
-    /**
-     * Hitung Kalkulator Dosis Sediaan (Metode Racikan)
-     */
-    function hitungKalkulatorDosis(source) {
-        const kps = parseFloat($('#kalk_kps').val()) || 0;
-        const satuanKps = $('#kalk_satuan_kps').val() || 'ml';
-        const satuanUtama = $('#lblEksekusiSatuan').text() || 'Kemasan';
-
-        let p1 = parseFloat($('#kalk_p1').val());
-        let p2 = parseFloat($('#kalk_p2').val());
-        let dosisDiminta = parseFloat($('#kalk_dosis_diminta').val());
-        let jml = parseFloat($('#eksekusi_jml').val());
-
-        if (source === 'dosis_diminta') {
-            if (!isNaN(dosisDiminta) && dosisDiminta > 0) {
-                if (kps > 0) {
-                    const total = dosisDiminta / kps;
-                    const roundedTotal = Number(total.toFixed(4));
-                    $('#eksekusi_jml').val(roundedTotal);
-
-                    const frac = sederhanakanPecahan(dosisDiminta, kps);
-                    $('#kalk_p1').val(frac.p1);
-                    $('#kalk_p2').val(frac.p2);
-
-                    updateKalkulatorUI(roundedTotal, frac.p1, frac.p2, dosisDiminta, kps, satuanKps, satuanUtama);
-                } else {
-                    $('#lblKalkHasilDosis').text(`Isi Kapasitas (Kps)`);
-                    $('#lblKalkFormulaText').text(`Kapasitas total sediaan obat harus diisi.`);
+            for (let k of known) {
+                if (Math.abs(ratio - k.r) < 0.02) {
+                    return {
+                        p1: k.p1,
+                        p2: k.p2
+                    };
                 }
             }
-        } else if (source === 'p1p2' || source === 'preset_fraction') {
-            if (isNaN(p1) || p1 < 0) p1 = 1;
-            if (isNaN(p2) || p2 <= 0) p2 = 1;
 
-            const fraction = p1 / p2;
-            const roundedTotal = Number(fraction.toFixed(4));
-            $('#eksekusi_jml').val(roundedTotal);
-
-            if (kps > 0) {
-                const dosis = Number((kps * fraction).toFixed(2));
-                $('#kalk_dosis_diminta').val(dosis);
-                updateKalkulatorUI(roundedTotal, p1, p2, dosis, kps, satuanKps, satuanUtama);
-            } else {
-                updateKalkulatorUI(roundedTotal, p1, p2, null, 0, satuanKps, satuanUtama);
+            function gcd(x, y) {
+                x = Math.round(Math.abs(x) * 100);
+                y = Math.round(Math.abs(y) * 100);
+                while (y) {
+                    let t = y;
+                    y = x % y;
+                    x = t;
+                }
+                return x;
             }
-        } else if (source === 'kps') {
-            if (kps > 0) {
+
+            const divisor = gcd(val1, val2);
+            if (divisor > 0) {
+                let p1 = Math.round((val1 * 100) / divisor);
+                let p2 = Math.round((val2 * 100) / divisor);
+                if (p1 > 0 && p2 > 0 && p1 < 100 && p2 < 100) {
+                    return {
+                        p1: p1,
+                        p2: p2
+                    };
+                }
+            }
+
+            return {
+                p1: Math.round(val1 * 100) / 100,
+                p2: Math.round(val2 * 100) / 100
+            };
+        }
+
+        /**
+         * Parse Kapasitas & Satuan Otomatis dari Nama Obat
+         */
+        function parseKapasitasDariNama(namaObat) {
+            if (!namaObat) return {
+                kapasitas: 0,
+                satuan: 'ml'
+            };
+            const clean = namaObat.toUpperCase();
+
+            const matchMl = clean.match(/(\d+(?:[.,]\d+)?)\s*(ML|CC)/i);
+            if (matchMl) {
+                return {
+                    kapasitas: parseFloat(matchMl[1].replace(',', '.')),
+                    satuan: 'ml'
+                };
+            }
+
+            const matchMgMl = clean.match(/(\d+(?:[.,]\d+)?)\s*MG\s*\/\s*(\d+(?:[.,]\d+)?)\s*ML/i);
+            if (matchMgMl) {
+                return {
+                    kapasitas: parseFloat(matchMgMl[2].replace(',', '.')),
+                    satuan: 'ml'
+                };
+            }
+
+            const matchMg = clean.match(/(\d+(?:[.,]\d+)?)\s*MG/i);
+            if (matchMg) {
+                return {
+                    kapasitas: parseFloat(matchMg[1].replace(',', '.')),
+                    satuan: 'mg'
+                };
+            }
+
+            const matchGr = clean.match(/(\d+(?:[.,]\d+)?)\s*(GR|GRAM)/i);
+            if (matchGr) {
+                return {
+                    kapasitas: parseFloat(matchGr[1].replace(',', '.')),
+                    satuan: 'gr'
+                };
+            }
+
+            const matchIu = clean.match(/(\d+(?:[.,]\d+)?)\s*IU/i);
+            if (matchIu) {
+                return {
+                    kapasitas: parseFloat(matchIu[1].replace(',', '.')),
+                    satuan: 'iu'
+                };
+            }
+
+            return {
+                kapasitas: 0,
+                satuan: 'ml'
+            };
+        }
+
+        /**
+         * Hitung Kalkulator Dosis Sediaan (Metode Racikan)
+         */
+        function hitungKalkulatorDosis(source) {
+            const kps = parseFloat($('#kalk_kps').val()) || 0;
+            const satuanKps = $('#kalk_satuan_kps').val() || 'ml';
+            const satuanUtama = $('#lblEksekusiSatuan').text() || 'Kemasan';
+
+            let p1 = parseFloat($('#kalk_p1').val());
+            let p2 = parseFloat($('#kalk_p2').val());
+            let dosisDiminta = parseFloat($('#kalk_dosis_diminta').val());
+            let jml = parseFloat($('#eksekusi_jml').val());
+
+            if (source === 'dosis_diminta') {
                 if (!isNaN(dosisDiminta) && dosisDiminta > 0) {
-                    hitungKalkulatorDosis('dosis_diminta');
-                } else if (!isNaN(p1) && !isNaN(p2) && p2 > 0) {
-                    const fraction = p1 / p2;
-                    const roundedTotal = Number(fraction.toFixed(4));
+                    if (kps > 0) {
+                        const total = dosisDiminta / kps;
+                        const roundedTotal = Number(total.toFixed(4));
+                        $('#eksekusi_jml').val(roundedTotal);
+
+                        const frac = sederhanakanPecahan(dosisDiminta, kps);
+                        $('#kalk_p1').val(frac.p1);
+                        $('#kalk_p2').val(frac.p2);
+
+                        updateKalkulatorUI(roundedTotal, frac.p1, frac.p2, dosisDiminta, kps, satuanKps, satuanUtama);
+                    } else {
+                        $('#lblKalkHasilDosis').text(`Isi Kapasitas (Kps)`);
+                        $('#lblKalkFormulaText').text(`Kapasitas total sediaan obat harus diisi.`);
+                    }
+                }
+            } else if (source === 'p1p2' || source === 'preset_fraction') {
+                if (isNaN(p1) || p1 < 0) p1 = 1;
+                if (isNaN(p2) || p2 <= 0) p2 = 1;
+
+                const fraction = p1 / p2;
+                const roundedTotal = Number(fraction.toFixed(4));
+                $('#eksekusi_jml').val(roundedTotal);
+
+                if (kps > 0) {
                     const dosis = Number((kps * fraction).toFixed(2));
                     $('#kalk_dosis_diminta').val(dosis);
                     updateKalkulatorUI(roundedTotal, p1, p2, dosis, kps, satuanKps, satuanUtama);
-                }
-            }
-        } else if (source === 'eksekusi_jml') {
-            if (!isNaN(jml) && jml > 0) {
-                const frac = sederhanakanPecahan(jml, 1);
-                $('#kalk_p1').val(frac.p1);
-                $('#kalk_p2').val(frac.p2);
-
-                if (kps > 0) {
-                    const dosis = Number((jml * kps).toFixed(2));
-                    $('#kalk_dosis_diminta').val(dosis);
-                    updateKalkulatorUI(jml, frac.p1, frac.p2, dosis, kps, satuanKps, satuanUtama);
                 } else {
-                    updateKalkulatorUI(jml, frac.p1, frac.p2, null, 0, satuanKps, satuanUtama);
+                    updateKalkulatorUI(roundedTotal, p1, p2, null, 0, satuanKps, satuanUtama);
+                }
+            } else if (source === 'kps') {
+                if (kps > 0) {
+                    if (!isNaN(dosisDiminta) && dosisDiminta > 0) {
+                        hitungKalkulatorDosis('dosis_diminta');
+                    } else if (!isNaN(p1) && !isNaN(p2) && p2 > 0) {
+                        const fraction = p1 / p2;
+                        const roundedTotal = Number(fraction.toFixed(4));
+                        const dosis = Number((kps * fraction).toFixed(2));
+                        $('#kalk_dosis_diminta').val(dosis);
+                        updateKalkulatorUI(roundedTotal, p1, p2, dosis, kps, satuanKps, satuanUtama);
+                    }
+                }
+            } else if (source === 'eksekusi_jml') {
+                if (!isNaN(jml) && jml > 0) {
+                    const frac = sederhanakanPecahan(jml, 1);
+                    $('#kalk_p1').val(frac.p1);
+                    $('#kalk_p2').val(frac.p2);
+
+                    if (kps > 0) {
+                        const dosis = Number((jml * kps).toFixed(2));
+                        $('#kalk_dosis_diminta').val(dosis);
+                        updateKalkulatorUI(jml, frac.p1, frac.p2, dosis, kps, satuanKps, satuanUtama);
+                    } else {
+                        updateKalkulatorUI(jml, frac.p1, frac.p2, null, 0, satuanKps, satuanUtama);
+                    }
                 }
             }
         }
-    }
 
-    function updateKalkulatorUI(jml, p1, p2, dosisDiminta, kps, satuanKps, satuanUtama) {
-        let formula = '';
-        let summaryText = '';
-        let autoKet = '';
+        function updateKalkulatorUI(jml, p1, p2, dosisDiminta, kps, satuanKps, satuanUtama) {
+            let formula = '';
+            let summaryText = '';
+            let autoKet = '';
 
-        if (dosisDiminta !== null && kps > 0) {
-            formula = `${dosisDiminta} ${satuanKps} / ${kps} ${satuanKps} = ${jml} ${satuanUtama} (Pecahan ${p1}/${p2})`;
-            summaryText = `<i class="bi bi-info-circle me-1"></i> Perhitungan: <b>${dosisDiminta} ${satuanKps}</b> dari sediaan <b>${kps} ${satuanKps}</b> (&asymp; ${jml} ${satuanUtama})`;
-            autoKet = `Diberikan ${dosisDiminta} ${satuanKps} (${p1}/${p2} ${satuanUtama})`;
-        } else {
-            formula = `Pecahan ${p1}/${p2} = ${jml} ${satuanUtama}`;
-            summaryText = `<i class="bi bi-info-circle me-1"></i> Perhitungan: Pecahan <b>${p1}/${p2}</b> (&asymp; ${jml} ${satuanUtama})`;
-            autoKet = `Diberikan ${p1}/${p2} ${satuanUtama}`;
-        }
-
-        $('#lblKalkHasilDosis').text(`${jml} ${satuanUtama}`);
-        $('#lblKalkFormulaText').text(formula);
-        $('#lblKalkulatorSummary').removeClass('d-none').html(summaryText);
-
-        const currentKet = $('#eksekusi_keterangan').val();
-        if (!currentKet || currentKet.startsWith('Diberikan ')) {
-            $('#eksekusi_keterangan').val(autoKet);
-        }
-
-        const currentAturan = $('#eksekusi_aturan_pakai').val() || '';
-        const matchFrek = currentAturan.match(/^(\d+\s*[xX]\s*)/);
-        if (matchFrek) {
-            $('#eksekusi_aturan_pakai').val(`${matchFrek[1]}${jml}`);
-        }
-    }
-
-    // Buka Dialog Eksekusi Pemberian Obat
-    function bukaDialogBeriObat(kode, nama, satuan, batch, faktur, bangsal, aturan, sisa, presetJam = '', sumber = 'permintaan_harian', noResep = '', kapasitas = 0) {
-        if (sisa <= 0) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Stok Obat Pasien Habis',
-                text: `Stok ${nama} untuk pasien ini sudah habis (0 ${satuan}). Harap buat order permintaan stok obat baru ke Depo Farmasi terlebih dahulu.`,
-                confirmButtonColor: '#0d6efd',
-            });
-            return;
-        }
-
-        $('#eksekusi_kode_brng').val(kode);
-        $('#eksekusi_no_batch').val(batch || '');
-        $('#eksekusi_no_faktur').val(faktur || '');
-        $('#eksekusi_kd_bangsal').val(bangsal || 'RM');
-        $('#eksekusi_sumber').val(sumber || 'permintaan_harian');
-        $('#eksekusi_no_resep').val(noResep || '');
-        $('#lblEksekusiNamaObat').text(nama);
-        $('#lblEksekusiSatuan').text(satuan);
-        $('#lblEksekusiSisaStok').text(`Sisa Stok Pasien: ${sisa} ${satuan}`);
-        $('#eksekusi_tanggal').val($('#emar_filter_tanggal').val() || moment().format('YYYY-MM-DD'));
-        $('#eksekusi_jam').val(presetJam || moment().format('HH:mm:ss'));
-        $('#eksekusi_jml').val('1').attr('max', sisa).data('max-sisa', sisa);
-        $('#eksekusi_aturan_pakai').val(aturan || '');
-        $('#eksekusi_keterangan').val('');
-        $('#lblKalkulatorSummary').addClass('d-none').empty();
-
-        // Inisialisasi Kalkulator Dosis Sediaan
-        let kpsFinal = parseFloat(kapasitas) || 0;
-        let satFinal = 'ml';
-
-        const parsed = parseKapasitasDariNama(nama);
-        if (kpsFinal <= 0 && parsed.kapasitas > 0) {
-            kpsFinal = parsed.kapasitas;
-            satFinal = parsed.satuan;
-        } else if (kpsFinal > 0) {
-            satFinal = parsed.satuan || 'ml';
-        } else {
-            const lowerSat = (satuan || '').toLowerCase();
-            const lowerNama = (nama || '').toLowerCase();
-            if (lowerSat.includes('botol') || lowerSat.includes('infus') || lowerSat.includes('fls') || lowerSat.includes('ampul') || lowerNama.includes('infus') || lowerNama.includes('sirup') || lowerNama.includes('syrup') || lowerNama.includes('drop')) {
-                satFinal = 'ml';
-            } else if (lowerSat.includes('tablet') || lowerSat.includes('kapsul') || lowerSat.includes('kaplet') || lowerNama.includes('tab') || lowerNama.includes('caps')) {
-                satFinal = 'mg';
-            }
-        }
-
-        $('#kalk_kps').val(kpsFinal > 0 ? kpsFinal : '');
-        $('#kalk_satuan_kps').val(satFinal);
-        $('#lblKalkSatuanKebutuhan').text(satFinal);
-        $('#kalk_dosis_diminta').val('');
-        $('#kalk_p1').val(1);
-        $('#kalk_p2').val(1);
-        $('#lblKalkHasilDosis').text(`1 ${satuan}`);
-        $('#lblKalkFormulaText').text('Rumus: 1 kemasan utuh');
-
-        // Reset panel kalkulator tertutup
-        $('#panelKalkulatorDosis').addClass('d-none');
-        $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
-
-        const $sumberBadge = $('#lblEksekusiSumberBadge');
-        const $alertInfo = $('#alertEksekusiInfo');
-        const $lblNoResep = $('#lblEksekusiNoResep');
-
-        if (sumber === 'resep_dokter') {
-            $sumberBadge.removeClass().addClass('badge bg-primary text-white').html('<i class="bi bi-prescription2 me-1"></i> Resep DPJP Ranap');
-            $lblNoResep.text(noResep ? `No. Resep: ${noResep}` : '');
-            $alertInfo.removeClass('d-none alert-info').addClass('alert-primary').html(
-                '<i class="bi bi-info-circle me-1"></i> <b>Pre-Billed:</b> Obat resep dokter ini sudah ter-billing saat validasi resep oleh Farmasi. Pencatatan ini murni untuk rekam medis administrasi obat (E-MAR).'
-            );
-        } else {
-            $sumberBadge.removeClass().addClass('badge bg-info text-dark').html('<i class="bi bi-box-seam me-1"></i> Permintaan Harian');
-            $lblNoResep.text('');
-            $alertInfo.removeClass('d-none alert-primary').addClass('alert-info').html(
-                '<i class="bi bi-info-circle me-1"></i> <b>Billing Rekonsiliasi:</b> Dosis pecahan (misal 0.5 ampul) akan diverifikasi dan dibulatkan tagihannya oleh Farmasi.'
-            );
-        }
-
-        // Tampilkan Notifikasi Khusus Obat Hasil Substitusi Farmasi
-        const itemObj = (window.emarItemsMap && window.emarItemsMap[kode]) || null;
-        const sub = itemObj?.substitusi || null;
-
-        if (sub) {
-            $('#alertEksekusiSubstitusi').removeClass('d-none');
-            $('#lblSubstitusiNamaAsal').text(sub.nama_brng_asal || '-');
-            $('#lblSubstitusiDokterPemeriksa').text(sub.nama_dokter || 'Dokter Register');
-            if (sub.catatan) {
-                $('#lblSubstitusiCatatanText').text(sub.catatan);
-                $('#lblSubstitusiCatatanWrap').removeClass('d-none');
+            if (dosisDiminta !== null && kps > 0) {
+                formula = `${dosisDiminta} ${satuanKps} / ${kps} ${satuanKps} = ${jml} ${satuanUtama} (Pecahan ${p1}/${p2})`;
+                summaryText = `<i class="bi bi-info-circle me-1"></i> Perhitungan: <b>${dosisDiminta} ${satuanKps}</b> dari sediaan <b>${kps} ${satuanKps}</b> (&asymp; ${jml} ${satuanUtama})`;
+                autoKet = `Diberikan ${dosisDiminta} ${satuanKps} (${p1}/${p2} ${satuanUtama})`;
             } else {
-                $('#lblSubstitusiCatatanWrap').addClass('d-none');
+                formula = `Pecahan ${p1}/${p2} = ${jml} ${satuanUtama}`;
+                summaryText = `<i class="bi bi-info-circle me-1"></i> Perhitungan: Pecahan <b>${p1}/${p2}</b> (&asymp; ${jml} ${satuanUtama})`;
+                autoKet = `Diberikan ${p1}/${p2} ${satuanUtama}`;
             }
-        } else {
-            $('#alertEksekusiSubstitusi').addClass('d-none');
+
+            $('#lblKalkHasilDosis').text(`${jml} ${satuanUtama}`);
+            $('#lblKalkFormulaText').text(formula);
+            $('#lblKalkulatorSummary').removeClass('d-none').html(summaryText);
+
+            const currentKet = $('#eksekusi_keterangan').val();
+            if (!currentKet || currentKet.startsWith('Diberikan ')) {
+                $('#eksekusi_keterangan').val(autoKet);
+            }
+
+            const currentAturan = $('#eksekusi_aturan_pakai').val() || '';
+            const matchFrek = currentAturan.match(/^(\d+\s*[xX]\s*)/);
+            if (matchFrek) {
+                $('#eksekusi_aturan_pakai').val(`${matchFrek[1]}${jml}`);
+            }
         }
 
-        $('#modalDialogEksekusiBeriObat').modal('show');
-    }
-
-    // Submit Eksekusi Pemberian Obat
-    $('#btnSimpanEksekusiBeriObat').on('click', function() {
-        const noRawat = $('#emar_info_no_rawat').text();
-        const kode = $('#eksekusi_kode_brng').val();
-        const tgl = $('#eksekusi_tanggal').val();
-        const jam = $('#eksekusi_jam').val();
-        const jml = parseFloat($('#eksekusi_jml').val()) || 0;
-        const maxSisa = parseFloat($('#eksekusi_jml').data('max-sisa')) || 0;
-        const batch = $('#eksekusi_no_batch').val();
-        const faktur = $('#eksekusi_no_faktur').val();
-        const bangsal = $('#eksekusi_kd_bangsal').val();
-        const aturan = $('#eksekusi_aturan_pakai').val();
-        const keterangan = $('#eksekusi_keterangan').val();
-        const sumber = $('#eksekusi_sumber').val() || 'permintaan_harian';
-        const noResep = $('#eksekusi_no_resep').val() || '';
-
-        if (jml <= 0) {
-            Swal.fire('Peringatan', 'Jumlah pemberian obat harus lebih dari 0.', 'warning');
-            return;
-        }
-
-        if (maxSisa > 0 && jml > maxSisa) {
-            Swal.fire('Peringatan', `Jumlah pemberian (${jml}) melebihi sisa stok obat pasien (${maxSisa}).`, 'warning');
-            return;
-        }
-
-        $.ajax({
-            url: "{{ route('ranap.pemberian-obat.simpan') }}",
-            type: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                no_rawat: noRawat,
-                kode_brng: kode,
-                tgl_perawatan: tgl,
-                jam: jam,
-                jml: jml,
-                no_batch: batch,
-                no_faktur: faktur,
-                kd_bangsal: bangsal,
-                aturan_pakai: aturan,
-                keterangan: keterangan,
-                sumber: sumber,
-                no_resep: noResep
-            },
-            beforeSend: function() {
-                Swal.fire({ title: 'Menyimpan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-            },
-            success: function(resp) {
-                $('#modalDialogEksekusiBeriObat').modal('hide');
-                loadEmarPasien(noRawat, tgl);
+        // Buka Dialog Eksekusi Pemberian Obat
+        function bukaDialogBeriObat(kode, nama, satuan, batch, faktur, bangsal, aturan, sisa, presetJam = '', sumber = 'permintaan_harian', noResep = '', kapasitas = 0) {
+            if (sisa <= 0) {
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: resp.message || 'Pemberian obat berhasil dicatat.',
-                    timer: 1500,
-                    showConfirmButton: false
+                    icon: 'warning',
+                    title: 'Stok Obat Pasien Habis',
+                    text: `Stok ${nama} untuk pasien ini sudah habis (0 ${satuan}). Harap buat order permintaan stok obat baru ke Depo Farmasi terlebih dahulu.`,
+                    confirmButtonColor: '#0d6efd',
                 });
-            },
-            error: function(xhr) {
-                const msg = xhr.responseJSON?.message || 'Gagal mencatat pemberian obat.';
-                Swal.fire('Gagal!', msg, 'error');
+                return;
+            }
+
+            $('#eksekusi_kode_brng').val(kode);
+            $('#eksekusi_no_batch').val(batch || '');
+            $('#eksekusi_no_faktur').val(faktur || '');
+            $('#eksekusi_kd_bangsal').val(bangsal || 'RM');
+            $('#eksekusi_sumber').val(sumber || 'permintaan_harian');
+            $('#eksekusi_no_resep').val(noResep || '');
+            $('#lblEksekusiNamaObat').text(nama);
+            $('#lblEksekusiSatuan').text(satuan);
+            $('#lblEksekusiSisaStok').text(`Sisa Stok Pasien: ${sisa} ${satuan}`);
+            $('#eksekusi_tanggal').val($('#emar_filter_tanggal').val() || moment().format('YYYY-MM-DD'));
+            $('#eksekusi_jam').val(presetJam || moment().format('HH:mm:ss'));
+            $('#eksekusi_jml').val('1').attr('max', sisa).data('max-sisa', sisa);
+            $('#eksekusi_aturan_pakai').val(aturan || '');
+            $('#eksekusi_keterangan').val('');
+            $('#lblKalkulatorSummary').addClass('d-none').empty();
+
+            // Inisialisasi Kalkulator Dosis Sediaan
+            let kpsFinal = parseFloat(kapasitas) || 0;
+            let satFinal = 'ml';
+
+            const parsed = parseKapasitasDariNama(nama);
+            if (kpsFinal <= 0 && parsed.kapasitas > 0) {
+                kpsFinal = parsed.kapasitas;
+                satFinal = parsed.satuan;
+            } else if (kpsFinal > 0) {
+                satFinal = parsed.satuan || 'ml';
+            } else {
+                const lowerSat = (satuan || '').toLowerCase();
+                const lowerNama = (nama || '').toLowerCase();
+                if (lowerSat.includes('botol') || lowerSat.includes('infus') || lowerSat.includes('fls') || lowerSat.includes('ampul') || lowerNama.includes('infus') || lowerNama.includes('sirup') || lowerNama.includes('syrup') || lowerNama.includes('drop')) {
+                    satFinal = 'ml';
+                } else if (lowerSat.includes('tablet') || lowerSat.includes('kapsul') || lowerSat.includes('kaplet') || lowerNama.includes('tab') || lowerNama.includes('caps')) {
+                    satFinal = 'mg';
+                }
+            }
+
+            $('#kalk_kps').val(kpsFinal > 0 ? kpsFinal : '');
+            $('#kalk_satuan_kps').val(satFinal);
+            $('#lblKalkSatuanKebutuhan').text(satFinal);
+            $('#kalk_dosis_diminta').val('');
+            $('#kalk_p1').val(1);
+            $('#kalk_p2').val(1);
+            $('#lblKalkHasilDosis').text(`1 ${satuan}`);
+            $('#lblKalkFormulaText').text('Rumus: 1 kemasan utuh');
+
+            // Reset panel kalkulator tertutup
+            $('#panelKalkulatorDosis').addClass('d-none');
+            $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
+
+            const $sumberBadge = $('#lblEksekusiSumberBadge');
+            const $alertInfo = $('#alertEksekusiInfo');
+            const $lblNoResep = $('#lblEksekusiNoResep');
+
+            if (sumber === 'resep_dokter') {
+                $sumberBadge.removeClass().addClass('badge bg-primary text-white').html('<i class="bi bi-prescription2 me-1"></i> Resep DPJP Ranap');
+                $lblNoResep.text(noResep ? `No. Resep: ${noResep}` : '');
+                $alertInfo.removeClass('d-none alert-info').addClass('alert-primary').html(
+                    '<i class="bi bi-info-circle me-1"></i> <b>Pre-Billed:</b> Obat resep dokter ini sudah ter-billing saat validasi resep oleh Farmasi. Pencatatan ini murni untuk rekam medis administrasi obat (E-MAR).'
+                );
+            } else {
+                $sumberBadge.removeClass().addClass('badge bg-info text-dark').html('<i class="bi bi-box-seam me-1"></i> Permintaan Harian');
+                $lblNoResep.text('');
+                $alertInfo.removeClass('d-none alert-primary').addClass('alert-info').html(
+                    '<i class="bi bi-info-circle me-1"></i> <b>Billing Rekonsiliasi:</b> Dosis pecahan (misal 0.5 ampul) akan diverifikasi dan dibulatkan tagihannya oleh Farmasi.'
+                );
+            }
+
+            // Tampilkan Notifikasi Khusus Obat Hasil Substitusi Farmasi
+            const itemObj = (window.emarItemsMap && window.emarItemsMap[kode]) || null;
+            const sub = itemObj?.substitusi || null;
+
+            if (sub) {
+                $('#alertEksekusiSubstitusi').removeClass('d-none');
+                $('#lblSubstitusiNamaAsal').text(sub.nama_brng_asal || '-');
+                $('#lblSubstitusiDokterPemeriksa').text(sub.nama_dokter || 'Dokter Register');
+                if (sub.catatan) {
+                    $('#lblSubstitusiCatatanText').text(sub.catatan);
+                    $('#lblSubstitusiCatatanWrap').removeClass('d-none');
+                } else {
+                    $('#lblSubstitusiCatatanWrap').addClass('d-none');
+                }
+            } else {
+                $('#alertEksekusiSubstitusi').addClass('d-none');
+            }
+
+            $('#modalDialogEksekusiBeriObat').modal('show');
+        }
+
+        // Submit Eksekusi Pemberian Obat
+        $('#btnSimpanEksekusiBeriObat').on('click', function() {
+            const noRawat = $('#emar_info_no_rawat').text();
+            const kode = $('#eksekusi_kode_brng').val();
+            const tgl = $('#eksekusi_tanggal').val();
+            const jam = $('#eksekusi_jam').val();
+            const jml = parseFloat($('#eksekusi_jml').val()) || 0;
+            const maxSisa = parseFloat($('#eksekusi_jml').data('max-sisa')) || 0;
+            const batch = $('#eksekusi_no_batch').val();
+            const faktur = $('#eksekusi_no_faktur').val();
+            const bangsal = $('#eksekusi_kd_bangsal').val();
+            const aturan = $('#eksekusi_aturan_pakai').val();
+            const keterangan = $('#eksekusi_keterangan').val();
+            const sumber = $('#eksekusi_sumber').val() || 'permintaan_harian';
+            const noResep = $('#eksekusi_no_resep').val() || '';
+
+            if (jml <= 0) {
+                Swal.fire('Peringatan', 'Jumlah pemberian obat harus lebih dari 0.', 'warning');
+                return;
+            }
+
+            if (maxSisa > 0 && jml > maxSisa) {
+                Swal.fire('Peringatan', `Jumlah pemberian (${jml}) melebihi sisa stok obat pasien (${maxSisa}).`, 'warning');
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('ranap.pemberian-obat.simpan') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_rawat: noRawat,
+                    kode_brng: kode,
+                    tgl_perawatan: tgl,
+                    jam: jam,
+                    jml: jml,
+                    no_batch: batch,
+                    no_faktur: faktur,
+                    kd_bangsal: bangsal,
+                    aturan_pakai: aturan,
+                    keterangan: keterangan,
+                    sumber: sumber,
+                    no_resep: noResep
+                },
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Menyimpan...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function(resp) {
+                    $('#modalDialogEksekusiBeriObat').modal('hide');
+                    loadEmarPasien(noRawat, tgl);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: resp.message || 'Pemberian obat berhasil dicatat.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                },
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Gagal mencatat pemberian obat.';
+                    Swal.fire('Gagal!', msg, 'error');
+                }
+            });
+        });
+
+        // Event listeners Kalkulator Dosis (Metode Racikan)
+        $('#btnToggleKalkulatorDosis').on('click', function() {
+            const $panel = $('#panelKalkulatorDosis');
+            if ($panel.hasClass('d-none')) {
+                $panel.removeClass('d-none');
+                $(this).html('<i class="bi bi-x-circle me-1"></i> Tutup Kalkulator').removeClass('btn-outline-primary').addClass('btn-outline-danger');
+                $('#kalk_dosis_diminta').focus().select();
+            } else {
+                $panel.addClass('d-none');
+                $(this).html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
             }
         });
-    });
 
-    // Event listeners Kalkulator Dosis (Metode Racikan)
-    $('#btnToggleKalkulatorDosis').on('click', function() {
-        const $panel = $('#panelKalkulatorDosis');
-        if ($panel.hasClass('d-none')) {
-            $panel.removeClass('d-none');
-            $(this).html('<i class="bi bi-x-circle me-1"></i> Tutup Kalkulator').removeClass('btn-outline-primary').addClass('btn-outline-danger');
-            $('#kalk_dosis_diminta').focus().select();
-        } else {
-            $panel.addClass('d-none');
-            $(this).html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
-        }
-    });
-
-    $('#btnCloseKalkulatorDosis').on('click', function() {
-        $('#panelKalkulatorDosis').addClass('d-none');
-        $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
-    });
-
-    $('#kalk_dosis_diminta').on('input', function() {
-        hitungKalkulatorDosis('dosis_diminta');
-    });
-
-    $('#kalk_kps').on('input', function() {
-        hitungKalkulatorDosis('kps');
-    });
-
-    $('#kalk_satuan_kps').on('change', function() {
-        const sat = $(this).val();
-        $('#lblKalkSatuanKebutuhan').text(sat);
-        hitungKalkulatorDosis('kps');
-    });
-
-    $('#kalk_p1, #kalk_p2').on('input', function() {
-        hitungKalkulatorDosis('p1p2');
-    });
-
-    $(document).on('click', '.btn-quick-fraction', function() {
-        const p1 = $(this).data('p1');
-        const p2 = $(this).data('p2');
-        $('#kalk_p1').val(p1);
-        $('#kalk_p2').val(p2);
-        hitungKalkulatorDosis('preset_fraction');
-    });
-
-    $('#eksekusi_jml').on('input', function() {
-        hitungKalkulatorDosis('eksekusi_jml');
-    });
-
-    $('#btnApplyKalkulator').on('click', function() {
-        hitungKalkulatorDosis('dosis_diminta');
-        $('#panelKalkulatorDosis').addClass('d-none');
-        $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
-    });
-
-    // Hapus Catatan Pemberian Obat
-    function hapusCatatanPemberian(noRawat, kode, tgl, jam, batch, faktur, id = null) {
-        Swal.fire({
-            title: 'Hapus Pemberian Obat?',
-            text: `Hapus catatan pemberian obat jam ${jam} pada tanggal ${tgl}?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc3545',
-            confirmButtonText: 'Ya, Hapus',
-            cancelButtonText: 'Batal'
-        }).then((res) => {
-            if (res.isConfirmed) {
-                $.ajax({
-                    url: "{{ route('ranap.pemberian-obat.hapus') }}",
-                    type: "DELETE",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id,
-                        no_rawat: noRawat,
-                        kode_brng: kode,
-                        tgl_perawatan: tgl,
-                        jam: jam,
-                        no_batch: batch,
-                        no_faktur: faktur
-                    },
-                    success: function(resp) {
-                        loadEmarPasien(noRawat, tgl);
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Dihapus!',
-                            text: resp.message || 'Catatan pemberian obat telah dihapus.',
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
-                    },
-                    error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Gagal menghapus pemberian obat.';
-                        Swal.fire('Gagal!', msg, 'error');
-                    }
-                });
-            }
+        $('#btnCloseKalkulatorDosis').on('click', function() {
+            $('#panelKalkulatorDosis').addClass('d-none');
+            $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
         });
-    }
 
-    // Helper Format Rupiah
-    function formatRupiah(angka) {
-        return new Intl.NumberFormat('id-ID').format(angka || 0);
-    }
+        $('#kalk_dosis_diminta').on('input', function() {
+            hitungKalkulatorDosis('dosis_diminta');
+        });
 
-    // ========================================================
-    // FITUR FORMULIR RM 5A (DAFTAR PEMBERIAN OBAT)
-    // ========================================================
+        $('#kalk_kps').on('input', function() {
+            hitungKalkulatorDosis('kps');
+        });
 
-    // 1. Buka Cetak Dokumen PDF Resmi RM 5A
-    function cetakFormulirRm5a(tglAwal = '') {
-        const noRawat = $('#emar_info_no_rawat').text();
-        if (!noRawat || noRawat === '-') {
-            Swal.fire('Peringatan', 'Silahkan pilih pasien rawat inap terlebih dahulu.', 'warning');
-            return;
+        $('#kalk_satuan_kps').on('change', function() {
+            const sat = $(this).val();
+            $('#lblKalkSatuanKebutuhan').text(sat);
+            hitungKalkulatorDosis('kps');
+        });
+
+        $('#kalk_p1, #kalk_p2').on('input', function() {
+            hitungKalkulatorDosis('p1p2');
+        });
+
+        $(document).on('click', '.btn-quick-fraction', function() {
+            const p1 = $(this).data('p1');
+            const p2 = $(this).data('p2');
+            $('#kalk_p1').val(p1);
+            $('#kalk_p2').val(p2);
+            hitungKalkulatorDosis('preset_fraction');
+        });
+
+        $('#eksekusi_jml').on('input', function() {
+            hitungKalkulatorDosis('eksekusi_jml');
+        });
+
+        $('#btnApplyKalkulator').on('click', function() {
+            hitungKalkulatorDosis('dosis_diminta');
+            $('#panelKalkulatorDosis').addClass('d-none');
+            $('#btnToggleKalkulatorDosis').html('<i class="bi bi-calculator me-1"></i> Hitung Dosis / Racikan').removeClass('btn-outline-danger').addClass('btn-outline-primary');
+        });
+
+        // Hapus Catatan Pemberian Obat
+        function hapusCatatanPemberian(noRawat, kode, tgl, jam, batch, faktur, id = null) {
+            Swal.fire({
+                title: 'Hapus Pemberian Obat?',
+                text: `Hapus catatan pemberian obat jam ${jam} pada tanggal ${tgl}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('ranap.pemberian-obat.hapus') }}",
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id: id,
+                            no_rawat: noRawat,
+                            kode_brng: kode,
+                            tgl_perawatan: tgl,
+                            jam: jam,
+                            no_batch: batch,
+                            no_faktur: faktur
+                        },
+                        success: function(resp) {
+                            loadEmarPasien(noRawat, tgl);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Dihapus!',
+                                text: resp.message || 'Catatan pemberian obat telah dihapus.',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        },
+                        error: function(xhr) {
+                            const msg = xhr.responseJSON?.message || 'Gagal menghapus pemberian obat.';
+                            Swal.fire('Gagal!', msg, 'error');
+                        }
+                    });
+                }
+            });
         }
 
-        const safeNoRawat = encodeURIComponent(noRawat.replace(/\//g, '-'));
-        let url = `{{ url('/ranap/pemberian-obat/cetak-rm5a') }}/${safeNoRawat}`;
-        
-        const filterTgl = tglAwal || $('#rm5a_filter_tgl_awal').val();
-        if (filterTgl) {
-            url += `?tgl_awal=${filterTgl}`;
+        // Helper Format Rupiah
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID').format(angka || 0);
         }
-        window.open(url, '_blank');
-    }
 
-    // 2. Load Rekap Tabel RM 5A (Multi-Hari) di Layar
-    function loadRekapRm5a() {
-        const noRawat = $('#emar_info_no_rawat').text();
-        const tglAwal = $('#rm5a_filter_tgl_awal').val() || '';
-        if (!noRawat || noRawat === '-') return;
+        // ========================================================
+        // FITUR FORMULIR RM 5A (DAFTAR PEMBERIAN OBAT)
+        // ========================================================
 
-        const $container = $('#containerTinjauRm5a');
-        $container.html(`
+        // 1. Buka Cetak Dokumen PDF Resmi RM 5A
+        function cetakFormulirRm5a(tglAwal = '') {
+            const noRawat = $('#emar_info_no_rawat').text();
+            if (!noRawat || noRawat === '-') {
+                Swal.fire('Peringatan', 'Silahkan pilih pasien rawat inap terlebih dahulu.', 'warning');
+                return;
+            }
+
+            const safeNoRawat = encodeURIComponent(noRawat.replace(/\//g, '-'));
+            let url = `{{ url('/ranap/pemberian-obat/cetak-rm5a') }}/${safeNoRawat}`;
+
+            const filterTgl = tglAwal || $('#rm5a_filter_tgl_awal').val();
+            if (filterTgl) {
+                url += `?tgl_awal=${filterTgl}`;
+            }
+            window.open(url, '_blank');
+        }
+
+        // 2. Load Rekap Tabel RM 5A (Multi-Hari) di Layar
+        function loadRekapRm5a() {
+            const noRawat = $('#emar_info_no_rawat').text();
+            const tglAwal = $('#rm5a_filter_tgl_awal').val() || '';
+            if (!noRawat || noRawat === '-') return;
+
+            const $container = $('#containerTinjauRm5a');
+            $container.html(`
             <div class="text-center text-muted py-5">
                 <div class="spinner-border text-success mb-2" role="status"></div>
                 <div class="small fw-semibold">Memuat rekap Lembar Daftar Pemberian Obat (RM 5A)...</div>
             </div>
         `);
 
-        $.get("{{ route('ranap.pemberian-obat.rekap-rm5a') }}", {
-            no_rawat: noRawat,
-            tgl_awal: tglAwal
-        }).done(function(resp) {
-            if (!resp.status || !resp.data) {
-                $container.html('<div class="text-center text-muted py-4">Data rekam pemberian obat tidak ditemukan.</div>');
-                return;
-            }
+            $.get("{{ route('ranap.pemberian-obat.rekap-rm5a') }}", {
+                no_rawat: noRawat,
+                tgl_awal: tglAwal
+            }).done(function(resp) {
+                if (!resp.status || !resp.data) {
+                    $container.html('<div class="text-center text-muted py-4">Data rekam pemberian obat tidak ditemukan.</div>');
+                    return;
+                }
 
-            const d = resp.data;
-            if (!tglAwal && d.tanggalList && d.tanggalList.length > 0) {
-                $('#rm5a_filter_tgl_awal').val(d.tanggalList[0].tanggal);
-            }
+                const d = resp.data;
+                if (!tglAwal && d.tanggalList && d.tanggalList.length > 0) {
+                    $('#rm5a_filter_tgl_awal').val(d.tanggalList[0].tanggal);
+                }
 
-            renderTampilanLembarRm5a(d);
-        }).fail(function(xhr) {
-            const msg = xhr.responseJSON?.message || 'Gagal memuat rekap RM 5A.';
-            $container.html(`<div class="text-center text-danger py-4"><i class="bi bi-exclamation-triangle fs-2 d-block mb-1"></i>${msg}</div>`);
-        });
-    }
+                renderTampilanLembarRm5a(d);
+            }).fail(function(xhr) {
+                const msg = xhr.responseJSON?.message || 'Gagal memuat rekap RM 5A.';
+                $container.html(`<div class="text-center text-danger py-4"><i class="bi bi-exclamation-triangle fs-2 d-block mb-1"></i>${msg}</div>`);
+            });
+        }
 
-    // 3. Render HTML Tabel RM 5A Interaktif di Layar
-    function renderTampilanLembarRm5a(d) {
-        const $container = $('#containerTinjauRm5a');
-        $container.empty();
+        // 3. Render HTML Tabel RM 5A Interaktif di Layar
+        function renderTampilanLembarRm5a(d) {
+            const $container = $('#containerTinjauRm5a');
+            $container.empty();
 
-        const tglList = d.tanggalList || [];
-        const grupOral = d.grupOral || [];
-        const grupInjeksi = d.grupInjeksi || [];
-        const grupLain = d.grupLain || [];
-        const petugasMap = d.petugasMap || {};
+            const tglList = d.tanggalList || [];
+            const grupOral = d.grupOral || [];
+            const grupInjeksi = d.grupInjeksi || [];
+            const grupLain = d.grupLain || [];
+            const petugasMap = d.petugasMap || {};
 
-        // Buat Baris Header Tanggal (Subkolom P, S, M)
-        let thTanggal1 = '';
-        let thTanggal2 = '';
-        tglList.forEach(t => {
-            thTanggal1 += `<th colspan="3" class="text-center bg-light border" style="font-size: 11px;">Tgl: <b>${t.label}</b></th>`;
-            thTanggal2 += `
+            // Buat Baris Header Tanggal (Subkolom P, S, M)
+            let thTanggal1 = '';
+            let thTanggal2 = '';
+            tglList.forEach(t => {
+                thTanggal1 += `<th colspan="3" class="text-center bg-light border" style="font-size: 11px;">Tgl: <b>${t.label}</b></th>`;
+                thTanggal2 += `
                 <th class="text-center border bg-white" style="font-size: 10px; width: 26px;">P</th>
                 <th class="text-center border bg-white" style="font-size: 10px; width: 26px;">S</th>
                 <th class="text-center border bg-white" style="font-size: 10px; width: 26px;">M</th>
             `;
-        });
+            });
 
-        // 1. Render Section ORAL
-        let rowsOral = '';
-        if (grupOral.length === 0) {
-            rowsOral = `<tr><td colspan="${7 + (tglList.length * 3)}" class="text-center text-muted py-2 fst-italic">Tidak ada instruksi obat oral.</td></tr>`;
-        } else {
-            grupOral.forEach((item, idx) => {
-                let cellTgl = '';
-                tglList.forEach(t => {
-                    const p = item.pemberian[t.tanggal] || { P: '', S: '', M: '' };
-                    cellTgl += `
+            // 1. Render Section ORAL
+            let rowsOral = '';
+            if (grupOral.length === 0) {
+                rowsOral = `<tr><td colspan="${7 + (tglList.length * 3)}" class="text-center text-muted py-2 fst-italic">Tidak ada instruksi obat oral.</td></tr>`;
+            } else {
+                grupOral.forEach((item, idx) => {
+                    let cellTgl = '';
+                    tglList.forEach(t => {
+                        const p = item.pemberian[t.tanggal] || {
+                            P: '',
+                            S: '',
+                            M: ''
+                        };
+                        cellTgl += `
                         <td class="text-center align-middle font-monospace" style="font-size: 10px; background-color: ${p.P ? '#e8f5e9' : 'transparent'}; font-weight: ${p.P ? 'bold' : 'normal'}; color: ${p.P ? '#1b5e20' : 'inherit'};">${p.P || ''}</td>
                         <td class="text-center align-middle font-monospace" style="font-size: 10px; background-color: ${p.S ? '#e8f5e9' : 'transparent'}; font-weight: ${p.S ? 'bold' : 'normal'}; color: ${p.S ? '#1b5e20' : 'inherit'};">${p.S || ''}</td>
                         <td class="text-center align-middle font-monospace" style="font-size: 10px; background-color: ${p.M ? '#e8f5e9' : 'transparent'}; font-weight: ${p.M ? 'bold' : 'normal'}; color: ${p.M ? '#1b5e20' : 'inherit'};">${p.M || ''}</td>
                     `;
-                });
+                    });
 
-                rowsOral += `
+                    rowsOral += `
                     <tr>
                         <td class="text-center align-middle">${idx + 1}</td>
                         <td class="align-middle"><strong>${item.nama}</strong></td>
@@ -1310,41 +1398,50 @@
                         ${cellTgl}
                     </tr>
                 `;
-            });
-        }
+                });
+            }
 
-        // Footer Baris Oral
-        let cellDoubleCekOral = '';
-        let cellMenyiapkanOral = '';
-        let cellMemberikanOral = '';
-        tglList.forEach(t => {
-            const pet = petugasMap[t.tanggal] || { menyiapkan: '-', P: '-', S: '-', M: '-' };
-            cellDoubleCekOral += `<td colspan="3" class="text-center text-success"><i class="bi bi-check-lg"></i></td>`;
-            cellMenyiapkanOral += `<td colspan="3" class="text-center fw-bold small text-primary" style="font-size: 10px;">${pet.menyiapkan}</td>`;
-            cellMemberikanOral += `
+            // Footer Baris Oral
+            let cellDoubleCekOral = '';
+            let cellMenyiapkanOral = '';
+            let cellMemberikanOral = '';
+            tglList.forEach(t => {
+                const pet = petugasMap[t.tanggal] || {
+                    menyiapkan: '-',
+                    P: '-',
+                    S: '-',
+                    M: '-'
+                };
+                cellDoubleCekOral += `<td colspan="3" class="text-center text-success"><i class="bi bi-check-lg"></i></td>`;
+                cellMenyiapkanOral += `<td colspan="3" class="text-center fw-bold small text-primary" style="font-size: 10px;">${pet.menyiapkan}</td>`;
+                cellMemberikanOral += `
                 <td class="text-center small" style="font-size: 9.5px;">${pet.P}</td>
                 <td class="text-center small" style="font-size: 9.5px;">${pet.S}</td>
                 <td class="text-center small" style="font-size: 9.5px;">${pet.M}</td>
             `;
-        });
+            });
 
-        // 2. Render Section INJEKSI
-        let rowsInjeksi = '';
-        if (grupInjeksi.length === 0) {
-            rowsInjeksi = `<tr><td colspan="${7 + (tglList.length * 3)}" class="text-center text-muted py-2 fst-italic">Tidak ada instruksi obat injeksi.</td></tr>`;
-        } else {
-            grupInjeksi.forEach((item, idx) => {
-                let cellTgl = '';
-                tglList.forEach(t => {
-                    const p = item.pemberian[t.tanggal] || { P: '', S: '', M: '' };
-                    cellTgl += `
+            // 2. Render Section INJEKSI
+            let rowsInjeksi = '';
+            if (grupInjeksi.length === 0) {
+                rowsInjeksi = `<tr><td colspan="${7 + (tglList.length * 3)}" class="text-center text-muted py-2 fst-italic">Tidak ada instruksi obat injeksi.</td></tr>`;
+            } else {
+                grupInjeksi.forEach((item, idx) => {
+                    let cellTgl = '';
+                    tglList.forEach(t => {
+                        const p = item.pemberian[t.tanggal] || {
+                            P: '',
+                            S: '',
+                            M: ''
+                        };
+                        cellTgl += `
                         <td class="text-center align-middle font-monospace" style="font-size: 10px; background-color: ${p.P ? '#e3f2fd' : 'transparent'}; font-weight: ${p.P ? 'bold' : 'normal'}; color: ${p.P ? '#0d47a1' : 'inherit'};">${p.P || ''}</td>
                         <td class="text-center align-middle font-monospace" style="font-size: 10px; background-color: ${p.S ? '#e3f2fd' : 'transparent'}; font-weight: ${p.S ? 'bold' : 'normal'}; color: ${p.S ? '#0d47a1' : 'inherit'};">${p.S || ''}</td>
                         <td class="text-center align-middle font-monospace" style="font-size: 10px; background-color: ${p.M ? '#e3f2fd' : 'transparent'}; font-weight: ${p.M ? 'bold' : 'normal'}; color: ${p.M ? '#0d47a1' : 'inherit'};">${p.M || ''}</td>
                     `;
-                });
+                    });
 
-                rowsInjeksi += `
+                    rowsInjeksi += `
                     <tr>
                         <td class="text-center align-middle">${idx + 1}</td>
                         <td class="align-middle"><strong>${item.nama}</strong></td>
@@ -1356,26 +1453,30 @@
                         ${cellTgl}
                     </tr>
                 `;
-            });
-        }
+                });
+            }
 
-        // 3. Render Section LAIN-LAIN
-        let rowsLain = '';
-        if (grupLain.length === 0) {
-            rowsLain = `<tr><td colspan="${7 + (tglList.length * 3)}" class="text-center text-muted py-2 fst-italic">Tidak ada instruksi terapi lain-lain.</td></tr>`;
-        } else {
-            grupLain.forEach((item, idx) => {
-                let cellTgl = '';
-                tglList.forEach(t => {
-                    const p = item.pemberian[t.tanggal] || { P: '', S: '', M: '' };
-                    cellTgl += `
+            // 3. Render Section LAIN-LAIN
+            let rowsLain = '';
+            if (grupLain.length === 0) {
+                rowsLain = `<tr><td colspan="${7 + (tglList.length * 3)}" class="text-center text-muted py-2 fst-italic">Tidak ada instruksi terapi lain-lain.</td></tr>`;
+            } else {
+                grupLain.forEach((item, idx) => {
+                    let cellTgl = '';
+                    tglList.forEach(t => {
+                        const p = item.pemberian[t.tanggal] || {
+                            P: '',
+                            S: '',
+                            M: ''
+                        };
+                        cellTgl += `
                         <td class="text-center align-middle font-monospace" style="font-size: 10px;">${p.P || ''}</td>
                         <td class="text-center align-middle font-monospace" style="font-size: 10px;">${p.S || ''}</td>
                         <td class="text-center align-middle font-monospace" style="font-size: 10px;">${p.M || ''}</td>
                     `;
-                });
+                    });
 
-                rowsLain += `
+                    rowsLain += `
                     <tr>
                         <td class="text-center align-middle">${idx + 1}</td>
                         <td class="align-middle"><strong>${item.nama}</strong></td>
@@ -1384,11 +1485,11 @@
                         ${cellTgl}
                     </tr>
                 `;
-            });
-        }
+                });
+            }
 
-        // Susun Tabel Keseluruhan
-        const html = `
+            // Susun Tabel Keseluruhan
+            const html = `
             <div class="border rounded p-3 bg-white shadow-sm" style="font-family: inherit;">
                 <!-- Header Dokumen Ringkas -->
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2 flex-wrap gap-2">
@@ -1507,7 +1608,7 @@
             </div>
         `;
 
-        $container.html(html);
-    }
-</script>
+            $container.html(html);
+        }
+    </script>
 @endpush

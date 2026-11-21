@@ -29,7 +29,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-12">
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
                                             id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off" disabled>
                                         <span class="input-group-text"><label for="">s/d</label></span>
@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-8 col-md-4 col-sm-12">
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
                                             id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off" disabled>
 

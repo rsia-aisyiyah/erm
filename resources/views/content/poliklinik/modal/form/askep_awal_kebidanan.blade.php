@@ -71,7 +71,7 @@
 
                         <div class="col-md-3">
                             <label for="td">TD</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="td" name="td" placeholder="mmHg" />
                                 <x-input-group-text>mmHg</x-input-group-text>
                             </x-input-group>
@@ -79,7 +79,7 @@
 
                         <div class="col-md-2">
                             <label for="nadi">Nadi</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="nadi" name="nadi" />
                                 <x-input-group-text>x/m</x-input-group-text>
                             </x-input-group>
@@ -87,7 +87,7 @@
 
                         <div class="col-md-2">
                             <label for="rr">RR</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="rr" name="rr" placeholder="x/menit" />
                                 <x-input-group-text>x/m</x-input-group-text>
                             </x-input-group>
@@ -95,7 +95,7 @@
 
                         <div class="col-md-2">
                             <label for="suhu">Suhu</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="suhu" name="suhu" placeholder="°C" />
                                 <x-input-group-text>°C</x-input-group-text>
                             </x-input-group>
@@ -108,7 +108,7 @@
 
                         <div class="col-md-2">
                             <label for="bb">BB</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="bb" name="bb" />
                                 <x-input-group-text>Kg</x-input-group-text>
                             </x-input-group>
@@ -116,7 +116,7 @@
 
                         <div class="col-md-3">
                             <label for="tb">TB</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="tb" name="tb" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
@@ -124,7 +124,7 @@
 
                         <div class="col-md-3">
                             <label for="lila">LILA</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="lila" name="lila" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
@@ -132,7 +132,7 @@
 
                         <div class="col-md-3">
                             <label for="bmi">BMI</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="bmi" name="bmi" />
                                 <x-input-group-text>Kg/M²</x-input-group-text>
                             </x-input-group>
@@ -153,7 +153,7 @@
 
                         <div class="col-md-3">
                             <label for="tfu">TFU</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="tfu" name="tfu" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
@@ -181,7 +181,7 @@
 
                         <div class="col-md-3">
                             <label for="his">Kontraksi/HIS</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="his" name="his" />
                                 <x-input-group-text>x/10`</x-input-group-text>
                             </x-input-group>
@@ -194,7 +194,7 @@
 
                         <div class="col-md-3">
                             <label for="lamanya">Lamanya</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="lamanya" name="lamanya" />
                                 <x-input-group-text>detik</x-input-group-text>
                             </x-input-group>
@@ -204,7 +204,7 @@
                             <label for="bjj">Gerak janin x/30 mnt, bjj:</label>
                             <div class="d-flex gap-2">
                                 <div>
-                                    <x-input-group class="input-group-sm">
+                                    <x-input-group>
                                         <x-input id="bjj" name="bjj" />
                                         <x-input-group-text>/m</x-input-group-text>
                                     </x-input-group>
@@ -231,7 +231,7 @@
 
                         <div class="col-md-3">
                             <label for="serviks">Pembukaan Serviks</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="serviks" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
@@ -239,7 +239,7 @@
 
                         <div class="col-md-3">
                             <label for="ketuban">Ketuban</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="ketuban" />
                                 <x-input-group-text>kep/bok</x-input-group-text>
                             </x-input-group>
@@ -374,7 +374,7 @@
 
                         <div class="col-md-2">
                             <label for="umur">Menarche</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="umur" />
                                 <x-input-group-text>th</x-input-group-text>
                             </x-input-group>
@@ -382,7 +382,7 @@
 
                         <div class="col-md-2">
                             <label for="lama">Lama Haid</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="lama" />
                                 <x-input-group-text>hari</x-input-group-text>
                             </x-input-group>
@@ -390,7 +390,7 @@
 
                         <div class="col-md-2">
                             <label for="banyaknya">Banyaknya</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="banyaknya" />
                                 <x-input-group-text>pembalut</x-input-group-text>
                             </x-input-group>
@@ -403,7 +403,7 @@
 
                         <div class="col-md-3">
                             <label for="siklus">Siklus</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="siklus" />
                                 <x-input-group-text>hari</x-input-group-text>
                             </x-input-group>
@@ -452,7 +452,7 @@
 
                         <div class="col-md-2">
                             <label for="kali">Menikah</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="kali" />
                                 <x-input-group-text>x</x-input-group-text>
                             </x-input-group>
@@ -460,7 +460,7 @@
 
                         <div class="col-md-2">
                             <label for="usia1">Usia Nikah I</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="usia1" />
                                 <x-input-group-text>th</x-input-group-text>
                             </x-input-group>
@@ -479,7 +479,7 @@
 
                         <div class="col-md-2">
                             <label for="usia2">Usia Nikah II</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="usia2" />
                                 <x-input-group-text>th</x-input-group-text>
                             </x-input-group>
@@ -498,7 +498,7 @@
 
                         <div class="col-md-2">
                             <label for="usia3">Usia Nikah III</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="usia3" />
                                 <x-input-group-text>th</x-input-group-text>
                             </x-input-group>
@@ -527,7 +527,7 @@
 
                         <div class="col-md-3">
                             <label for="usia_kehamilan">Usia Kehamilan</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="usia_kehamilan" />
                                 <x-input-group-text>mg</x-input-group-text>
                             </x-input-group>
@@ -555,7 +555,7 @@
 
                         <div class="col-md-2">
                             <label for="hidup">Hidup</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="hidup" />
                                 <x-input-group-text>anak</x-input-group-text>
                             </x-input-group>
@@ -572,7 +572,7 @@
                                 </div>
                                 <div class="col-md-6 p-1">
                                     <label for="ket_imunisasi">Jumlah TT</label>
-                                    <x-input-group class="input-group-sm">
+                                    <x-input-group>
                                         <x-input name="ket_imunisasi" />
                                         <x-input-group-text>x</x-input-group-text>
                                     </x-input-group>
@@ -627,7 +627,7 @@
 
                         <div class="col-md-2">
                             <label for="ket_kb">Lama Pemakaian</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="ket_kb" />
                                 <x-input-group-text>th</x-input-group-text>
                             </x-input-group>
@@ -707,7 +707,7 @@
 
                         <div class="col-md-2">
                             <label for="ket_kebiasaan1">Batang/Hari</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="ket_kebiasaan1" />
                                 <x-input-group-text>btg</x-input-group-text>
                             </x-input-group>
@@ -723,7 +723,7 @@
                         </div>
                         <div class="col-md-2">
                             <label for="ket_kebiasaan2">Ket.</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="ket_kebiasaan2" />
                                 <x-input-group-text>gls/Hari</x-input-group-text>
                             </x-input-group>
@@ -814,7 +814,7 @@
         const formInfoAskepAwalObgyn = $('#formInfoAskepAwalObgyn');
         const rangeSkalaNyeri = formAskepAwalObgyn.find('input[name=skala_nyeri]');
 
-        rangeSkalaNyeri.on('change', function (e) {
+        rangeSkalaNyeri.on('change', function(e) {
             formAskepAwalObgyn.find('span[id=nilai_skala_nyeri]')
                 .text(e.currentTarget.value);
         });
@@ -866,7 +866,10 @@
                 }).done((response) => {
                     let optPetugas = ''
                     if (response.data) {
-                        const { petugas, pasien } = response.data
+                        const {
+                            petugas,
+                            pasien
+                        } = response.data
                         setDataForm(formAskepAwalObgyn, response.data);
                         optPetugas = new Option(petugas?.nama, petugas?.nik, true, true);
                         formAskepAwalObgyn.find('select[name=nip]').append(optPetugas).trigger('change');
@@ -926,7 +929,7 @@
             }
         })
 
-        formAskepAwalObgyn.on('change', 'select[name=sg1]', function () {
+        formAskepAwalObgyn.on('change', 'select[name=sg1]', function() {
 
             const nilai = $(this)
                 .find('option:selected')
@@ -940,7 +943,7 @@
             hitungSkorGizi();
         });
 
-        formAskepAwalObgyn.on('change', 'input[name=sg2]', function () {
+        formAskepAwalObgyn.on('change', 'input[name=sg2]', function() {
 
             const nilai = $(this).data('nilai');
 
@@ -951,6 +954,7 @@
 
             hitungSkorGizi();
         });
+
         function hitungSkorGizi() {
 
             const nilai1 = parseInt(
@@ -971,12 +975,12 @@
         formAskepAwalObgyn.on(
             'change',
             'input[name="berjalan_a"], input[name="berjalan_b"], input[name="berjalan_c"]',
-            function () {
+            function() {
                 hitungResikoJatuh(formAskepAwalObgyn)
             }
 
         );
-        formAskepAwalObgyn.find('input[name=lapor]').on('change', function (e) {
+        formAskepAwalObgyn.find('input[name=lapor]').on('change', function(e) {
 
             if (e.currentTarget.value == 'Ya') {
                 const jam = moment().format('HH:mm:ss')
@@ -989,7 +993,7 @@
                     .val('00:00:00');
             }
         })
-        formAskepAwalObgyn.find('input[name=pada_dokter]').on('change', function (e) {
+        formAskepAwalObgyn.find('input[name=pada_dokter]').on('change', function(e) {
 
             if (e.currentTarget.value == 'Ya') {
                 const jam = moment().format('HH:mm:ss')
@@ -1015,6 +1019,7 @@
                 alert('Nomor rawat tidak ditemukan!');
             }
         }
+
         function showModalRiwayatPersalinanAskep() {
             const no_rkm_medis = formInfoAskepAwalObgyn.find('input[name="no_rkm_medis"]').val()
             $('#modalRiwayatPersalinan').modal('show')

@@ -2,7 +2,7 @@
 <div class="modal fade" id="modalBookingOperasi" tabindex="-1" aria-labelledby="modalBookingOperasiLabel" aria-hidden="true" style="z-index: 1055;">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow">
-            
+
             <div class="modal-header bg-danger text-white py-2 px-3">
                 <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-calendar-plus-fill fs-5"></i>
@@ -23,7 +23,7 @@
                         <label class="form-label small fw-bold mb-1 text-danger">
                             <i class="bi bi-person-search me-1"></i> Cari Pasien (Rawat Inap / Rawat Jalan)
                         </label>
-                        <div class="input-group input-group-sm mb-1 position-relative">
+                        <div class="input-group mb-1 position-relative">
                             <input type="text" class="form-control form-control-sm" id="booking_cari_pasien" placeholder="Ketik No. RM / Nama Pasien / No. Rawat..." autocomplete="off">
                             <button class="btn btn-danger btn-sm" type="button" id="btnCariPasienBooking">
                                 <i class="bi bi-search"></i>
@@ -37,8 +37,8 @@
                                 <div>
                                     <h6 class="fw-bold text-dark mb-0" id="lblBookingNamaPasien">-</h6>
                                     <small class="text-muted" style="font-size: 11px;">
-                                        No. RM: <b id="lblBookingNoRm" class="font-monospace text-primary">-</b> | 
-                                        No. Rawat: <b id="lblBookingNoRawat" class="font-monospace">-</b> | 
+                                        No. RM: <b id="lblBookingNoRm" class="font-monospace text-primary">-</b> |
+                                        No. Rawat: <b id="lblBookingNoRawat" class="font-monospace">-</b> |
                                         Kamar: <span id="lblBookingKamar" class="badge bg-secondary">-</span>
                                     </small>
                                 </div>
@@ -111,4 +111,3 @@
         </div>
     </div>
 </div>
-

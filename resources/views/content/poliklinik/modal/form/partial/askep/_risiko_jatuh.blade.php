@@ -59,7 +59,7 @@
 
             <div class="col-md-3">
                 <label for="ket_lapor">Jam Lapor</label>
-                <x-input-group class="input-group-sm">
+                <x-input-group>
                     <x-input name="ket_lapor" type="time" value="00:00:00" disabled />
                     <x-input-group-text>WIB</x-input-group-text>
                 </x-input-group>

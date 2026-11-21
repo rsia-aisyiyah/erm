@@ -10,7 +10,7 @@
             <div class="card-body">
                 <div class="row g-2 mb-3 align-items-center">
                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input class="form-control" id="start_date" name="start_date" value="{{ date('Y-m-d') }}" type="date"></x-input>
                             <x-input-group-text for="no_sep" label="s/d"></x-input-group-text>
                             <x-input class="form-control" id="end_date" name="end_date" value="{{ date('Y-m-d') }}" type="date"></x-input>
@@ -73,8 +73,6 @@
     @include('content.poliklinik.modal.modal_spri')
     @include('content.poliklinik.modal.modal_skrj')
     @include('content.poliklinik.modal.modal_peserta')
-
-
 @endsection
 
 

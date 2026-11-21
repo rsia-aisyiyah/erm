@@ -15,7 +15,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="">Pasien</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <input type="text" class="form-control form-control-sm" id="no_rkm_medis"
                                 name="no_rkm_medis" placeholder="" readonly>
                             <input type="text" class="form-control form-control-sm w-50" id="pasien" name="pasien"
@@ -34,14 +34,14 @@
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-12">
                         <label for="">Kamar</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input id="kamar" name="kamar" readonly class="w-50" />
                             <x-input id="lama" name="lama" readonly />
                         </x-input-group>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <label for="">Pebiayaan</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input id="penjab" name="penjab" readonly class="w-50" />
                             <x-input id="no_kartu" name="no_kartu" readonly />
                         </x-input-group>

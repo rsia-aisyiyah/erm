@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-6 col-lg-3 col-sm-12">
                 <label for="tgl_registrasi" class="form-label" style="font-size: 12px;margin-bottom:0px">Periode</label>
-                <div class="input-group input-group-sm input-daterange">
+                <div class="input-group input-daterange">
                     <input type="text" class="form-control form-control-sm tgl_awal" style="font-size:12px">
                     <div class="input-group-text">ke</div>
                     <input type="text" class="form-control form-control-sm tgl_akhir" style="font-size:12px">
@@ -197,41 +197,41 @@
                         }
                     },
                 },
-                initComplete: function () {
+                initComplete: function() {
                     // toastReload('Menampilkan data pasien UGD', 2000)
                 },
                 columnDefs: [{
-                    target: 0,
-                    width: 10,
-                }, {
-                    target: 1,
-                    width: 100,
-                }, {
-                    target: 2,
-                    width: 300,
-                },
-                {
-                    target: 3,
-                    width: 200,
-                },
-                {
-                    target: 5,
-                    width: 100,
-                },
-                {
-                    target: 4,
-                    width: 80,
-                }, {
-                    target: 6,
-                    width: 80,
+                        target: 0,
+                        width: 10,
+                    }, {
+                        target: 1,
+                        width: 100,
+                    }, {
+                        target: 2,
+                        width: 300,
+                    },
+                    {
+                        target: 3,
+                        width: 200,
+                    },
+                    {
+                        target: 5,
+                        width: 100,
+                    },
+                    {
+                        target: 4,
+                        width: 80,
+                    }, {
+                        target: 6,
+                        width: 80,
 
-                },
-                {
-                    target: 7,
-                    width: 100,
-                }
+                    },
+                    {
+                        target: 7,
+                        width: 100,
+                    }
                 ],
-                createdRow: function (row, data, dataIndex) {
+                createdRow: function(row, data, dataIndex) {
                     $(row).addClass('row-ugd')
                         .attr('data-id', data.no_rawat)
                         .attr('data-no_rkm_medis', data.no_rkm_medis)
@@ -272,73 +272,73 @@
                         });
                 },
                 columns: [{
-                    data: '',
-                    title: '',
-                    render: function (data, type, row, meta) {
-                        const pasien = row.pasien || {};
-                        const dokter = row.dokter || {};
+                        data: '',
+                        title: '',
+                        render: function(data, type, row, meta) {
+                            const pasien = row.pasien || {};
+                            const dokter = row.dokter || {};
 
-                        list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd('${row.no_rawat}')"><i class="bi bi-journal-medical text-info me-1"></i> CPPT</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')"><i class="bi bi-file-earmark-medical text-primary me-1"></i> Pemeriksaan Penunjang</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')"><i class="bi bi-hospital text-danger me-1"></i> Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAskepUgd('${row.no_rawat}')"><i class="bi bi-clipboard-pulse text-info me-1"></i> Asesmen Keperawatan UGD ${cekList(row.askep_igd)} </a></li>`;
-                        if ((pasien.jk || '').toUpperCase() === 'P') {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAskepKebidananUgd('${row.no_rawat}')"><i class="bi bi-gender-female text-danger me-1"></i> Asesmen Keperawatan Kebidanan ${cekList(row.askep_kebidanan)} </a></li>`;
-                        }
-                        if (pasien.tgl_lahir) {
-                            list += renderListsAsesmenNyeri(pasien.tgl_lahir, row.tgl_registrasi, row.no_rawat);
-                        }
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}"><i class="bi bi-exclamation-triangle text-danger me-1"></i> Hasil Kritis</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')"><i class="bi bi-upload text-secondary me-1"></i> Upload Berkas Penunjang</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')"><i class="bi bi-lungs text-danger me-1"></i> Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}"><i class="bi bi-clock-history text-secondary me-1"></i> Riwayat Pemeriksaan</a></li>`;
+                            list = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalSoapUgd('${row.no_rawat}')"><i class="bi bi-journal-medical text-info me-1"></i> CPPT</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${row.no_rawat}')"><i class="bi bi-file-earmark-medical text-primary me-1"></i> Pemeriksaan Penunjang</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAsmedUgd('${row.no_rawat}')"><i class="bi bi-hospital text-danger me-1"></i> Asesmen Medis UGD ${cekList(row.asmed_igd)} </a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAskepUgd('${row.no_rawat}')"><i class="bi bi-clipboard-pulse text-info me-1"></i> Asesmen Keperawatan UGD ${cekList(row.askep_igd)} </a></li>`;
+                            if ((pasien.jk || '').toUpperCase() === 'P') {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="modalAskepKebidananUgd('${row.no_rawat}')"><i class="bi bi-gender-female text-danger me-1"></i> Asesmen Keperawatan Kebidanan ${cekList(row.askep_kebidanan)} </a></li>`;
+                            }
+                            if (pasien.tgl_lahir) {
+                                list += renderListsAsesmenNyeri(pasien.tgl_lahir, row.tgl_registrasi, row.no_rawat);
+                            }
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="hasilKritis('${row.no_rawat}')" data-id="${row.no_rawat}"><i class="bi bi-exclamation-triangle text-danger me-1"></i> Hasil Kritis</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="detailPeriksa('${row.no_rawat}', 'Ralan')"><i class="bi bi-upload text-secondary me-1"></i> Upload Berkas Penunjang</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="skoringTb('${row.no_rawat}')"><i class="bi bi-lungs text-danger me-1"></i> Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="listRiwayatPasien('${row.no_rkm_medis}')" data-id="${row.no_rkm_medis}"><i class="bi bi-clock-history text-secondary me-1"></i> Riwayat Pemeriksaan</a></li>`;
 
-                        if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${pasien.no_peserta || ''}', '${dokter.mapping_dokter?.kd_dokter_bpjs || ''}')"><i class="bi bi-card-checklist text-primary me-1"></i> Riwayat Perawatan ICare</a></li>`;
-                        }
+                            if (row.kd_pj == 'A01' || row.kd_pj == 'A05') {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="riwayatIcare('${pasien.no_peserta || ''}', '${dokter.mapping_dokter?.kd_dokter_bpjs || ''}')"><i class="bi bi-card-checklist text-primary me-1"></i> Riwayat Perawatan ICare</a></li>`;
+                            }
 
-                        if (row.umurdaftar > 13 && row.sttsumur === 'Th') {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${row.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Dewasa</a></li>`;
-                        } else {
-                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Anak</a></li>`;
-                        }
-                        list += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPermintaanObatRanap('${row.no_rawat}')"><i class="bi bi-cart-plus text-success me-1"></i> Permintaan Obat Pasien (UGD)</a></li>`;
-                        list += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPemberianObatRanap('${row.no_rawat}')"><i class="bi bi-capsule-pill text-primary me-1"></i> Jadwal & Pemberian Obat (E-MAR)</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${row.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
-                        list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenGeriatri('${row.no_rawat}')"><i class="bi bi-person-heart text-success me-1"></i> Asesmen Awal Geriatri ${cekList(row.asesmen_geriatri)}</a></li>`;
-                        
-                        if (row.triase_pre_reg) {
-                            list += `<li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="unlinkTriasePreReg('${row.no_rawat}', '${pasien.nm_pasien || ''}')"><i class="bi bi-link-45deg me-1"></i> Lepas Tautan Triase Pre-Reg</a></li>`;
-                        }
-                        button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
-                        return button;
-                    }
-                },
-                {
-                    title: 'No. Rawat',
-                    data: 'no_rawat',
-                    render: (data, type, row, meta) => {
-                        return `<a href="javascript:void(0)" onclick="modalSoapUgd('${row.no_rawat}')" style="text-decoration: none; color: #000">${data}</a>`;
-                    }
-                },
-                {
-                    title: 'Pasien',
-                    data: 'pasien',
-                    render: (data, type, row, meta) => {
-                        if (!data && !row.pasien) {
-                            return `<div class="text-danger small">${row.no_rkm_medis} (Data Pasien Tidak Ditemukan)</div>`;
-                        }
-                        const pasien = row.pasien || data || {};
-                        const umurDaftar = hitungUmurDaftar(pasien.tgl_lahir, row.tgl_registrasi);
-                        const umur = `${umurDaftar.tahun} Th ${umurDaftar.bulan} Bln ${umurDaftar.hari} Hr`;
+                            if (row.umurdaftar > 13 && row.sttsumur === 'Th') {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${row.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Dewasa</a></li>`;
+                            } else {
+                                list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${row.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Anak</a></li>`;
+                            }
+                            list += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPermintaanObatRanap('${row.no_rawat}')"><i class="bi bi-cart-plus text-success me-1"></i> Permintaan Obat Pasien (UGD)</a></li>`;
+                            list += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPemberianObatRanap('${row.no_rawat}')"><i class="bi bi-capsule-pill text-primary me-1"></i> Jadwal & Pemberian Obat (E-MAR)</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalTransferPasien('${row.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
+                            list += `<li><a class="dropdown-item" href="javascript:void(0)" onclick="showModalAsesmenGeriatri('${row.no_rawat}')"><i class="bi bi-person-heart text-success me-1"></i> Asesmen Awal Geriatri ${cekList(row.asesmen_geriatri)}</a></li>`;
 
-                        const kamarInap = (row.kamar_inap && Object.keys(row.kamar_inap).length) ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
+                            if (row.triase_pre_reg) {
+                                list += `<li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="unlinkTriasePreReg('${row.no_rawat}', '${pasien.nm_pasien || ''}')"><i class="bi bi-link-45deg me-1"></i> Lepas Tautan Triase Pre-Reg</a></li>`;
+                            }
+                            button = '<div class="dropdown-center"><button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:11px"><i class="bi bi-list-task"></i></button><ul class="dropdown-menu" style="font-size:12px">' + list + '</ul></div>'
+                            return button;
+                        }
+                    },
+                    {
+                        title: 'No. Rawat',
+                        data: 'no_rawat',
+                        render: (data, type, row, meta) => {
+                            return `<a href="javascript:void(0)" onclick="modalSoapUgd('${row.no_rawat}')" style="text-decoration: none; color: #000">${data}</a>`;
+                        }
+                    },
+                    {
+                        title: 'Pasien',
+                        data: 'pasien',
+                        render: (data, type, row, meta) => {
+                            if (!data && !row.pasien) {
+                                return `<div class="text-danger small">${row.no_rkm_medis} (Data Pasien Tidak Ditemukan)</div>`;
+                            }
+                            const pasien = row.pasien || data || {};
+                            const umurDaftar = hitungUmurDaftar(pasien.tgl_lahir, row.tgl_registrasi);
+                            const umur = `${umurDaftar.tahun} Th ${umurDaftar.bulan} Bln ${umurDaftar.hari} Hr`;
 
-                        // Tentukan warna berdasarkan jenis kelamin
-                        const badgeColor = pasien.jk == 'L' ? 'bg-info' : '';
-                        const badgeStyle = pasien.jk == 'P' ? 'style="background-color: #ff6aaf;"' : '';
+                            const kamarInap = (row.kamar_inap && Object.keys(row.kamar_inap).length) ? `<button title="Pindah Kamar" class="btn btn-sm btn-success rounded-circle" type="button"><i class="bi bi-box-arrow-right"></i></button>` : '';
 
-                        return `<div class="d-flex align-items-center gap-2">
+                            // Tentukan warna berdasarkan jenis kelamin
+                            const badgeColor = pasien.jk == 'L' ? 'bg-info' : '';
+                            const badgeStyle = pasien.jk == 'P' ? 'style="background-color: #ff6aaf;"' : '';
+
+                            return `<div class="d-flex align-items-center gap-2">
                                     <span class="badge ${badgeColor} rounded-pill" ${badgeStyle}>
                                         ${pasien.jk == 'L' ? '<i class="bi bi-gender-male"></i>' : '<i class="bi bi-gender-female"></i>'}
                                     </span>
@@ -347,112 +347,112 @@
                                         <br/><small class="text-muted">${umur}</small>
                                     </p>
                                 </div>`;
-                    }
-                },
-                {
-                    title: 'Dokter',
-                    data: 'dokter',
-                    render: (data, type, row, meta) => {
-                        return (row.dokter && row.dokter.nm_dokter) ? row.dokter.nm_dokter : (data && data.nm_dokter ? data.nm_dokter : (row.kd_dokter || '-'));
-                    }
-                },
-                {
-                    title: 'Tgl. Masuk',
-                    data: 'tgl_registrasi',
-                    render: (data, type, row, meta) => {
-                        return `${moment(data).format('DD-MM-YYYY')} ${row.jam_reg}`;
-                    }
-                },
-
-                {
-                    title: 'Dx. Awal',
-                    data: 'asmed_igd',
-                    render: (data, type, row, meta) => {
-                        if (data == null) {
-                            return '-'
                         }
-                        return data?.diagnosis;
-
-                    }
-                },
-                {
-                    title: 'Asesmen Medis',
-                    data: 'asmed_igd',
-                    render: (data, type, row, meta) => {
-                        if (data == null) {
-                            return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
-                        }
-                        return moment(data.tanggal).format('DD-MM-YYYY HH:mm:ss');
-                    }
-                },
-                {
-                    title: 'Pembiayaan',
-                    data: 'penjab',
-                    render: (data, type, row, meta) => {
-                        let penjab = '';
-                        if (data.kd_pj == 'A03') {
-                            penjab = `<span class="text-danger"><b>${row.penjab.png_jawab}</b></span>`
-                        } else if (data.kd_pj == 'A01' || row.penjab.kd_pj == 'A05') {
-                            penjab = `<span class="text-success"><b>${row.penjab.png_jawab} ${row.sep?.no_sep ? '<i class="fa fa-check text-success"></i>' : ''}</b></span>`
-                        }
-
-                        return penjab;
-
-                    }
-                },
-                {
-                    title: 'Status',
-                    data: 'status_lanjut',
-                    render: (data, type, row, meta) => {
-                        if (data === 'Ralan') {
-                            return `<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rawat Jalan"><i class="bi bi-person-wheelchair"></i></button>`
-                        } else {
-                            return `<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Default tooltip"><i class="bi bi-house-add"></i></button>`
-                        }
-                    }
-                },
-                {
-                    title: 'Catatan',
-                    data: 'reg_periksa.no_rkm_medis',
-                    render: function (data) {
-                        return `<span class="" id="riwayat_lab_${data}"></span>`
                     },
-                    name: 'no_rkm_medis',
-                },
-                {
-                    title: 'Pindah Kamar',
-                    data: '',
-                    render: (data, type, row, meta) => {
-                        return row.kamar_pulang ? row.kamar_pulang.kamar.bangsal.nm_bangsal : '';
-                    }
-                }, {
-                    title: 'Triase',
-                    data: '',
-                    render: (data, type, row, meta) => {
-                        let ats = '';
-                        let atsClass = '';
-                        if (row.triase_skala1.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '1')) {
-                            ats = `ATS I`
-                            atsClass = 'bg-danger text-white';
-                        } else if (row.triase_skala2.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '2')) {
-                            ats = `ATS II`
-                            atsClass = 'bg-warning text-dark';
-                        } else if (row.triase_skala3.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '3')) {
-                            ats = `ATS III`
-                            atsClass = 'bg-success text-white';
-                        } else if (row.triase_skala4.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '4')) {
-                            ats = `ATS IV`
-                            atsClass = 'bg-primary text-white';
-                        } else if (row.triase_skala5.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '5')) {
-                            ats = `ATS V`
-                            atsClass = 'bg-secondary text-white';
+                    {
+                        title: 'Dokter',
+                        data: 'dokter',
+                        render: (data, type, row, meta) => {
+                            return (row.dokter && row.dokter.nm_dokter) ? row.dokter.nm_dokter : (data && data.nm_dokter ? data.nm_dokter : (row.kd_dokter || '-'));
                         }
-                        
-                        let preBadge = row.triase_pre_reg ? `<div class="mt-1"><span class="badge bg-dark" style="font-size:9px;" title="Pre-Reg Linked: ${row.triase_pre_reg.id_triase}"><i class="bi bi-link-45deg"></i> Pre-Reg</span></div>` : '';
+                    },
+                    {
+                        title: 'Tgl. Masuk',
+                        data: 'tgl_registrasi',
+                        render: (data, type, row, meta) => {
+                            return `${moment(data).format('DD-MM-YYYY')} ${row.jam_reg}`;
+                        }
+                    },
 
-                        return `<div class="${atsClass} p-1 text-center" style="font-family:monospace">${ats}${preBadge}</div>`
+                    {
+                        title: 'Dx. Awal',
+                        data: 'asmed_igd',
+                        render: (data, type, row, meta) => {
+                            if (data == null) {
+                                return '-'
+                            }
+                            return data?.diagnosis;
+
+                        }
+                    },
+                    {
+                        title: 'Asesmen Medis',
+                        data: 'asmed_igd',
+                        render: (data, type, row, meta) => {
+                            if (data == null) {
+                                return '<span class="text-danger"><b>Belum Ada Asmed</b></span>'
+                            }
+                            return moment(data.tanggal).format('DD-MM-YYYY HH:mm:ss');
+                        }
+                    },
+                    {
+                        title: 'Pembiayaan',
+                        data: 'penjab',
+                        render: (data, type, row, meta) => {
+                            let penjab = '';
+                            if (data.kd_pj == 'A03') {
+                                penjab = `<span class="text-danger"><b>${row.penjab.png_jawab}</b></span>`
+                            } else if (data.kd_pj == 'A01' || row.penjab.kd_pj == 'A05') {
+                                penjab = `<span class="text-success"><b>${row.penjab.png_jawab} ${row.sep?.no_sep ? '<i class="fa fa-check text-success"></i>' : ''}</b></span>`
+                            }
+
+                            return penjab;
+
+                        }
+                    },
+                    {
+                        title: 'Status',
+                        data: 'status_lanjut',
+                        render: (data, type, row, meta) => {
+                            if (data === 'Ralan') {
+                                return `<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rawat Jalan"><i class="bi bi-person-wheelchair"></i></button>`
+                            } else {
+                                return `<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Default tooltip"><i class="bi bi-house-add"></i></button>`
+                            }
+                        }
+                    },
+                    {
+                        title: 'Catatan',
+                        data: 'reg_periksa.no_rkm_medis',
+                        render: function(data) {
+                            return `<span class="" id="riwayat_lab_${data}"></span>`
+                        },
+                        name: 'no_rkm_medis',
+                    },
+                    {
+                        title: 'Pindah Kamar',
+                        data: '',
+                        render: (data, type, row, meta) => {
+                            return row.kamar_pulang ? row.kamar_pulang.kamar.bangsal.nm_bangsal : '';
+                        }
+                    }, {
+                        title: 'Triase',
+                        data: '',
+                        render: (data, type, row, meta) => {
+                            let ats = '';
+                            let atsClass = '';
+                            if (row.triase_skala1.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '1')) {
+                                ats = `ATS I`
+                                atsClass = 'bg-danger text-white';
+                            } else if (row.triase_skala2.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '2')) {
+                                ats = `ATS II`
+                                atsClass = 'bg-warning text-dark';
+                            } else if (row.triase_skala3.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '3')) {
+                                ats = `ATS III`
+                                atsClass = 'bg-success text-white';
+                            } else if (row.triase_skala4.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '4')) {
+                                ats = `ATS IV`
+                                atsClass = 'bg-primary text-white';
+                            } else if (row.triase_skala5.length > 0 || (row.triase_pre_reg && row.triase_pre_reg.skala_triase == '5')) {
+                                ats = `ATS V`
+                                atsClass = 'bg-secondary text-white';
+                            }
+
+                            let preBadge = row.triase_pre_reg ? `<div class="mt-1"><span class="badge bg-dark" style="font-size:9px;" title="Pre-Reg Linked: ${row.triase_pre_reg.id_triase}"><i class="bi bi-link-45deg"></i> Pre-Reg</span></div>` : '';
+
+                            return `<div class="${atsClass} p-1 text-center" style="font-family:monospace">${ats}${preBadge}</div>`
+                        }
                     }
-                }
 
                 ],
                 "language": {
@@ -652,10 +652,13 @@
                 ordering: false,
                 ajax: {
                     url: '/erm/triase/get/indikator',
-                    data: { no_rawat: '' }
+                    data: {
+                        no_rawat: ''
+                    }
                 },
-                columns: [
-                    { data: 'nama_pemeriksaan' },
+                columns: [{
+                        data: 'nama_pemeriksaan'
+                    },
                     {
                         data: 'skala1',
                         render: function(data) {
@@ -820,14 +823,17 @@
             }
 
             let formData = form.serializeArray();
-            formData.push({ name: 'detail_skala_json', value: JSON.stringify(detailSkalaJson) });
+            formData.push({
+                name: 'detail_skala_json',
+                value: JSON.stringify(detailSkalaJson)
+            });
 
             $('#btnSimpanTriasePreReg').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...');
             $.ajax({
                 url: '/erm/triase/prereg/simpan',
                 type: 'POST',
                 data: $.param(formData),
-                success: function (res) {
+                success: function(res) {
                     $('#btnSimpanTriasePreReg').prop('disabled', false).html('<i class="bi bi-check-lg me-1"></i> Simpan Triase Pre-Registrasi');
                     if (res.status === 'success') {
                         alertSuccessAjax(res.message);
@@ -842,7 +848,7 @@
                         alertErrorAjax(res.message);
                     }
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     $('#btnSimpanTriasePreReg').prop('disabled', false).html('<i class="bi bi-check-lg me-1"></i> Simpan Triase Pre-Registrasi');
                     alertErrorAjax(xhr.responseJSON?.message || 'Gagal menyimpan Triase Pre-Registrasi');
                 }
@@ -851,7 +857,9 @@
 
         function loadRiwayatTriasePreReg() {
             const search = $('#searchTriasePreRegList').val() || '';
-            $.get('/erm/triase/prereg/list', { search: search }).done((res) => {
+            $.get('/erm/triase/prereg/list', {
+                search: search
+            }).done((res) => {
                 let html = '';
                 if (res.status === 'success' && res.data && res.data.length > 0) {
                     res.data.forEach((item) => {
@@ -970,7 +978,7 @@
                             _token: "{{ csrf_token() }}",
                             id_triase: id_triase
                         },
-                        success: function (res) {
+                        success: function(res) {
                             if (res.status === 'success') {
                                 alertSuccessAjax(res.message);
                                 loadRiwayatTriasePreReg();
@@ -979,7 +987,7 @@
                                 alertErrorAjax(res.message);
                             }
                         },
-                        error: function (xhr) {
+                        error: function(xhr) {
                             alertErrorAjax(xhr.responseJSON?.message || 'Gagal menghapus Triase');
                         }
                     });
@@ -1006,7 +1014,9 @@
 
         function loadUnlinkedTriaseList() {
             const search = $('#searchUnlinkedTriase').val() || '';
-            $.get('/erm/triase/prereg/unlinked', { search: search }).done((res) => {
+            $.get('/erm/triase/prereg/unlinked', {
+                search: search
+            }).done((res) => {
                 let html = '';
                 if (res.status === 'success' && res.data && res.data.length > 0) {
                     res.data.forEach((item) => {
@@ -1073,7 +1083,7 @@
                     id_triase: selectedIdTriasePreReg,
                     no_rawat: targetLinkNoRawat
                 },
-                success: function (res) {
+                success: function(res) {
                     $('#btnEksekusiLinkTriase').prop('disabled', false).html('<i class="bi bi-link-45deg me-1"></i> Tautkan Data Triase Ini');
                     if (res.status === 'success') {
                         alertSuccessAjax(res.message);
@@ -1092,7 +1102,7 @@
                         alertErrorAjax(res.message);
                     }
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     $('#btnEksekusiLinkTriase').prop('disabled', false).html('<i class="bi bi-link-45deg me-1"></i> Tautkan Data Triase Ini');
                     alertErrorAjax(xhr.responseJSON?.message || 'Gagal menautkan Triase');
                 }
@@ -1118,7 +1128,7 @@
                             _token: "{{ csrf_token() }}",
                             no_rawat: no_rawat
                         },
-                        success: function (res) {
+                        success: function(res) {
                             if (res.status === 'success') {
                                 alertSuccessAjax(res.message);
                                 $('#tb_ugd').DataTable().destroy();
@@ -1128,7 +1138,7 @@
                                 alertErrorAjax(res.message);
                             }
                         },
-                        error: function (xhr) {
+                        error: function(xhr) {
                             alertErrorAjax(xhr.responseJSON?.message || 'Gagal melepaskan tautan Triase');
                         }
                     });

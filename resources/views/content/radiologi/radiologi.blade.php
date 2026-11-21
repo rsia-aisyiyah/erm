@@ -10,15 +10,15 @@
                         <div class="row">
                             <div class="col-md-6 col-lg-3 col-sm-12">
                                 <label for="tgl_registrasi" class="form-label"
-                                       style="font-size: 12px;margin-bottom:0px">Periode</label>
-                                <div class="input-group input-group-sm input-daterange">
+                                    style="font-size: 12px;margin-bottom:0px">Periode</label>
+                                <div class="input-group input-daterange">
                                     <input type="text" class="form-control form-control-sm tgl_awal"
-                                           style="font-size:12px">
+                                        style="font-size:12px">
                                     <div class="input-group-text">ke</div>
                                     <input type="text" class="form-control form-control-sm tgl_akhir"
-                                           style="font-size:12px">
+                                        style="font-size:12px">
                                     <button class="btn btn-success btn-sm" type="button" id="btnFilterPeriode"><i
-                                                class="bi bi-search"></i></button>
+                                            class="bi bi-search"></i></button>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3 col-sm-12">
@@ -53,7 +53,7 @@
 
 
     <div class="modal fade" id="modalCetakHasilRadiologi" tabindex="-1" aria-labelledby="modalCetakHasilRadiologi"
-         aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -66,7 +66,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" style="font-size:12px" data-bs-dismiss="modal">
                         <i
-                                class="bi bi-x-circle"></i> Keluar
+                            class="bi bi-x-circle"></i> Keluar
                     </button>
                 </div>
             </div>
@@ -186,19 +186,19 @@
 
                         }
                     }
-                },{
-                    'targets' : [0, 6, 7,8 ,9],
-                    'orderable' : false
+                }, {
+                    'targets': [0, 6, 7, 8, 9],
+                    'orderable': false
                 }],
                 columns: [{
-                    data: 'reg_periksa',
-                    render: (data, type, row, meta) => {
-                        let no_rkm_medis = data.no_rkm_medis
-                        let listPrint = '';
-                        if (row.hasil_radiologi.length) {
-                            listPrint = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>`;
-                        }
-                        return `
+                        data: 'reg_periksa',
+                        render: (data, type, row, meta) => {
+                            let no_rkm_medis = data.no_rkm_medis
+                            let listPrint = '';
+                            if (row.hasil_radiologi.length) {
+                                listPrint = `<li><a class="dropdown-item" href="javascript:void(0)" onclick="printPeriksa('${data.no_rawat}', '${row.tgl_hasil}', '${row.jam_hasil}')" >Cetak Hasil</a></li>`;
+                            }
+                            return `
                                 <div class="btn-group">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bi bi-list-ul"></i>
@@ -209,8 +209,8 @@
                                     </ul>
                                 </div>
                                 `;
+                        },
                     },
-                },
                     {
                         data: 'hasil_radiologi',
                         title: 'No. Permintaan',
@@ -226,7 +226,8 @@
                                 cek = '';
                             }
                             return `${cek} ${row.noorder}`
-                        }, name:'noorder'
+                        },
+                        name: 'noorder'
                     },
                     {
                         title: 'No. Rawat',
@@ -234,7 +235,7 @@
                         render: (data, type, row, meta) => {
                             return `${data}`;
                         },
-                        name:'no_rawat'
+                        name: 'no_rawat'
                     },
                     {
                         data: 'reg_periksa',
@@ -242,14 +243,16 @@
                         render: (data, type, row, meta) => {
 
                             return `${data.pasien.nm_pasien} (${data.no_rkm_medis})`
-                        }, name:''
+                        },
+                        name: ''
                     },
                     {
                         title: 'Tgl. Permintaan',
                         data: 'tgl_permintaan',
                         render: (data, type, row, meta) => {
                             return `${splitTanggal(data)} ${row.jam_permintaan}`
-                        }, name:'tgl_permintaan'
+                        },
+                        name: 'tgl_permintaan'
                     },
                     {
                         title: 'Tgl. Sampel',
@@ -259,7 +262,8 @@
                                 return `${splitTanggal(data)} ${row.jam_sampel}`
                             }
                             return '-'
-                        }, name:'tgl_sampel'
+                        },
+                        name: 'tgl_sampel'
                     },
                     {
                         title: 'Dr. Perujuk',

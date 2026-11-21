@@ -1,17 +1,17 @@
 <div class="row gy-2">
-    {{--                                    <div class="col-lg-4 col-sm-12 col-md-12">--}}
-    {{--                                        <x-input-group class="input-group-sm">--}}
-    {{--                                            <x-input name="tgl_pertama" id="tgl_pertama" type="date"--}}
-    {{--                                                     value="{{date('Y-m-d')}}"></x-input>--}}
-    {{--                                            <x-input-group-text>s.d</x-input-group-text>--}}
-    {{--                                            <x-input name="tgl_kedua" id="tgl_kedua" type="date"--}}
-    {{--                                                     value="{{date('Y-m-d')}}"></x-input>--}}
-    {{--                                            <button class="btn btn-primary btn-sm" type="button"--}}
-    {{--                                                    id="btnFilterTindakanDokterRanap">--}}
-    {{--                                                <i class="bi bi-search"></i>--}}
-    {{--                                            </button>--}}
-    {{--                                        </x-input-group>--}}
-    {{--                                    </div>--}}
+    {{--                                    <div class="col-lg-4 col-sm-12 col-md-12"> --}}
+    {{--                                        <x-input-group> --}}
+    {{--                                            <x-input name="tgl_pertama" id="tgl_pertama" type="date" --}}
+    {{--                                                     value="{{date('Y-m-d')}}"></x-input> --}}
+    {{--                                            <x-input-group-text>s.d</x-input-group-text> --}}
+    {{--                                            <x-input name="tgl_kedua" id="tgl_kedua" type="date" --}}
+    {{--                                                     value="{{date('Y-m-d')}}"></x-input> --}}
+    {{--                                            <button class="btn btn-primary btn-sm" type="button" --}}
+    {{--                                                    id="btnFilterTindakanDokterRanap"> --}}
+    {{--                                                <i class="bi bi-search"></i> --}}
+    {{--                                            </button> --}}
+    {{--                                        </x-input-group> --}}
+    {{--                                    </div> --}}
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -19,16 +19,16 @@
             </div>
             <div class="card-body overflow-auto" style="max-height: 15vh">
                 <table class="table table-sm table-bordered table-striped"
-                       id="tbTindakanDilakukanDokterRanap">
+                    id="tbTindakanDilakukanDokterRanap">
                     <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Tgl. Tindakan</th>
-                        <th>Jam</th>
-                        <th>Tindakan</th>
-                        <th>Oleh</th>
-                        <th>Biaya</th>
-                    </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Tgl. Tindakan</th>
+                            <th>Jam</th>
+                            <th>Tindakan</th>
+                            <th>Oleh</th>
+                            <th>Biaya</th>
+                        </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -36,8 +36,8 @@
             </div>
             <div class="card-footer">
                 <button type="button" class="btn btn-danger btn-sm"
-                        id="btnHapusTindakanDokterRanap"
-                        onclick="deleteTindakanDokterRanap()">
+                    id="btnHapusTindakanDokterRanap"
+                    onclick="deleteTindakanDokterRanap()">
                     <i class="bi bi-trash"></i> Hapus
                 </button>
             </div>
@@ -51,16 +51,16 @@
             </div>
             <div class="card-body overflow-auto" style="max-height: 15vh">
                 <table class="table table-sm table-bordered table-striped"
-                       id="tbTindakanPerawatRanap">
+                    id="tbTindakanPerawatRanap">
                     <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Tgl. Tindakan</th>
-                        <th>Jam</th>
-                        <th>Tindakan</th>
-                        <th>Oleh</th>
-                        <th>Biaya</th>
-                    </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Tgl. Tindakan</th>
+                            <th>Jam</th>
+                            <th>Tindakan</th>
+                            <th>Oleh</th>
+                            <th>Biaya</th>
+                        </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -68,8 +68,8 @@
             </div>
             <div class="card-footer">
                 <button type="button" class="btn btn-danger btn-sm"
-                        id="btnHapusTindakanPerawatRanap"
-                        onclick="deleteTindakanPerawatRanap()">
+                    id="btnHapusTindakanPerawatRanap"
+                    onclick="deleteTindakanPerawatRanap()">
                     <i class="bi bi-trash"></i> Hapus
                 </button>
             </div>
@@ -82,16 +82,16 @@
             </div>
             <div class="card-body overflow-auto" style="max-height: 30vh">
                 <table class="table table-sm table-bordered table-striped"
-                       id="tbTindakanDokterPerawatRanap">
+                    id="tbTindakanDokterPerawatRanap">
                     <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Tgl. Tindakan</th>
-                        <th>Jam</th>
-                        <th>Tindakan</th>
-                        <th>Oleh</th>
-                        <th>Biaya</th>
-                    </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Tgl. Tindakan</th>
+                            <th>Jam</th>
+                            <th>Tindakan</th>
+                            <th>Oleh</th>
+                            <th>Biaya</th>
+                        </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -99,8 +99,8 @@
             </div>
             <div class="card-footer">
                 <button type="button" class="btn btn-danger btn-sm"
-                        id="btnHapusTindakanDokterPerawatRanap"
-                        onclick="deleteTindakanDokterPerawatRanap()">
+                    id="btnHapusTindakanDokterPerawatRanap"
+                    onclick="deleteTindakanDokterPerawatRanap()">
                     <i class="bi bi-trash"></i> Hapus
                 </button>
             </div>
@@ -197,6 +197,5 @@
             })
 
         }
-
     </script>
 @endpush

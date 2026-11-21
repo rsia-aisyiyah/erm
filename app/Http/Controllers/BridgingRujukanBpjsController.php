@@ -24,6 +24,7 @@ class BridgingRujukanBpjsController extends Controller
     }
     function create(Request $request)
     {
+        
         $data = $request->all();
         try {
             $rujukan = $this->rujukan->create($data);

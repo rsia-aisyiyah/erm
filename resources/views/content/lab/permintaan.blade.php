@@ -6,7 +6,7 @@
             <div class="row gy-2">
                 <div class="col-lg-3 col-md-12 col-md-12">
                     <label class="form-label">Tgl. Pemeriksaan</label>
-                    <x-input-group class="input-group-sm">
+                    <x-input-group>
                         <x-input id="tgl_pertama" name="tgl_pertama" class="filterTanggal" />
                         <x-input-group-text>s.d.</x-input-group-text>
                         <x-input id="tgl_kedua" name="tgl_kedua" class="filterTanggal" />
@@ -208,7 +208,7 @@
             dropdownParent: modalHasilPermintaanLab,
             delay: 0,
             scrollAfterSelect: false,
-            initSelection: function (element, callback) { },
+            initSelection: function(element, callback) {},
             ajax: {
                 url: `${url}/dokter/cari`,
                 dataType: 'json',
@@ -218,9 +218,9 @@
                     }
                     return query
                 },
-                processResults: function (data) {
+                processResults: function(data) {
                     return {
-                        results: $.map(data, function (item) {
+                        results: $.map(data, function(item) {
                             return {
                                 text: item.nm_dokter,
                                 id: item.kd_dokter
@@ -240,7 +240,7 @@
                 nowrap: true,
                 ajax: {
                     url: '/erm/lab/permintaan/table',
-                    data: function (d) {
+                    data: function(d) {
                         d.tgl_pertama = $('#tgl_pertama').val();
                         d.tgl_kedua = $('#tgl_kedua').val();
                     }
@@ -274,89 +274,89 @@
                     width: 90,
                 }],
                 columns: [{
-                    title: 'No. Order',
-                    data: 'noorder',
-                    name: 'noorder',
-                    render: (data, type, row, meta) => {
-                        return `<a href="javascript:void(0)" style="text-decoration: none;color:#000000" onclick="showHasilPemeriksaanLab('${row.no_rawat}','${data}')">${data}</a>`
-                    }
-                },
-                {
-                    title: 'Nama',
-                    data: 'reg_periksa',
-                    name: 'no_rawat',
-                    render: (data, type, row, meta) => {
-                        return `${data.no_rawat} <br/><strong>${data.no_rkm_medis} - ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})</strong>`
-                    }
-                },
-                {
-                    title: 'Diagnosis',
-                    data: 'diagnosa_klinis',
-                    name: 'diagnosa_klinis',
-                },
-                {
-                    title: 'Informasi',
-                    data: 'informasi_tambahan',
-                    name: 'informasi_tambahan',
-                },
+                        title: 'No. Order',
+                        data: 'noorder',
+                        name: 'noorder',
+                        render: (data, type, row, meta) => {
+                            return `<a href="javascript:void(0)" style="text-decoration: none;color:#000000" onclick="showHasilPemeriksaanLab('${row.no_rawat}','${data}')">${data}</a>`
+                        }
+                    },
+                    {
+                        title: 'Nama',
+                        data: 'reg_periksa',
+                        name: 'no_rawat',
+                        render: (data, type, row, meta) => {
+                            return `${data.no_rawat} <br/><strong>${data.no_rkm_medis} - ${data.pasien.nm_pasien} (${data.umurdaftar} ${data.sttsumur})</strong>`
+                        }
+                    },
+                    {
+                        title: 'Diagnosis',
+                        data: 'diagnosa_klinis',
+                        name: 'diagnosa_klinis',
+                    },
+                    {
+                        title: 'Informasi',
+                        data: 'informasi_tambahan',
+                        name: 'informasi_tambahan',
+                    },
 
-                {
-                    title: 'Tgl. Permintaan',
-                    data: 'tgl_permintaan',
-                    render: (data, type, row, meta) => {
-                        return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_permintaan}`
-                    }
-                }, {
-                    title: 'Tgl. Sampling',
-                    data: 'tgl_sampel',
-                    render: (data, type, row, meta) => {
-                        if (data === '0000-00-00') {
-                            return '-';
+                    {
+                        title: 'Tgl. Permintaan',
+                        data: 'tgl_permintaan',
+                        render: (data, type, row, meta) => {
+                            return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_permintaan}`
                         }
-                        return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_sampel}`
-                    }
-                },
-                {
-                    title: 'Tgl. Hasil',
-                    data: 'tgl_hasil',
-                    render: (data, type, row, meta) => {
-                        if (data === '0000-00-00') {
-                            return '-';
+                    }, {
+                        title: 'Tgl. Sampling',
+                        data: 'tgl_sampel',
+                        render: (data, type, row, meta) => {
+                            if (data === '0000-00-00') {
+                                return '-';
+                            }
+                            return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_sampel}`
                         }
-                        return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_hasil}`
-                    }
-                },
-                {
-                    title: 'Dokter Perujuk',
-                    data: 'dokter.nm_dokter',
-                    name: 'dokter_perujuk',
-                },
-                {
-                    title: 'Pembiayaan',
-                    data: 'reg_periksa.penjab',
-                    orderable: false,
-                    // name: 'reg_periksa.penjab',
-                    render: (data, type, row, meta) => {
-                        if (data.kd_pj == 'A01' || data.kd_pj == 'A05') {
-                            return `<strong class="text-success">${data.png_jawab}</strong>`
-                        } else {
-                            return `<strong class="text-danger">${data.png_jawab}</strong>`
+                    },
+                    {
+                        title: 'Tgl. Hasil',
+                        data: 'tgl_hasil',
+                        render: (data, type, row, meta) => {
+                            if (data === '0000-00-00') {
+                                return '-';
+                            }
+                            return `${moment(data).format('DD-MM-YYYY')} <br/>${row.jam_hasil}`
                         }
-                    }
-                },
-                {
-                    title: 'Status',
-                    data: 'status',
-                    name: 'status',
-                    orderable: false,
-                    render: (data, type, row, meta) => {
-                        if (data === 'ralan') {
-                            return '<button type="button" class="btn btn-warning btn-sm ">Rawat Jalan</button>';
-                        } else {
-                            return '<button type="button" class="btn btn-danger btn-sm">Rawat Inap</button>';
+                    },
+                    {
+                        title: 'Dokter Perujuk',
+                        data: 'dokter.nm_dokter',
+                        name: 'dokter_perujuk',
+                    },
+                    {
+                        title: 'Pembiayaan',
+                        data: 'reg_periksa.penjab',
+                        orderable: false,
+                        // name: 'reg_periksa.penjab',
+                        render: (data, type, row, meta) => {
+                            if (data.kd_pj == 'A01' || data.kd_pj == 'A05') {
+                                return `<strong class="text-success">${data.png_jawab}</strong>`
+                            } else {
+                                return `<strong class="text-danger">${data.png_jawab}</strong>`
+                            }
                         }
-                    }
-                },
+                    },
+                    {
+                        title: 'Status',
+                        data: 'status',
+                        name: 'status',
+                        orderable: false,
+                        render: (data, type, row, meta) => {
+                            if (data === 'ralan') {
+                                return '<button type="button" class="btn btn-warning btn-sm ">Rawat Jalan</button>';
+                            } else {
+                                return '<button type="button" class="btn btn-danger btn-sm">Rawat Inap</button>';
+                            }
+                        }
+                    },
 
                 ],
             })
@@ -393,8 +393,8 @@
                     formHasilPermintaanLab.find('#dokter').val(rawat.dokter.nm_dokter);
                     formHasilPermintaanLab.find('#penjab').val(rawat.penjab.png_jawab);
                     const kamar = rawat.kamar_inap.filter((item) => {
-                        return item.stts_pulang !== 'Pindah Kamar'
-                    })
+                            return item.stts_pulang !== 'Pindah Kamar'
+                        })
                         .map((item) => {
                             return item.kamar.bangsal.nm_bangsal
                         })
@@ -515,7 +515,7 @@
                     }
                 },
                 dataType: 'json',
-                processResults: function (data) {
+                processResults: function(data) {
                     return {
                         results: data.map((item) => {
                             return {

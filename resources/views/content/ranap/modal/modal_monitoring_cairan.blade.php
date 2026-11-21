@@ -51,21 +51,21 @@
                     <div class="row gy-2 sectionMonitoring">
                         <div class="col-lg-2 col-md-6 col-sm-12">
                             <label for="suhu_tubuh">Suhu Tubuh <a href="javascript:void(0);" id="searchPemeriksaanRanap"><i class="bi bi-search"></i></a></label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="suhu_tubuh" name="suhu_tubuh" />
                                 <x-input-group-text label="°C" />
                             </x-input-group>
                         </div>
                         <div class="col-lg-2 col-md-6 col-sm-12">
                             <label for="nadi">Nadi</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="nadi" name="nadi" />
                                 <x-input-group-text label="x/mnt" />
                             </x-input-group>
                         </div>
                         <div class="col-lg-2 col-md-6 col-sm-12">
                             <label for="tensi">Tekanan Darah</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="tensi" name="tensi" />
                                 <x-input-group-text label="mmHg" />
                             </x-input-group>

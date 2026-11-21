@@ -55,14 +55,14 @@
                     <div class="row gy-2 sectionMonitoring">
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label for="petugas" class="form-label">Petugas</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="nip" name="nip" value="{{ session()->get('pegawai')->nik }}" readonly />
                                 <x-input id="petugas" name="petugas" value="{{ session()->get('pegawai')->nama }}" class="w-25" readonly />
                             </x-input-group>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-12">
                             <label for="tanggal" class="form-label">Tanggal</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input-group-text>
                                     <i class="bi bi-calendar3"></i>
                                 </x-input-group-text>

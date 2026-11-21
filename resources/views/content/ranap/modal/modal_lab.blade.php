@@ -15,7 +15,7 @@
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <label for="">Pasien</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <input type="text" class="form-control form-control-sm" id="no_rkm_medis"
                                 name="no_rkm_medis" placeholder="" readonly>
                             <input type="text" class="form-control form-control-sm w-50" id="pasien" name="pasien"
@@ -220,7 +220,9 @@
         function setRiwayatRadiologiPasien(no_rkm_medis) {
             const listRiwayatRadiologiPasien = $('#listRiwayatRadiologiPasien')
             $.get(`/erm/radiologi/riwayat/${no_rkm_medis}`).done((response) => {
-                const { data } = response;
+                const {
+                    data
+                } = response;
                 listRiwayatRadiologiPasien.empty()
                 if (data.length === 0) {
                     return false;
@@ -247,7 +249,7 @@
                             </li>`
                 }).join('')
 
-                listRiwayatRadiologiPasien.on('click', 'li', function () {
+                listRiwayatRadiologiPasien.on('click', 'li', function() {
                     listRiwayatRadiologiPasien.find('li').removeClass('active');
                     $(this).addClass('active');
                 });
@@ -259,10 +261,13 @@
             })
 
         }
+
         function setRiwayatLabPasien(no_rkm_medis) {
             const listRiwayatLabPasien = $('#listRiwayatLabPasien')
             $.get(`/erm/lab/riwayat/${no_rkm_medis}`).done((response) => {
-                const { data } = response;
+                const {
+                    data
+                } = response;
                 listRiwayatLabPasien.empty()
                 if (data.length === 0) {
                     return false;
@@ -288,7 +293,7 @@
                                     </li>`
                 }).join('')
 
-                listRiwayatLabPasien.on('click', 'li', function () {
+                listRiwayatLabPasien.on('click', 'li', function() {
                     listRiwayatLabPasien.find('li').removeClass('active');
                     $(this).addClass('active');
                 });
@@ -383,7 +388,7 @@
         }
 
 
-        $('#modalLabRanap').on('hidden.bs.modal', function () {
+        $('#modalLabRanap').on('hidden.bs.modal', function() {
             $('#tabel-lab').empty()
             $('#tbHasilRadiologi tbody').empty()
             tableHasilPermintaan.find('tbody').empty();
@@ -415,7 +420,7 @@
             document.querySelector('.infoPasien').classList.remove('d-none');
 
             // Proses html2canvas
-            html2canvas(content).then(function (canvas) {
+            html2canvas(content).then(function(canvas) {
                 const imageDataURL = canvas.toDataURL('image/png');
                 const link = document.createElement('a');
                 link.href = imageDataURL;
@@ -437,7 +442,7 @@
                     document.querySelector('.infoPasien').classList.add('d-none');
                 });
 
-            }).catch(function (error) {
+            }).catch(function(error) {
                 Swal.close();
                 Swal.fire({
                     icon: 'error',
@@ -545,6 +550,5 @@
                 });
             });
         }
-
     </script>
 @endpush

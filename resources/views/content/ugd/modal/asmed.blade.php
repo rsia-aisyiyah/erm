@@ -35,7 +35,7 @@
                                                 <div class="list-dokter"></div>
                                             </div>
                                             <div class="col-md-4">
-                                                <div class="input-group input-group-sm">
+                                                <div class="input-group">
                                                     <select class="form-select form-select-sm" id="anamnesis" name="anamnesis" style="max-width:130px;">
                                                         <option value="Autoanamnesis" selected>Autoanamnesis</option>
                                                         <option value="Alloanamnesis">Alloanamnesis</option>
@@ -569,17 +569,13 @@
                                         <div class="col-md-4">
                                             <label for="ranap_dpjp" class="form-label fw-semibold">DPJP Ranap :</label>
                                             @php
-                                                $listDokterRanap = \App\Models\Dokter::where('status', '1')
-                                                    ->where('kd_dokter', '!=', '-')
-                                                    ->with('spesialis')
-                                                    ->orderBy('nm_dokter', 'asc')
-                                                    ->get();
+                                                $listDokterRanap = \App\Models\Dokter::where('status', '1')->where('kd_dokter', '!=', '-')->with('spesialis')->orderBy('nm_dokter', 'asc')->get();
                                             @endphp
                                             <select class="form-select form-select-sm" name="ranap_dpjp" id="ranap_dpjp">
                                                 <option value="">-- Pilih DPJP Ranap --</option>
                                                 @foreach ($listDokterRanap as $doc)
                                                     <option value="{{ $doc->kd_dokter }}">
-                                                        {{ $doc->nm_dokter }} {{ (!empty($doc->spesialis->nm_sps) && $doc->spesialis->nm_sps != '-') ? '('.$doc->spesialis->nm_sps.')' : '' }}
+                                                        {{ $doc->nm_dokter }} {{ !empty($doc->spesialis->nm_sps) && $doc->spesialis->nm_sps != '-' ? '(' . $doc->spesialis->nm_sps . ')' : '' }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -617,7 +613,7 @@
                                     <div class="row g-2">
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold d-block mb-1">Tujuan Rujukan :</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <select class="form-select" name="rujuk_tujuan" id="rujuk_tujuan" style="max-width: 140px;">
                                                     <option value="RS">Rumah Sakit</option>
                                                     <option value="Puskesmas">Puskesmas</option>
@@ -780,6 +776,7 @@
             resize: vertical !important;
             font-size: 12px;
         }
+
         #modalAsmedUgd #terapi_farmakologis,
         #modalAsmedUgd #terapi_non_farmakologis {
             min-height: 180px !important;
@@ -787,6 +784,7 @@
             font-size: 12px;
             line-height: 1.5;
         }
+
         #modalAsmedUgd #diagnosis {
             min-height: 90px !important;
         }
@@ -847,9 +845,15 @@
             canvasTtd.onmouseleave = stopDraw;
 
             // Touch Events (HP / Tablet)
-            canvasTtd.addEventListener('touchstart', startDraw, { passive: false });
-            canvasTtd.addEventListener('touchmove', draw, { passive: false });
-            canvasTtd.addEventListener('touchend', stopDraw, { passive: false });
+            canvasTtd.addEventListener('touchstart', startDraw, {
+                passive: false
+            });
+            canvasTtd.addEventListener('touchmove', draw, {
+                passive: false
+            });
+            canvasTtd.addEventListener('touchend', stopDraw, {
+                passive: false
+            });
         }
 
         $('#btnBukaModalTtd').on('click', () => {
@@ -1268,7 +1272,7 @@
                         const userNik = "{{ session()->get('pegawai')->nik }}";
                         const userNama = "{{ session()->get('pegawai')->nama }}";
                         const isUserDokter = "{{ session()->get('pegawai')->bidang }}" === 'Spesialis' || "{{ session()->get('pegawai')->jbtn }}".includes('Dokter') || "{{ session()->get('pegawai')->jnj_jabatan }}".includes('Dokter');
-                        
+
                         const kdDokterVal = (isUserDokter && userNik) ? userNik : (doc.kd_dokter || userNik);
                         const nmDokterVal = (isUserDokter && userNama) ? userNama : (doc.nm_dokter || userNama);
 
@@ -1294,7 +1298,9 @@
                         }
 
                         // Auto pre-fill dari Triase Pre-Registrasi jika ada
-                        $.get('/erm/triase/prereg/by-no-rawat', { no_rawat: params }).done((resPre) => {
+                        $.get('/erm/triase/prereg/by-no-rawat', {
+                            no_rawat: params
+                        }).done((resPre) => {
                             if (resPre.status === 'success' && resPre.data) {
                                 const tri = resPre.data;
                                 $('#badgeAsmedTriaseLinkedStatus').html(`<span class="badge bg-success ms-2 text-xs" title="ID Triase: ${tri.id_triase}"><i class="bi bi-check-circle-fill"></i> Data Ditarik dari Triase Pre-Reg (${tri.id_triase})</span>`);
@@ -1321,7 +1327,9 @@
                     $('.btn-asmed-ugd').html('<i class="bi bi-pencil-square"></i> Ubah Asesmen');
                     $('#btnAsmedTarikTriasePreReg').addClass('d-none');
 
-                    $.get('/erm/triase/prereg/by-no-rawat', { no_rawat: response.no_rawat }).done((resPre) => {
+                    $.get('/erm/triase/prereg/by-no-rawat', {
+                        no_rawat: response.no_rawat
+                    }).done((resPre) => {
                         if (resPre.status === 'success' && resPre.data) {
                             $('#badgeAsmedTriaseLinkedStatus').html(`<span class="badge bg-success ms-2 text-xs" title="ID Triase: ${resPre.data.id_triase}"><i class="bi bi-check-circle-fill"></i> Data Ditarik dari Triase Pre-Reg (${resPre.data.id_triase})</span>`);
                         } else {
@@ -1357,7 +1365,7 @@
 
                     // 13 Organ Pemeriksaan Fisik (Status & Keterangan)
                     let rsia = response.rsia_asmed || response.rsia_penilaian_medis_igd || {};
-                    
+
                     const setOrganFisik = (orgName, statusVal, ketVal) => {
                         let status = statusVal || 'Normal';
                         $(`#formAsmedUgd select[name="${orgName}"]`).val(status);
@@ -1410,7 +1418,7 @@
                         $('#formAsmedUgd input[name="kontrol_ke"]').val(rsia.kontrol_ke || '');
                         $('#formAsmedUgd input[name="ranap_indikasi"]').val(rsia.ranap_indikasi || '');
                         $('#formAsmedUgd select[name="ranap_smf"]').val(rsia.ranap_smf || '');
-                        
+
                         // Handler Backward Compatibility DPJP Ranap (Mendukung kd_dokter & Free Text Nama Dokter Lama)
                         const $dpjpSelect = $('#formAsmedUgd select[name="ranap_dpjp"]');
                         $dpjpSelect.find('.option-temp-dpjp').remove();
@@ -1472,7 +1480,7 @@
                         if (rsia.ttd_pasien) {
                             let ttdUrl = rsia.ttd_pasien;
                             if (!ttdUrl.startsWith('data:image') && !ttdUrl.startsWith('http')) {
-                                ttdUrl = '{{ asset("storage") }}/' + ttdUrl.replace(/^\/+/, '');
+                                ttdUrl = '{{ asset('storage') }}/' + ttdUrl.replace(/^\/+/, '');
                             }
                             $('#ttd_pasien').val(rsia.ttd_pasien);
                             $('#imgPreviewTtd').attr('src', ttdUrl);

@@ -23,7 +23,7 @@
 
         <div class="col-lg-3 col-sm-12 mb-2">
             <label for="png_jawab">Pembiayaan</label>
-            <x-input-group class="input-group-sm">
+            <x-input-group>
                 <x-input id="png_jawab" name="png_jawab" readonly />
                 <x-input id="no_peserta" name="no_peserta" readonly />
                 <button type="button" class="btn btn-primary" id="btnInfoPeserta">
@@ -223,7 +223,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Box Integrasi SKU BPJS (Hanya muncul untuk peserta BPJS) -->
                             <div id="box_sku_bpjs_info" class="border rounded-2 d-none" style="margin-top: 12px; padding: 10px 14px;">
                                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
@@ -313,22 +313,26 @@
         color: #6f42c1 !important;
         border-color: #6f42c1 !important;
     }
+
     .btn-outline-purple:hover,
-    .btn-check:checked + .btn-outline-purple,
-    .btn-check:active + .btn-outline-purple {
+    .btn-check:checked+.btn-outline-purple,
+    .btn-check:active+.btn-outline-purple {
         color: #ffffff !important;
         background-color: #6f42c1 !important;
         border-color: #6f42c1 !important;
     }
+
     .bg-purple {
         background-color: #6f42c1 !important;
         color: #ffffff !important;
     }
+
     .alert-purple {
         background-color: #f3e8ff !important;
         border-color: #d8b4fe !important;
         color: #581c87 !important;
     }
+
     .text-purple {
         color: #6f42c1 !important;
     }
@@ -350,6 +354,7 @@
         -ms-user-select: text !important;
         user-select: text !important;
     }
+
     #offcanvasRiwayatSoap .btn,
     #offcanvasRiwayatSoap .btn-close {
         -webkit-user-select: none !important;
@@ -737,7 +742,7 @@
             onChangeStatusTindakLanjut('KONTROL', false);
         }
 
-        $(document).on('click', 'input[name="status_tindak_lanjut"]', function () {
+        $(document).on('click', 'input[name="status_tindak_lanjut"]', function() {
             const val = $(this).val();
             if (val === lastSelectedStatusTindakLanjut) {
                 $(this).prop('checked', false);
@@ -1043,7 +1048,7 @@
                     'no_rawat': no_rawat,
                 },
                 method: 'POST',
-                success: function (data) {
+                success: function(data) {
                     console.log('Estimasi poli (Task 4) tercatat:', data);
                 }
             });
@@ -1257,7 +1262,9 @@
             $('#loadingRiwayatSoap').removeClass('d-none');
             $('#contentRiwayatSoap').addClass('d-none').empty();
 
-            $.get('/erm/registrasi/riwayat', { no_rkm_medis: noRm }).done(function(response) {
+            $.get('/erm/registrasi/riwayat', {
+                no_rkm_medis: noRm
+            }).done(function(response) {
                 $('#loadingRiwayatSoap').addClass('d-none');
                 $('#contentRiwayatSoap').removeClass('d-none');
 
@@ -1398,7 +1405,10 @@
                 }
 
                 // Extract SOAP (Ralan / Ranap)
-                let sParts = [], oParts = [], aParts = [], pParts = [];
+                let sParts = [],
+                    oParts = [],
+                    aParts = [],
+                    pParts = [];
 
                 let targetSoapList = [];
                 if (item.pemeriksaan_ralan && item.pemeriksaan_ralan.length > 0) {
@@ -1605,12 +1615,12 @@
             }, true);
 
             // Sinkronisasi status visual tombol saat drawer riwayat dibuka / ditutup
-            $('#offcanvasRiwayatSoap').on('show.bs.offcanvas', function () {
+            $('#offcanvasRiwayatSoap').on('show.bs.offcanvas', function() {
                 $('#btnToggleSideRiwayat')
                     .removeClass('btn-outline-primary')
                     .addClass('btn-primary');
             });
-            $('#offcanvasRiwayatSoap').on('hidden.bs.offcanvas', function () {
+            $('#offcanvasRiwayatSoap').on('hidden.bs.offcanvas', function() {
                 $('#btnToggleSideRiwayat')
                     .removeClass('btn-primary')
                     .addClass('btn-outline-primary');

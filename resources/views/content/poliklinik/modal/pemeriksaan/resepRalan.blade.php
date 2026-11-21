@@ -1,9 +1,5 @@
 @php
-    $isUserDokter = session()->get('role') === 'dokter' || 
-                    !empty(session()->get('pegawai')->dokter) || 
-                    session()->get('pegawai')->bidang === 'Spesialis' || 
-                    str_contains(session()->get('pegawai')->jbtn ?? '', 'Dokter') ||
-                    str_contains(session()->get('pegawai')->jnj_jabatan ?? '', 'Dokter');
+    $isUserDokter = session()->get('role') === 'dokter' || !empty(session()->get('pegawai')->dokter) || session()->get('pegawai')->bidang === 'Spesialis' || str_contains(session()->get('pegawai')->jbtn ?? '', 'Dokter') || str_contains(session()->get('pegawai')->jnj_jabatan ?? '', 'Dokter');
 @endphp
 <div id="formInfoPasienResep">
     <input type="hidden" class="no_resep form-control form-control-sm" name="no_resep" />
@@ -23,7 +19,7 @@
                 <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-shield-lock-fill text-primary fs-5"></i>
                     <div>
-                        <strong>Mode Lihat Resep (Non-Dokter):</strong> 
+                        <strong>Mode Lihat Resep (Non-Dokter):</strong>
                         <span class="text-secondary">Anda dapat meninjau resep dokter &amp; riwayat obat pasien. Pembuatan dan perubahan resep obat merupakan kewenangan DPJP/Dokter.</span>
                     </div>
                 </div>
@@ -31,7 +27,11 @@
             </div>
         </div>
         <style>
-            .actionsObatUmum, .actionsRacikan, .actionResep, .tambah_umum, .tambah_racik {
+            .actionsObatUmum,
+            .actionsRacikan,
+            .actionResep,
+            .tambah_umum,
+            .tambah_racik {
                 display: none !important;
             }
         </style>
@@ -284,7 +284,7 @@
                     return `<tr class="racikan-${val.no_racik}">
                                     <td>${val.nama_racik}</td>
                                     <td>${val.metode?.nm_racik || '-'}</td>
-                                    <td>${val.jml_dr}</td>  
+                                    <td>${val.jml_dr}</td>
                                     <td>${val.aturan_pakai || '-'}</td>
                                     <td class="subtotalRacikan text-end" data-number="${subtotal}">
                                         ${formatCurrency(subtotal)}
@@ -378,8 +378,10 @@
 
         function hapusRacikan(no_resep, no_racik) {
             const no_rawat = $('#formInfoPasienResep').find('#no_rawat').val() ||
-                             $('#formInfoPasien').find('input[name="no_rawat"]').val() ||
-                             $('input[name="no_rawat"]').filter(function() { return $(this).val(); }).first().val();
+                $('#formInfoPasien').find('input[name="no_rawat"]').val() ||
+                $('input[name="no_rawat"]').filter(function() {
+                    return $(this).val();
+                }).first().val();
             Swal.fire({
                 title: 'Yakin ?',
                 text: "Anda tidak bisa mengembalikan lagi",
@@ -937,7 +939,7 @@
                             </div>
                         </td>
                         <td>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="p1${index}" class="p1${index} form-underline" name="p1[]" value="${val.p1}" type="search" onfocusout="setNilaiPembagi(this)" onchange="hitungObatRacik(${index})" autocomplete="off" onkeypress="return hanyaAngka(event)"/>
                                 <x-input-group-text>/</x-input-group-text>
                                 <x-input id="p2${index}" class="p2${index} form-underline" name="p2[]" value="${val.p2}" type="search" onfocusout="setNilaiPembagi(this)" onchange="hitungObatRacik(${index})"  autocomplete="off" onkeypress="return hanyaAngka(event)"/>
@@ -1556,17 +1558,17 @@
                     }
 
                     const isRanap = item.status === 'ranap';
-                    const badgeStatus = isRanap 
-                        ? '<span class="badge text-white ms-1" style="background-color: #6f42c1; font-size:10px;"><i class="bi bi-hospital me-1"></i>Ranap</span>'
-                        : '<span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1" style="font-size:10px;"><i class="bi bi-person-walking me-1"></i>Ralan</span>';
+                    const badgeStatus = isRanap ?
+                        '<span class="badge text-white ms-1" style="background-color: #6f42c1; font-size:10px;"><i class="bi bi-hospital me-1"></i>Ranap</span>' :
+                        '<span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1" style="font-size:10px;"><i class="bi bi-person-walking me-1"></i>Ralan</span>';
 
-                    const unitNama = isRanap 
-                        ? (item.reg_periksa?.kamar_inap?.[0]?.kamar?.bangsal?.nm_bangsal || 'Rawat Inap')
-                        : (item.reg_periksa?.poliklinik?.nm_poli || 'Rawat Jalan');
+                    const unitNama = isRanap ?
+                        (item.reg_periksa?.kamar_inap?.[0]?.kamar?.bangsal?.nm_bangsal || 'Rawat Inap') :
+                        (item.reg_periksa?.poliklinik?.nm_poli || 'Rawat Jalan');
 
-                    const dokterNama = item.dokter?.nm_dokter 
-                        ? `<small class="text-muted d-block text-truncate" style="font-size:11px;" title="${item.dokter.nm_dokter}"><i class="bi bi-person-fill"></i> ${item.dokter.nm_dokter}</small>` 
-                        : '';
+                    const dokterNama = item.dokter?.nm_dokter ?
+                        `<small class="text-muted d-block text-truncate" style="font-size:11px;" title="${item.dokter.nm_dokter}"><i class="bi bi-person-fill"></i> ${item.dokter.nm_dokter}</small>` :
+                        '';
 
                     rows.push(`<tr>
                         <td width="22%" class="align-middle">
@@ -1600,10 +1602,10 @@
 
         // Auto load riwayat resep saat tab Riwayat Resep diklik
         $(document).on('shown.bs.tab', 'a[href="#riwayat"]', function() {
-            const no_rm = $('#formInfoPasienResep').find('input[name=no_rkm_medis]').val() || 
-                          $('#formInfoPasien').find('input[name=no_rkm_medis]').val() ||
-                          $('#no_rkm_medis').val() ||
-                          $('#no_rm').val();
+            const no_rm = $('#formInfoPasienResep').find('input[name=no_rkm_medis]').val() ||
+                $('#formInfoPasien').find('input[name=no_rkm_medis]').val() ||
+                $('#no_rkm_medis').val() ||
+                $('#no_rm').val();
             if (no_rm) {
                 riwayatResep(no_rm);
             }

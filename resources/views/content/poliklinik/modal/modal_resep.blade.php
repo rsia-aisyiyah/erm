@@ -2,6 +2,7 @@
     #modalObatRacik {
         z-index: 1070 !important;
     }
+
     .swal2-container {
         z-index: 2000 !important;
     }
@@ -97,18 +98,18 @@
 </div>
 @push('script')
     <script>
-        $('#modalObatRacik').on('show.bs.modal', function () {
+        $('#modalObatRacik').on('show.bs.modal', function() {
             $(this).css('z-index', 1070);
         });
 
-        $('#modalObatRacik').on('shown.bs.modal', function () {
+        $('#modalObatRacik').on('shown.bs.modal', function() {
             const backdrops = $('.modal-backdrop');
             if (backdrops.length > 1) {
                 backdrops.last().css('z-index', 1065);
             }
         });
 
-        $('#modalObatRacik').on('hidden.bs.modal', function () {
+        $('#modalObatRacik').on('hidden.bs.modal', function() {
             $('.modal-backdrop').first().css('z-index', '');
             const activeModals = $('.modal.show').length;
             const backdrops = $('.modal-backdrop');
@@ -291,70 +292,70 @@
                 <tr class="baris_${no}">
                     <td>
                         <input type="hidden" id="kode_brng${no}" name="kode_brng[]"/>
-                        <input type="text" 
-                            onkeyup="cariObatRacikan(this, ${no}, event)" 
-                            autocomplete="off" 
+                        <input type="text"
+                            onkeyup="cariObatRacikan(this, ${no}, event)"
+                            autocomplete="off"
                             class="form-control form-control-sm nama_obat_${no} form-underline" />
                         <div class="list_obat_${no}"></div>
                     </td>
                     <td>
                         <div class="d-flex justify-content-between">
-                        <input type="text" 
-                            autocomplete="off" 
-                            class="form-control form-control-sm form-underline" 
-                            id="kps${no}" 
-                            name="kps[]" 
+                        <input type="text"
+                            autocomplete="off"
+                            class="form-control form-control-sm form-underline"
+                            id="kps${no}"
+                            name="kps[]"
                             readonly />
                             <span class="mt-2">mg</span>
                         </div>
                     </td>
                     <td>
-                        <x-input-group class="input-group-sm">
-                        <input type="text" 
-                            class="form-control form-control-sm form-underline" 
-                            id="p1${no}" 
-                            name="p1[]" 
-                            onkeyup="hitungObatRacik(${no})" 
-                            onfocusout="setNilaiPembagi(this)" 
+                        <x-input-group>
+                        <input type="text"
+                            class="form-control form-control-sm form-underline"
+                            id="p1${no}"
+                            name="p1[]"
+                            onkeyup="hitungObatRacik(${no})"
+                            onfocusout="setNilaiPembagi(this)"
                             autocomplete="off"/>
                         <x-input-group-text>/</x-input-group-text>
-                        <input type="text" 
-                            class="form-control form-control-sm form-underline" 
-                            id="p2${no}" 
-                            name="p2[]" 
-                            onkeyup="hitungObatRacik(${no})" 
-                            onfocusout="setNilaiPembagi(this)" 
+                        <input type="text"
+                            class="form-control form-control-sm form-underline"
+                            id="p2${no}"
+                            name="p2[]"
+                            onkeyup="hitungObatRacik(${no})"
+                            onfocusout="setNilaiPembagi(this)"
                             autocomplete="off"/>
                         </x-input-group>
                     </td>
                     <td>
                         <div class="d-flex justify-content-between">
-                            <input type="text" 
-                                onkeypress="return hanyaAngka(event)" 
-                                class="form-control form-control-sm form-underline" 
-                                id="kandungan${no}" 
-                                name="kandungan[]" 
-                                onkeyup="hitungDosis(${no})" 
+                            <input type="text"
+                                onkeypress="return hanyaAngka(event)"
+                                class="form-control form-control-sm form-underline"
+                                id="kandungan${no}"
+                                name="kandungan[]"
+                                onkeyup="hitungDosis(${no})"
                                 autocomplete="off"/>
                             <span class="mt-2">mg</span>
                         </div>
                     </td>
                     <td id="labelHargaBarang${no}" data-number="">
-                       
+
                     </td>
                     <td>
-                        <input type="text" 
-                            class="form-control form-control-sm form-underline" 
-                            id="jml_obat${no}" 
+                        <input type="text"
+                            class="form-control form-control-sm form-underline"
+                            id="jml_obat${no}"
                             name="jml[]" autocomplete="off"/>
                     </td>
-                    <td class="labelSubTotalBarang" id="labelSubTotalBarang${no}"> 
-                        
+                    <td class="labelSubTotalBarang" id="labelSubTotalBarang${no}">
+
                     </td>
                     <td>
-                        <a href="javascript:void(0)" 
-                        data-no="${no}" 
-                        type="button" 
+                        <a href="javascript:void(0)"
+                        data-no="${no}"
+                        type="button"
                         class="btn btn-danger btn-sm x form-label mb-0">
                         <i class="bi bi-trash-fill"></i>
                         </a>

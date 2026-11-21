@@ -7,21 +7,25 @@
         max-width: 320px !important;
         border-radius: 8px !important;
     }
+
     .swal2-popup.swal2-toast .swal2-title {
         font-size: 11.5px !important;
         margin: 0 !important;
         font-weight: 600 !important;
     }
+
     .swal2-popup.swal2-toast .swal2-html-container {
         font-size: 11px !important;
         margin: 0 !important;
     }
+
     .swal2-popup.swal2-toast .swal2-icon {
         width: 1.25rem !important;
         height: 1.25rem !important;
         min-width: 1.25rem !important;
         margin: 0 8px 0 0 !important;
     }
+
     .swal2-popup.swal2-toast .swal2-icon .swal2-icon-content {
         font-size: 0.85rem !important;
     }
@@ -29,7 +33,7 @@
 <div class="modal fade" id="modalPermintaanObatRanap" tabindex="-1" aria-labelledby="modalPermintaanObatRanapLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
-            
+
             <!-- Modal Header -->
             <div class="modal-header text-white py-2 px-3 justify-content-between align-items-center" style="background: linear-gradient(135deg, #198754 0%, #157347 100%);">
                 <div class="d-flex align-items-center gap-2">
@@ -56,7 +60,7 @@
 
             <!-- Modal Body -->
             <div class="modal-body p-3 bg-light">
-                
+
                 <!-- PATIENT INFO BANNER -->
                 <div class="card border-0 shadow-sm rounded-3 mb-3 bg-white">
                     <div class="card-body p-2.5">
@@ -97,7 +101,7 @@
 
                 <!-- TAB CONTENT -->
                 <div class="tab-content" id="pills-permintaan-tabContent">
-                    
+
                     <!-- TAB 1: FORM ORDER PERMINTAAN BARU -->
                     <div class="tab-pane fade show active" id="tab-order-obat" role="tabpanel">
                         <div class="card border-0 shadow-sm rounded-3 bg-white mb-3">
@@ -118,7 +122,7 @@
                                         <!-- Pencarian Obat -->
                                         <div class="col-md-5 col-12">
                                             <label class="form-label small fw-bold mb-1">Cari Obat / BHP Medis</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <input type="text" class="form-control" id="permintaan_cari_obat" placeholder="Ketik nama obat / scan barcode..." autocomplete="off">
                                                 <button class="btn btn-outline-secondary" type="button" id="btnCariObatPermintaan">
                                                     <i class="bi bi-search"></i>
@@ -138,7 +142,7 @@
                                         <!-- Jumlah -->
                                         <div class="col-md-2 col-4">
                                             <label class="form-label small fw-bold mb-1">Jumlah</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <input type="number" class="form-control text-center fw-bold" id="permintaan_jml" value="1" min="0.1" step="any">
                                                 <span class="input-group-text" id="lblSatuanObat" style="font-size: 11px;">Sat</span>
                                             </div>
@@ -341,133 +345,133 @@
 @include('content.farmasi.modal.modal_edit_aturan_pakai')
 
 @push('script')
-<script>
-    let listOrderSementara = [];
+    <script>
+        let listOrderSementara = [];
 
-    // Buka Modal Permintaan Obat Ranap
-    function modalPermintaanObatRanap(noRawat) {
-        if (!noRawat) {
-            Swal.fire('Peringatan', 'No. Rawat tidak valid.', 'warning');
-            return;
-        }
-
-        $('#permintaan_no_rawat').val(noRawat);
-        $('#permintaan_info_no_rawat').text(noRawat);
-
-        // Ambil info pasien & kamar
-        getRegPeriksa(noRawat).done(function(res) {
-            const pasien = res?.pasien || {};
-            const kamarList = res?.kamar_inap || [];
-            const dokter = res?.dokter || {};
-
-            let kamarNama = '-';
-            if (kamarList.length > 0) {
-                const activeKamar = kamarList.find(k => k.stts_pulang === '-') || kamarList[0];
-                kamarNama = activeKamar?.kamar?.bangsal?.nm_bangsal || activeKamar?.kd_kamar || '-';
-            } else if (res?.kd_poli === 'IGDK' || res?.poliklinik?.nm_poli?.includes('IGD') || res?.poliklinik?.nm_poli?.includes('UGD')) {
-                kamarNama = 'IGD / UGD';
-            } else if (res?.poliklinik?.nm_poli) {
-                kamarNama = res.poliklinik.nm_poli;
+        // Buka Modal Permintaan Obat Ranap
+        function modalPermintaanObatRanap(noRawat) {
+            if (!noRawat) {
+                Swal.fire('Peringatan', 'No. Rawat tidak valid.', 'warning');
+                return;
             }
 
-            $('#permintaan_info_no_rkm_medis').text(pasien?.no_rkm_medis || '-');
-            $('#permintaan_info_nm_pasien').text(pasien?.nm_pasien || '-');
-            $('#permintaan_info_kamar').text(kamarNama);
-            $('#permintaan_kd_dokter').val(res?.kd_dokter || dokter?.kd_dokter || '');
-        });
+            $('#permintaan_no_rawat').val(noRawat);
+            $('#permintaan_info_no_rawat').text(noRawat);
 
-        // Ambil nomor permintaan baru
-        $.get("{{ route('ranap.permintaan-obat.nomor') }}").done(function(resNomor) {
-            $('#infoNoPermintaanBaru').text(`No. Baru: ${resNomor}`);
-            $('#badgeNoPermintaanAktif').text(resNomor);
-        });
+            // Ambil info pasien & kamar
+            getRegPeriksa(noRawat).done(function(res) {
+                const pasien = res?.pasien || {};
+                const kamarList = res?.kamar_inap || [];
+                const dokter = res?.dokter || {};
 
-        // Reset form & list
-        resetFormInputObat();
-        listOrderSementara = [];
-        renderTableItemSementara();
+                let kamarNama = '-';
+                if (kamarList.length > 0) {
+                    const activeKamar = kamarList.find(k => k.stts_pulang === '-') || kamarList[0];
+                    kamarNama = activeKamar?.kamar?.bangsal?.nm_bangsal || activeKamar?.kd_kamar || '-';
+                } else if (res?.kd_poli === 'IGDK' || res?.poliklinik?.nm_poli?.includes('IGD') || res?.poliklinik?.nm_poli?.includes('UGD')) {
+                    kamarNama = 'IGD / UGD';
+                } else if (res?.poliklinik?.nm_poli) {
+                    kamarNama = res.poliklinik.nm_poli;
+                }
 
-        // Switch to Tab 1
-        $('#tab-order-obat-link').tab('show');
+                $('#permintaan_info_no_rkm_medis').text(pasien?.no_rkm_medis || '-');
+                $('#permintaan_info_nm_pasien').text(pasien?.nm_pasien || '-');
+                $('#permintaan_info_kamar').text(kamarNama);
+                $('#permintaan_kd_dokter').val(res?.kd_dokter || dokter?.kd_dokter || '');
+            });
 
-        // Show Modal
-        $('#modalPermintaanObatRanap').modal('show');
-    }
+            // Ambil nomor permintaan baru
+            $.get("{{ route('ranap.permintaan-obat.nomor') }}").done(function(resNomor) {
+                $('#infoNoPermintaanBaru').text(`No. Baru: ${resNomor}`);
+                $('#badgeNoPermintaanAktif').text(resNomor);
+            });
 
-    let itemEditIndex = null;
+            // Reset form & list
+            resetFormInputObat();
+            listOrderSementara = [];
+            renderTableItemSementara();
 
-    // Reset Form Input Obat
-    function resetFormInputObat() {
-        $('#permintaan_cari_obat').val('');
-        $('#permintaan_kode_brng').val('');
-        $('#permintaan_nama_brng').val('');
-        $('#permintaan_satuan').val('');
-        $('#lblObatTerpilih').text('-');
-        $('#lblStokDepo').text('0');
-        $('#lblSatuanObat').text('Sat');
-        $('#permintaan_jml').val('1');
-        $('#permintaan_aturan_pakai').val('');
-        setPresetJam('clear');
-        $('#permintaan_dropdown_obat').addClass('d-none').empty();
-    }
+            // Switch to Tab 1
+            $('#tab-order-obat-link').tab('show');
 
-    // Batal Mode Edit Item
-    function batalEditItemSementara() {
-        itemEditIndex = null;
-        resetFormInputObat();
-        $('#btnBatalEditItem').addClass('d-none');
-        $('#btnTambahItemPermintaan').removeClass('btn-warning').addClass('btn-success')
-            .html('<i class="bi bi-plus-lg me-1"></i> Tambahkan ke Daftar Order');
-    }
-
-    // Set Preset Jadwal Jam (Pagi, Malam, 2x, 3x, 4x, etc.)
-    function setPresetJam(mode) {
-        $('.chk-jam-order').prop('checked', false);
-
-        if (mode === '1x_pagi') {
-            $('#chk_jam07').prop('checked', true);
-        } else if (mode === '1x_malam') {
-            $('#chk_jam19').prop('checked', true);
-        } else if (mode === '2x') {
-            $('#chk_jam07, #chk_jam19').prop('checked', true);
-        } else if (mode === '3x') {
-            $('#chk_jam07, #chk_jam13, #chk_jam19').prop('checked', true);
-        } else if (mode === '4x') {
-            $('#chk_jam07, #chk_jam13, #chk_jam19, #chk_jam01').prop('checked', true);
-        } else if (mode === '8h') {
-            $('#chk_jam06, #chk_jam14, #chk_jam22').prop('checked', true);
+            // Show Modal
+            $('#modalPermintaanObatRanap').modal('show');
         }
-    }
 
-    // Autocomplete pencarian obat
-    let timerCariObat;
-    $('#permintaan_cari_obat').on('input', function() {
-        clearTimeout(timerCariObat);
-        const keyword = $(this).val();
-        if (keyword.length < 2) {
+        let itemEditIndex = null;
+
+        // Reset Form Input Obat
+        function resetFormInputObat() {
+            $('#permintaan_cari_obat').val('');
+            $('#permintaan_kode_brng').val('');
+            $('#permintaan_nama_brng').val('');
+            $('#permintaan_satuan').val('');
+            $('#lblObatTerpilih').text('-');
+            $('#lblStokDepo').text('0');
+            $('#lblSatuanObat').text('Sat');
+            $('#permintaan_jml').val('1');
+            $('#permintaan_aturan_pakai').val('');
+            setPresetJam('clear');
             $('#permintaan_dropdown_obat').addClass('d-none').empty();
-            return;
         }
 
-        timerCariObat = setTimeout(function() {
-            $.get("{{ url('/obat/cari') }}", {
-                nama: keyword,
-                gudang: 'RM'
-            }).done(function(res) {
-                const list = res?.data || [];
-                const $dropdown = $('#permintaan_dropdown_obat');
-                $dropdown.empty();
+        // Batal Mode Edit Item
+        function batalEditItemSementara() {
+            itemEditIndex = null;
+            resetFormInputObat();
+            $('#btnBatalEditItem').addClass('d-none');
+            $('#btnTambahItemPermintaan').removeClass('btn-warning').addClass('btn-success')
+                .html('<i class="bi bi-plus-lg me-1"></i> Tambahkan ke Daftar Order');
+        }
 
-                if (list.length === 0) {
-                    $dropdown.append('<div class="list-group-item list-group-item-action disabled text-muted py-2">Obat tidak ditemukan</div>');
-                } else {
-                    list.forEach(function(item) {
-                        let stok = 0;
-                        if (item.gudang_barang && item.gudang_barang.length > 0) {
-                            stok = item.gudang_barang[0].stok || 0;
-                        }
-                        const sat = item.kode_satuan?.satuan || item.kode_sat || '';
-                        const rowHtml = `
+        // Set Preset Jadwal Jam (Pagi, Malam, 2x, 3x, 4x, etc.)
+        function setPresetJam(mode) {
+            $('.chk-jam-order').prop('checked', false);
+
+            if (mode === '1x_pagi') {
+                $('#chk_jam07').prop('checked', true);
+            } else if (mode === '1x_malam') {
+                $('#chk_jam19').prop('checked', true);
+            } else if (mode === '2x') {
+                $('#chk_jam07, #chk_jam19').prop('checked', true);
+            } else if (mode === '3x') {
+                $('#chk_jam07, #chk_jam13, #chk_jam19').prop('checked', true);
+            } else if (mode === '4x') {
+                $('#chk_jam07, #chk_jam13, #chk_jam19, #chk_jam01').prop('checked', true);
+            } else if (mode === '8h') {
+                $('#chk_jam06, #chk_jam14, #chk_jam22').prop('checked', true);
+            }
+        }
+
+        // Autocomplete pencarian obat
+        let timerCariObat;
+        $('#permintaan_cari_obat').on('input', function() {
+            clearTimeout(timerCariObat);
+            const keyword = $(this).val();
+            if (keyword.length < 2) {
+                $('#permintaan_dropdown_obat').addClass('d-none').empty();
+                return;
+            }
+
+            timerCariObat = setTimeout(function() {
+                $.get("{{ url('/obat/cari') }}", {
+                    nama: keyword,
+                    gudang: 'RM'
+                }).done(function(res) {
+                    const list = res?.data || [];
+                    const $dropdown = $('#permintaan_dropdown_obat');
+                    $dropdown.empty();
+
+                    if (list.length === 0) {
+                        $dropdown.append('<div class="list-group-item list-group-item-action disabled text-muted py-2">Obat tidak ditemukan</div>');
+                    } else {
+                        list.forEach(function(item) {
+                            let stok = 0;
+                            if (item.gudang_barang && item.gudang_barang.length > 0) {
+                                stok = item.gudang_barang[0].stok || 0;
+                            }
+                            const sat = item.kode_satuan?.satuan || item.kode_sat || '';
+                            const rowHtml = `
                             <a href="javascript:void(0)" class="list-group-item list-group-item-action py-1.5 px-2.5" onclick="pilihObatPermintaan('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', '${sat}', ${stok})">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <strong style="font-size: 11.5px;">${item.nama_brng}</strong>
@@ -476,183 +480,186 @@
                                 <small class="text-muted" style="font-size: 10px;">Kode: ${item.kode_brng} | Jns: ${item.jenis?.nama || '-'}</small>
                             </a>
                         `;
-                        $dropdown.append(rowHtml);
+                            $dropdown.append(rowHtml);
+                        });
+                    }
+                    $dropdown.removeClass('d-none');
+                });
+            }, 300);
+        });
+
+        // Callback saat obat dipilih
+        function pilihObatPermintaan(kode, nama, satuan, stok) {
+            $('#permintaan_kode_brng').val(kode);
+            $('#permintaan_nama_brng').val(nama);
+            $('#permintaan_satuan').val(satuan);
+            $('#permintaan_cari_obat').val(nama);
+            $('#lblObatTerpilih').text(nama);
+            $('#lblStokDepo').text(`${stok} ${satuan}`);
+            $('#lblSatuanObat').text(satuan);
+            $('#permintaan_dropdown_obat').addClass('d-none').empty();
+            $('#permintaan_jml').focus();
+        }
+
+        // Sembunyikan dropdown bila klik di luar
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#permintaan_cari_obat, #permintaan_dropdown_obat').length) {
+                $('#permintaan_dropdown_obat').addClass('d-none');
+            }
+        });
+
+        // Tambah / Update item ke tabel sementara
+        $('#btnTambahItemPermintaan').on('click', function() {
+            const kode = $('#permintaan_kode_brng').val();
+            const nama = $('#permintaan_nama_brng').val();
+            const satuan = $('#permintaan_satuan').val() || 'Sat';
+            const jml = parseFloat($('#permintaan_jml').val()) || 0;
+            const aturan = $('#permintaan_aturan_pakai').val() || '-';
+
+            if (!kode || !nama) {
+                Swal.fire('Peringatan', 'Silahkan pilih obat terlebih dahulu.', 'warning');
+                return;
+            }
+
+            if (jml <= 0) {
+                Swal.fire('Peringatan', 'Jumlah obat harus lebih dari 0.', 'warning');
+                return;
+            }
+
+            // Kumpulkan jam yang dicentang
+            const jamObj = {};
+            const jamAktifList = [];
+            for (let i = 0; i <= 23; i++) {
+                const pad = String(i).padStart(2, '0');
+                const key = `jam${pad}`;
+                const isChecked = $(`#chk_${key}`).is(':checked');
+                jamObj[key] = isChecked;
+                if (isChecked) {
+                    jamAktifList.push(`${pad}:00`);
+                }
+            }
+
+            if (itemEditIndex !== null && listOrderSementara[itemEditIndex]) {
+                // Mode UPDATE
+                listOrderSementara[itemEditIndex].kode_brng = kode;
+                listOrderSementara[itemEditIndex].nama_brng = nama;
+                listOrderSementara[itemEditIndex].satuan = satuan;
+                listOrderSementara[itemEditIndex].jml = jml;
+                listOrderSementara[itemEditIndex].aturan_pakai = aturan;
+                listOrderSementara[itemEditIndex].jam = jamObj;
+                listOrderSementara[itemEditIndex].jam_list = jamAktifList;
+                batalEditItemSementara();
+            } else {
+                // Mode TAMBAH BARU (cek duplikasi)
+                const existingIdx = listOrderSementara.findIndex(i => i.kode_brng === kode);
+                if (existingIdx !== -1) {
+                    listOrderSementara[existingIdx].jml += jml;
+                    listOrderSementara[existingIdx].aturan_pakai = aturan;
+                    listOrderSementara[existingIdx].jam = jamObj;
+                    listOrderSementara[existingIdx].jam_list = jamAktifList;
+                } else {
+                    listOrderSementara.push({
+                        kode_brng: kode,
+                        nama_brng: nama,
+                        satuan: satuan,
+                        jml: jml,
+                        aturan_pakai: aturan,
+                        jam: jamObj,
+                        jam_list: jamAktifList,
                     });
                 }
-                $dropdown.removeClass('d-none');
-            });
-        }, 300);
-    });
-
-    // Callback saat obat dipilih
-    function pilihObatPermintaan(kode, nama, satuan, stok) {
-        $('#permintaan_kode_brng').val(kode);
-        $('#permintaan_nama_brng').val(nama);
-        $('#permintaan_satuan').val(satuan);
-        $('#permintaan_cari_obat').val(nama);
-        $('#lblObatTerpilih').text(nama);
-        $('#lblStokDepo').text(`${stok} ${satuan}`);
-        $('#lblSatuanObat').text(satuan);
-        $('#permintaan_dropdown_obat').addClass('d-none').empty();
-        $('#permintaan_jml').focus();
-    }
-
-    // Sembunyikan dropdown bila klik di luar
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('#permintaan_cari_obat, #permintaan_dropdown_obat').length) {
-            $('#permintaan_dropdown_obat').addClass('d-none');
-        }
-    });
-
-    // Tambah / Update item ke tabel sementara
-    $('#btnTambahItemPermintaan').on('click', function() {
-        const kode = $('#permintaan_kode_brng').val();
-        const nama = $('#permintaan_nama_brng').val();
-        const satuan = $('#permintaan_satuan').val() || 'Sat';
-        const jml = parseFloat($('#permintaan_jml').val()) || 0;
-        const aturan = $('#permintaan_aturan_pakai').val() || '-';
-
-        if (!kode || !nama) {
-            Swal.fire('Peringatan', 'Silahkan pilih obat terlebih dahulu.', 'warning');
-            return;
-        }
-
-        if (jml <= 0) {
-            Swal.fire('Peringatan', 'Jumlah obat harus lebih dari 0.', 'warning');
-            return;
-        }
-
-        // Kumpulkan jam yang dicentang
-        const jamObj = {};
-        const jamAktifList = [];
-        for (let i = 0; i <= 23; i++) {
-            const pad = String(i).padStart(2, '0');
-            const key = `jam${pad}`;
-            const isChecked = $(`#chk_${key}`).is(':checked');
-            jamObj[key] = isChecked;
-            if (isChecked) {
-                jamAktifList.push(`${pad}:00`);
+                resetFormInputObat();
             }
+
+            renderTableItemSementara();
+            $('#permintaan_cari_obat').focus();
+        });
+
+        // Edit Item (Muat kembali ke Form Input)
+        function editItemSementara(idx) {
+            if (!listOrderSementara[idx]) return;
+            const item = listOrderSementara[idx];
+            itemEditIndex = idx;
+
+            $('#permintaan_kode_brng').val(item.kode_brng);
+            $('#permintaan_nama_brng').val(item.nama_brng);
+            $('#permintaan_satuan').val(item.satuan);
+            $('#permintaan_cari_obat').val(item.nama_brng);
+            $('#lblObatTerpilih').text(item.nama_brng);
+            $('#lblSatuanObat').text(item.satuan);
+            $('#permintaan_jml').val(item.jml);
+            $('#permintaan_aturan_pakai').val(item.aturan_pakai !== '-' ? item.aturan_pakai : '');
+
+            // Pulihkan centang jam
+            $('.chk-jam-order').prop('checked', false);
+            for (let h = 0; h <= 23; h++) {
+                const key = `jam${String(h).padStart(2, '0')}`;
+                if (item.jam && item.jam[key]) {
+                    $(`#chk_${key}`).prop('checked', true);
+                }
+            }
+
+            // Tampilkan tombol Batal & ubah tombol Simpan
+            $('#btnBatalEditItem').removeClass('d-none');
+            $('#btnTambahItemPermintaan').removeClass('btn-success').addClass('btn-warning')
+                .html('<i class="bi bi-check-lg me-1"></i> Simpan Perubahan');
+
+            // Scroll halus ke form dan fokus ke input jumlah
+            document.getElementById('formPermintaanObatRanap').scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            });
+            $('#permintaan_jml').focus().select();
         }
 
-        if (itemEditIndex !== null && listOrderSementara[itemEditIndex]) {
-            // Mode UPDATE
-            listOrderSementara[itemEditIndex].kode_brng = kode;
-            listOrderSementara[itemEditIndex].nama_brng = nama;
-            listOrderSementara[itemEditIndex].satuan = satuan;
-            listOrderSementara[itemEditIndex].jml = jml;
-            listOrderSementara[itemEditIndex].aturan_pakai = aturan;
-            listOrderSementara[itemEditIndex].jam = jamObj;
-            listOrderSementara[itemEditIndex].jam_list = jamAktifList;
-            batalEditItemSementara();
-        } else {
-            // Mode TAMBAH BARU (cek duplikasi)
-            const existingIdx = listOrderSementara.findIndex(i => i.kode_brng === kode);
-            if (existingIdx !== -1) {
-                listOrderSementara[existingIdx].jml += jml;
-                listOrderSementara[existingIdx].aturan_pakai = aturan;
-                listOrderSementara[existingIdx].jam = jamObj;
-                listOrderSementara[existingIdx].jam_list = jamAktifList;
-            } else {
-                listOrderSementara.push({
-                    kode_brng: kode,
-                    nama_brng: nama,
-                    satuan: satuan,
-                    jml: jml,
-                    aturan_pakai: aturan,
-                    jam: jamObj,
-                    jam_list: jamAktifList,
+        // Ubah Jumlah Langsung dari Tabel (Inline)
+        function ubahJumlahItemSementara(idx, val) {
+            const num = parseFloat(val);
+            if (isNaN(num) || num <= 0) {
+                Swal.fire('Peringatan', 'Jumlah obat harus lebih dari 0.', 'warning');
+                renderTableItemSementara();
+                return;
+            }
+
+            if (listOrderSementara[idx]) {
+                listOrderSementara[idx].jml = num;
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    html: `<span style="font-size: 11.5px;">Jumlah <b>${listOrderSementara[idx].nama_brng}</b> diubah jadi <b>${num}</b></span>`,
+                    showConfirmButton: false,
+                    timer: 1300,
+                    timerProgressBar: true,
+                    width: 'auto'
                 });
             }
-            resetFormInputObat();
         }
 
-        renderTableItemSementara();
-        $('#permintaan_cari_obat').focus();
-    });
+        // Render tabel item sementara
+        function renderTableItemSementara() {
+            const $tbody = $('#tbodyItemPermintaanSementara');
+            $tbody.empty();
 
-    // Edit Item (Muat kembali ke Form Input)
-    function editItemSementara(idx) {
-        if (!listOrderSementara[idx]) return;
-        const item = listOrderSementara[idx];
-        itemEditIndex = idx;
-
-        $('#permintaan_kode_brng').val(item.kode_brng);
-        $('#permintaan_nama_brng').val(item.nama_brng);
-        $('#permintaan_satuan').val(item.satuan);
-        $('#permintaan_cari_obat').val(item.nama_brng);
-        $('#lblObatTerpilih').text(item.nama_brng);
-        $('#lblSatuanObat').text(item.satuan);
-        $('#permintaan_jml').val(item.jml);
-        $('#permintaan_aturan_pakai').val(item.aturan_pakai !== '-' ? item.aturan_pakai : '');
-
-        // Pulihkan centang jam
-        $('.chk-jam-order').prop('checked', false);
-        for (let h = 0; h <= 23; h++) {
-            const key = `jam${String(h).padStart(2, '0')}`;
-            if (item.jam && item.jam[key]) {
-                $(`#chk_${key}`).prop('checked', true);
-            }
-        }
-
-        // Tampilkan tombol Batal & ubah tombol Simpan
-        $('#btnBatalEditItem').removeClass('d-none');
-        $('#btnTambahItemPermintaan').removeClass('btn-success').addClass('btn-warning')
-            .html('<i class="bi bi-check-lg me-1"></i> Simpan Perubahan');
-
-        // Scroll halus ke form dan fokus ke input jumlah
-        document.getElementById('formPermintaanObatRanap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        $('#permintaan_jml').focus().select();
-    }
-
-    // Ubah Jumlah Langsung dari Tabel (Inline)
-    function ubahJumlahItemSementara(idx, val) {
-        const num = parseFloat(val);
-        if (isNaN(num) || num <= 0) {
-            Swal.fire('Peringatan', 'Jumlah obat harus lebih dari 0.', 'warning');
-            renderTableItemSementara();
-            return;
-        }
-
-        if (listOrderSementara[idx]) {
-            listOrderSementara[idx].jml = num;
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                html: `<span style="font-size: 11.5px;">Jumlah <b>${listOrderSementara[idx].nama_brng}</b> diubah jadi <b>${num}</b></span>`,
-                showConfirmButton: false,
-                timer: 1300,
-                timerProgressBar: true,
-                width: 'auto'
-            });
-        }
-    }
-
-    // Render tabel item sementara
-    function renderTableItemSementara() {
-        const $tbody = $('#tbodyItemPermintaanSementara');
-        $tbody.empty();
-
-        if (listOrderSementara.length === 0) {
-            $tbody.html(`
+            if (listOrderSementara.length === 0) {
+                $tbody.html(`
                 <tr>
                     <td colspan="8" class="text-center text-muted py-3">
                         <i>Belum ada item obat yang ditambahkan. Silahkan cari obat dan klik Tambahkan.</i>
                     </td>
                 </tr>
             `);
-            $('#lblTotalItemOrder').text('Total Item: 0 obat');
-            return;
-        }
-
-        listOrderSementara.forEach(function(item, idx) {
-            let jamBadge = '-';
-            if (item.jam_list && item.jam_list.length > 0) {
-                jamBadge = item.jam_list.map(j => `<span class="badge bg-success-subtle text-success border border-success me-1" style="font-size: 9.5px;">${j}</span>`).join(' ');
+                $('#lblTotalItemOrder').text('Total Item: 0 obat');
+                return;
             }
 
-            const tr = `
+            listOrderSementara.forEach(function(item, idx) {
+                let jamBadge = '-';
+                if (item.jam_list && item.jam_list.length > 0) {
+                    jamBadge = item.jam_list.map(j => `<span class="badge bg-success-subtle text-success border border-success me-1" style="font-size: 9.5px;">${j}</span>`).join(' ');
+                }
+
+                const tr = `
                 <tr class="${itemEditIndex === idx ? 'table-warning' : ''}">
                     <td class="text-center">${idx + 1}</td>
                     <td class="font-monospace">${item.kode_brng}</td>
@@ -673,135 +680,139 @@
                     </td>
                 </tr>
             `;
-            $tbody.append(tr);
-        });
+                $tbody.append(tr);
+            });
 
-        $('#lblTotalItemOrder').text(`Total Item: ${listOrderSementara.length} obat`);
-    }
-
-    function hapusItemSementara(index) {
-        if (itemEditIndex === index) {
-            batalEditItemSementara();
-        }
-        listOrderSementara.splice(index, 1);
-        renderTableItemSementara();
-    }
-
-    // Kirim Permintaan ke Farmasi (Submit Order)
-    $('#btnKirimOrderFarmasi').on('click', function() {
-        const noRawat = $('#permintaan_no_rawat').val();
-        const kdDokter = $('#permintaan_kd_dokter').val();
-
-        if (listOrderSementara.length === 0) {
-            Swal.fire('Peringatan', 'Daftar item order masih kosong.', 'warning');
-            return;
+            $('#lblTotalItemOrder').text(`Total Item: ${listOrderSementara.length} obat`);
         }
 
-        if (!noRawat || !kdDokter) {
-            Swal.fire('Peringatan', 'Data dokter DPJP / No. Rawat belum terisi.', 'warning');
-            return;
-        }
-
-        Swal.fire({
-            title: 'Kirim Permintaan?',
-            text: `Kirim ${listOrderSementara.length} item obat ke Farmasi untuk disiapkan?`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#198754',
-            confirmButtonText: 'Ya, Kirim ke Farmasi',
-            cancelButtonText: 'Batal'
-        }).then((res) => {
-            if (res.isConfirmed) {
-                // Siapkan payload
-                const obatPayload = listOrderSementara.map(i => {
-                    const row = {
-                        kode_brng: i.kode_brng,
-                        jml: i.jml,
-                        aturan_pakai: i.aturan_pakai,
-                    };
-                    for (let h = 0; h <= 23; h++) {
-                        const key = `jam${String(h).padStart(2, '0')}`;
-                        row[key] = i.jam[key] ? 'true' : 'false';
-                    }
-                    return row;
-                });
-
-                $.ajax({
-                    url: "{{ route('ranap.permintaan-obat.simpan') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        no_rawat: noRawat,
-                        kd_dokter: kdDokter,
-                        obat: obatPayload
-                    },
-                    beforeSend: function() {
-                        Swal.fire({
-                            title: 'Mengirim...',
-                            allowOutsideClick: false,
-                            didOpen: () => { Swal.showLoading(); }
-                        });
-                    },
-                    success: function(response) {
-                        listOrderSementara = [];
-                        renderTableItemSementara();
-                        // Pindah ke Tab Riwayat
-                        $('#tab-riwayat-order-link').tab('show');
-                        loadRiwayatPermintaanPasien();
-
-                        Swal.fire({
-                            title: 'Berhasil!',
-                            text: response.message || 'Permintaan berhasil dikirim ke Farmasi',
-                            icon: 'success',
-                            showCancelButton: true,
-                            confirmButtonText: '<i class="bi bi-printer me-1"></i> Cetak Lembar Order',
-                            cancelButtonText: 'Tutup',
-                            confirmButtonColor: '#198754'
-                        }).then((res) => {
-                            if (res.isConfirmed && response.no_permintaan) {
-                                cetakPermintaanObat(response.no_permintaan);
-                            }
-                        });
-                    },
-                    error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Terjadi kesalahan saat menyimpan permintaan.';
-                        Swal.fire('Gagal!', msg, 'error');
-                    }
-                });
+        function hapusItemSementara(index) {
+            if (itemEditIndex === index) {
+                batalEditItemSementara();
             }
-        });
-    });
+            listOrderSementara.splice(index, 1);
+            renderTableItemSementara();
+        }
 
-    // Pindah ke tab riwayat
-    $('#tab-riwayat-order-link').on('shown.bs.tab', function() {
-        loadRiwayatPermintaanPasien();
-    });
+        // Kirim Permintaan ke Farmasi (Submit Order)
+        $('#btnKirimOrderFarmasi').on('click', function() {
+            const noRawat = $('#permintaan_no_rawat').val();
+            const kdDokter = $('#permintaan_kd_dokter').val();
 
-    // Load Riwayat Permintaan Pasien
-    function loadRiwayatPermintaanPasien() {
-        const noRawat = $('#permintaan_no_rawat').val();
-        if (!noRawat) return;
-
-        const $tbody = $('#tbodyRiwayatPermintaanRanap');
-        $tbody.html('<tr><td colspan="6" class="text-center text-muted py-3">Memuat riwayat permintaan...</td></tr>');
-
-        $.get("{{ route('ranap.permintaan-obat.get') }}", { no_rawat: noRawat }).done(function(data) {
-            $tbody.empty();
-            if (!data || data.length === 0) {
-                $tbody.html('<tr><td colspan="6" class="text-center text-muted py-3"><i>Belum ada permintaan obat untuk pasien ini.</i></td></tr>');
+            if (listOrderSementara.length === 0) {
+                Swal.fire('Peringatan', 'Daftar item order masih kosong.', 'warning');
                 return;
             }
 
-            data.forEach(function(row) {
-                const statusBadge = row.status === 'Sudah'
-                    ? '<span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Sudah Disiapkan Farmasi</span>'
-                    : '<span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i> Menunggu Farmasi</span>';
+            if (!noRawat || !kdDokter) {
+                Swal.fire('Peringatan', 'Data dokter DPJP / No. Rawat belum terisi.', 'warning');
+                return;
+            }
 
-                const waktuValidasi = row.status === 'Sudah'
-                    ? `<small class="text-success">${row.tgl_validasi} ${row.jam_validasi}</small>`
-                    : '<span class="text-muted">-</span>';
+            Swal.fire({
+                title: 'Kirim Permintaan?',
+                text: `Kirim ${listOrderSementara.length} item obat ke Farmasi untuk disiapkan?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#198754',
+                confirmButtonText: 'Ya, Kirim ke Farmasi',
+                cancelButtonText: 'Batal'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    // Siapkan payload
+                    const obatPayload = listOrderSementara.map(i => {
+                        const row = {
+                            kode_brng: i.kode_brng,
+                            jml: i.jml,
+                            aturan_pakai: i.aturan_pakai,
+                        };
+                        for (let h = 0; h <= 23; h++) {
+                            const key = `jam${String(h).padStart(2, '0')}`;
+                            row[key] = i.jam[key] ? 'true' : 'false';
+                        }
+                        return row;
+                    });
 
-                let aksiHtml = `
+                    $.ajax({
+                        url: "{{ route('ranap.permintaan-obat.simpan') }}",
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_rawat: noRawat,
+                            kd_dokter: kdDokter,
+                            obat: obatPayload
+                        },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Mengirim...',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                        },
+                        success: function(response) {
+                            listOrderSementara = [];
+                            renderTableItemSementara();
+                            // Pindah ke Tab Riwayat
+                            $('#tab-riwayat-order-link').tab('show');
+                            loadRiwayatPermintaanPasien();
+
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: response.message || 'Permintaan berhasil dikirim ke Farmasi',
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonText: '<i class="bi bi-printer me-1"></i> Cetak Lembar Order',
+                                cancelButtonText: 'Tutup',
+                                confirmButtonColor: '#198754'
+                            }).then((res) => {
+                                if (res.isConfirmed && response.no_permintaan) {
+                                    cetakPermintaanObat(response.no_permintaan);
+                                }
+                            });
+                        },
+                        error: function(xhr) {
+                            const msg = xhr.responseJSON?.message || 'Terjadi kesalahan saat menyimpan permintaan.';
+                            Swal.fire('Gagal!', msg, 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Pindah ke tab riwayat
+        $('#tab-riwayat-order-link').on('shown.bs.tab', function() {
+            loadRiwayatPermintaanPasien();
+        });
+
+        // Load Riwayat Permintaan Pasien
+        function loadRiwayatPermintaanPasien() {
+            const noRawat = $('#permintaan_no_rawat').val();
+            if (!noRawat) return;
+
+            const $tbody = $('#tbodyRiwayatPermintaanRanap');
+            $tbody.html('<tr><td colspan="6" class="text-center text-muted py-3">Memuat riwayat permintaan...</td></tr>');
+
+            $.get("{{ route('ranap.permintaan-obat.get') }}", {
+                no_rawat: noRawat
+            }).done(function(data) {
+                $tbody.empty();
+                if (!data || data.length === 0) {
+                    $tbody.html('<tr><td colspan="6" class="text-center text-muted py-3"><i>Belum ada permintaan obat untuk pasien ini.</i></td></tr>');
+                    return;
+                }
+
+                data.forEach(function(row) {
+                    const statusBadge = row.status === 'Sudah' ?
+                        '<span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Sudah Disiapkan Farmasi</span>' :
+                        '<span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i> Menunggu Farmasi</span>';
+
+                    const waktuValidasi = row.status === 'Sudah' ?
+                        `<small class="text-success">${row.tgl_validasi} ${row.jam_validasi}</small>` :
+                        '<span class="text-muted">-</span>';
+
+                    let aksiHtml = `
                     <button type="button" class="btn btn-outline-info btn-sm py-0 px-2" onclick="showDetailPermintaanObat('${row.no_permintaan}')" title="Lihat Detail Item">
                         <i class="bi bi-eye"></i> Detail
                     </button>
@@ -810,15 +821,15 @@
                     </button>
                 `;
 
-                if (row.status === 'Belum') {
-                    aksiHtml += `
+                    if (row.status === 'Belum') {
+                        aksiHtml += `
                         <button type="button" class="btn btn-outline-danger btn-sm py-0 px-2 ms-1" onclick="hapusPermintaanObat('${row.no_permintaan}')" title="Batalkan Permintaan">
                             <i class="bi bi-trash"></i> Batalkan
                         </button>
                     `;
-                }
+                    }
 
-                const tr = `
+                    const tr = `
                     <tr>
                         <td class="font-monospace fw-bold text-primary">${row.no_permintaan}</td>
                         <td>${row.tgl_permintaan} ${row.jam}</td>
@@ -828,83 +839,83 @@
                         <td class="text-center">${aksiHtml}</td>
                     </tr>
                 `;
-                $tbody.append(tr);
+                    $tbody.append(tr);
+                });
             });
-        });
-    }
+        }
 
-    // Detail Permintaan Modal
-    function showDetailPermintaanObat(noPermintaan) {
-        $.get(`{{ url('/ranap/permintaan-obat/detail') }}/${noPermintaan}`).done(function(res) {
-            $('#lblDetNoPermintaan').text(res.no_permintaan);
-            $('#lblDetTglJam').text(`${res.tgl_permintaan} ${res.jam}`);
-            $('#lblDetStatus').html(res.status === 'Sudah' ? '<span class="badge bg-success">Sudah Disiapkan</span>' : '<span class="badge bg-warning text-dark">Menunggu Farmasi</span>');
-            $('#lblDetDokter').text(res.dokter?.nm_dokter || '-');
+        // Detail Permintaan Modal
+        function showDetailPermintaanObat(noPermintaan) {
+            $.get(`{{ url('/ranap/permintaan-obat/detail') }}/${noPermintaan}`).done(function(res) {
+                $('#lblDetNoPermintaan').text(res.no_permintaan);
+                $('#lblDetTglJam').text(`${res.tgl_permintaan} ${res.jam}`);
+                $('#lblDetStatus').html(res.status === 'Sudah' ? '<span class="badge bg-success">Sudah Disiapkan</span>' : '<span class="badge bg-warning text-dark">Menunggu Farmasi</span>');
+                $('#lblDetDokter').text(res.dokter?.nm_dokter || '-');
 
-            const $tbody = $('#tbodyDetailObatPermintaan');
-            $tbody.empty();
+                const $tbody = $('#tbodyDetailObatPermintaan');
+                $tbody.empty();
 
-            const details = res.detail_permintaan || [];
-            if (details.length === 0) {
-                $tbody.html('<tr><td colspan="6" class="text-center text-muted py-3">Tidak ada data detail obat.</td></tr>');
-            } else {
-                window.activePermintaanItems = window.activePermintaanItems || {};
-                details.forEach(function(det, idx) {
-                    window.activePermintaanItems[`${res.no_permintaan}_${det.kode_brng}`] = det;
+                const details = res.detail_permintaan || [];
+                if (details.length === 0) {
+                    $tbody.html('<tr><td colspan="6" class="text-center text-muted py-3">Tidak ada data detail obat.</td></tr>');
+                } else {
+                    window.activePermintaanItems = window.activePermintaanItems || {};
+                    details.forEach(function(det, idx) {
+                        window.activePermintaanItems[`${res.no_permintaan}_${det.kode_brng}`] = det;
 
-                    // Extract active hours
-                    const jamList = [];
-                    for (let h = 0; h <= 23; h++) {
-                        const key = `jam${String(h).padStart(2, '0')}`;
-                        if (det[key] === 'true') {
-                            jamList.push(`${String(h).padStart(2, '0')}:00`);
+                        // Extract active hours
+                        const jamList = [];
+                        for (let h = 0; h <= 23; h++) {
+                            const key = `jam${String(h).padStart(2, '0')}`;
+                            if (det[key] === 'true') {
+                                jamList.push(`${String(h).padStart(2, '0')}:00`);
+                            }
                         }
-                    }
-                    const jamStr = jamList.length > 0 ? jamList.map(j => `<span class="badge bg-success-subtle text-success border border-success me-0.5" style="font-size: 9px;">${j}</span>`).join(' ') : '-';
+                        const jamStr = jamList.length > 0 ? jamList.map(j => `<span class="badge bg-success-subtle text-success border border-success me-0.5" style="font-size: 9px;">${j}</span>`).join(' ') : '-';
 
-                    const kdDokter = res.kd_dokter || res.reg_periksa?.kd_dokter || '';
-                    const namaDokter = res.dokter?.nm_dokter || res.reg_periksa?.dokter?.nm_dokter || '';
-                    const safeNoRawat = (res.no_rawat || '').replace(/'/g, "\\'");
-                    const safeKdDokter = (kdDokter || '').replace(/'/g, "\\'");
-                    const safeNamaDokter = (namaDokter || '').replace(/'/g, "\\'");
+                        const kdDokter = res.kd_dokter || res.reg_periksa?.kd_dokter || '';
+                        const namaDokter = res.dokter?.nm_dokter || res.reg_periksa?.dokter?.nm_dokter || '';
+                        const safeNoRawat = (res.no_rawat || '').replace(/'/g, "\\'");
+                        const safeKdDokter = (kdDokter || '').replace(/'/g, "\\'");
+                        const safeNamaDokter = (namaDokter || '').replace(/'/g, "\\'");
 
-                    // Cek apakah item ini pernah disubstitusi
-                    const riwayatSub = (res.riwayat_substitusi || []).find(s => s.kode_brng_pengganti === det.kode_brng);
-                    let badgeSubstitusi = '';
-                    if (riwayatSub) {
-                        badgeSubstitusi = `
+                        // Cek apakah item ini pernah disubstitusi
+                        const riwayatSub = (res.riwayat_substitusi || []).find(s => s.kode_brng_pengganti === det.kode_brng);
+                        let badgeSubstitusi = '';
+                        if (riwayatSub) {
+                            badgeSubstitusi = `
                             <div class="mt-1">
                                 <span class="badge bg-warning-subtle text-dark border border-warning" style="font-size: 10px;" title="Disubstitusi dari: ${riwayatSub.nama_brng_asal} | ACC DPJP: ${riwayatSub.nama_dokter}">
                                     <i class="bi bi-arrow-left-right text-warning"></i> Ganti dari: <b>${riwayatSub.nama_brng_asal}</b>
                                 </span>
                             </div>
                         `;
-                    }
+                        }
 
-                    let btnSubstitusiHtml = '-';
-                    let btnEditAturanHtml = '';
-                    let btnEditJmlHtml = '';
-                    if (res.status === 'Belum') {
-                        const safeNama = (det.data_barang?.nama_brng || det.kode_brng).replace(/'/g, "\\'");
-                        const safeAturan = (det.aturan_pakai || '').replace(/'/g, "\\'");
-                        btnSubstitusiHtml = `
+                        let btnSubstitusiHtml = '-';
+                        let btnEditAturanHtml = '';
+                        let btnEditJmlHtml = '';
+                        if (res.status === 'Belum') {
+                            const safeNama = (det.data_barang?.nama_brng || det.kode_brng).replace(/'/g, "\\'");
+                            const safeAturan = (det.aturan_pakai || '').replace(/'/g, "\\'");
+                            btnSubstitusiHtml = `
                             <button type="button" class="btn btn-outline-warning btn-sm py-0 px-1 text-dark" onclick="bukaModalSubstitusi('${res.no_permintaan}', '${det.kode_brng}', '${safeNama}', ${det.jml}, '${safeAturan}', '${safeNoRawat}', '${safeKdDokter}', '${safeNamaDokter}')" title="Substitusi / Ganti Obat">
                                 <i class="bi bi-arrow-left-right"></i> Ganti
                             </button>
                         `;
-                        btnEditAturanHtml = `
+                            btnEditAturanHtml = `
                             <button type="button" class="btn btn-outline-primary btn-sm py-0 px-1.5 ms-1 text-nowrap rounded shadow-none" onclick="triggerEditAturanPakai('${res.no_permintaan}', '${det.kode_brng}')" title="Ubah Jumlah, Aturan Pakai &amp; Jam" style="font-size: 11px;">
                                 <i class="bi bi-pencil-square"></i> Ubah
                             </button>
                         `;
-                        btnEditJmlHtml = `
+                            btnEditJmlHtml = `
                             <button type="button" class="btn btn-outline-secondary btn-sm p-0 px-1 border-0 text-muted shadow-none" onclick="quickEditJumlah('${res.no_permintaan}', '${det.kode_brng}', ${det.jml}, '${safeNama}')" title="Sesuaikan Jumlah Obat" style="font-size: 11px;">
                                 <i class="bi bi-pencil text-primary"></i>
                             </button>
                         `;
-                    }
+                        }
 
-                    const tr = `
+                        const tr = `
                         <tr>
                             <td class="text-center">${idx + 1}</td>
                             <td class="font-monospace">${det.kode_brng}</td>
@@ -929,62 +940,64 @@
                             <td class="text-center">${btnSubstitusiHtml}</td>
                         </tr>
                     `;
-                    $tbody.append(tr);
-                });
-            }
+                        $tbody.append(tr);
+                    });
+                }
 
-            $('#modalDetailPermintaanObat').modal('show');
-        });
-    }
-
-    // Hapus Permintaan Obat (Belum Dilayani)
-    function hapusPermintaanObat(noPermintaan) {
-        Swal.fire({
-            title: 'Batalkan Permintaan?',
-            text: `Apakah Anda yakin ingin membatalkan & menghapus order ${noPermintaan}?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc3545',
-            confirmButtonText: 'Ya, Batalkan',
-            cancelButtonText: 'Tutup'
-        }).then((res) => {
-            if (res.isConfirmed) {
-                $.ajax({
-                    url: `{{ url('/ranap/permintaan-obat') }}/${noPermintaan}`,
-                    type: "DELETE",
-                    data: { _token: "{{ csrf_token() }}" },
-                    success: function(resp) {
-                        Swal.fire('Dihapus!', resp.message || 'Permintaan berhasil dihapus', 'success');
-                        loadRiwayatPermintaanPasien();
-                    },
-                    error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Gagal menghapus permintaan';
-                        Swal.fire('Gagal!', msg, 'error');
-                    }
-                });
-            }
-        });
-    }
-
-    // Cetak Lembar Resmi Permintaan Stok Obat Pasien
-    function cetakPermintaanObat(noPermintaan) {
-        if (!noPermintaan || noPermintaan === '-') {
-            Swal.fire('Peringatan', 'Nomor permintaan tidak valid.', 'warning');
-            return;
+                $('#modalDetailPermintaanObat').modal('show');
+            });
         }
-        const printUrl = `{{ route('ranap.permintaan-obat.cetak') }}?no_permintaan=${encodeURIComponent(noPermintaan)}`;
-        window.open(printUrl, '_blank');
-    }
 
-    // Cetak Permintaan Terakhir untuk Pasien Aktif
-    function cetakPermintaanTerbaru() {
-        const noRawat = $('#permintaan_no_rawat').val();
-        if (!noRawat) {
-            Swal.fire('Peringatan', 'No. Rawat tidak valid.', 'warning');
-            return;
+        // Hapus Permintaan Obat (Belum Dilayani)
+        function hapusPermintaanObat(noPermintaan) {
+            Swal.fire({
+                title: 'Batalkan Permintaan?',
+                text: `Apakah Anda yakin ingin membatalkan & menghapus order ${noPermintaan}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Ya, Batalkan',
+                cancelButtonText: 'Tutup'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    $.ajax({
+                        url: `{{ url('/ranap/permintaan-obat') }}/${noPermintaan}`,
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(resp) {
+                            Swal.fire('Dihapus!', resp.message || 'Permintaan berhasil dihapus', 'success');
+                            loadRiwayatPermintaanPasien();
+                        },
+                        error: function(xhr) {
+                            const msg = xhr.responseJSON?.message || 'Gagal menghapus permintaan';
+                            Swal.fire('Gagal!', msg, 'error');
+                        }
+                    });
+                }
+            });
         }
-        const printUrl = `{{ route('ranap.permintaan-obat.cetak') }}?no_rawat=${encodeURIComponent(noRawat)}`;
-        window.open(printUrl, '_blank');
-    }
-</script>
+
+        // Cetak Lembar Resmi Permintaan Stok Obat Pasien
+        function cetakPermintaanObat(noPermintaan) {
+            if (!noPermintaan || noPermintaan === '-') {
+                Swal.fire('Peringatan', 'Nomor permintaan tidak valid.', 'warning');
+                return;
+            }
+            const printUrl = `{{ route('ranap.permintaan-obat.cetak') }}?no_permintaan=${encodeURIComponent(noPermintaan)}`;
+            window.open(printUrl, '_blank');
+        }
+
+        // Cetak Permintaan Terakhir untuk Pasien Aktif
+        function cetakPermintaanTerbaru() {
+            const noRawat = $('#permintaan_no_rawat').val();
+            if (!noRawat) {
+                Swal.fire('Peringatan', 'No. Rawat tidak valid.', 'warning');
+                return;
+            }
+            const printUrl = `{{ route('ranap.permintaan-obat.cetak') }}?no_rawat=${encodeURIComponent(noRawat)}`;
+            window.open(printUrl, '_blank');
+        }
+    </script>
 @endpush

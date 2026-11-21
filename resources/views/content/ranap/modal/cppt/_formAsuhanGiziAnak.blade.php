@@ -22,28 +22,28 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <label for="antropometri_bb">Berat Badan</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <x-input id="antropometri_bb" name="antropometri_bb" style="font-size: 11px" value="0" />
                             <span class="input-group-text"><label for="">kg</label></span>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <label for="antropometri_tb">Tinggi/Panjang Badan</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <x-input id="antropometri_tb" name="antropometri_tb" style="font-size: 11px" value="0" />
                             <span class="input-group-text"><label for="">cm</label></span>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <label for="antropometri_imt">IMT</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <x-input id="antropometri_imt" name="antropometri_imt" style="font-size: 11px" value="0" />
                             <span class="input-group-text"><label for="">kg/m<sup>2</sup></label></span>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <label for="antropometri_zscore_bbperu">ZScore BB/U</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <x-input id="antropometri_zscore_bbperu" name="antropometri_zscore_bbperu"
                                 style="font-size: 11px" value="0" />
                             <span class="input-group-text"><label for="">SD</label></span>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <label for="antropometri_zscore_bbpertb">ZScore BB/TB</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <x-input id="antropometri_zscore_bbpertb" name="antropometri_zscore_bbpertb"
                                 style="font-size: 11px" value="0" />
                             <span class="input-group-text"><label for="">SD</label></span>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <label for="antropometri_zscore_imtperu">ZScore IMT/U</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <x-input id="antropometri_zscore_imtperu" name="antropometri_zscore_imtperu"
                                 style="font-size: 11px" value="0" />
                             <span class="input-group-text"><label for="">SD</label></span>
@@ -67,7 +67,7 @@
                     </div>
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <label for="antropometri_bbideal">BB Ideal</label>
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <x-input id="antropometri_bbideal" name="antropometri_bbideal" style="font-size: 11px"
                                 value="0" />
                             <span class="input-group-text"><label for="">KG</label></span>
@@ -91,25 +91,25 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="fisik_klinis_td">Tekanan Darah</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input id="fisik_klinis_td" name="fisik_klinis_td" style="font-size:11px"
                                 value=0></x-input>
                             <x-input-group-text for="fisik_klinis_td" label="mmHG"></x-input-group-text>
                         </x-input-group>
                         <label for="fisik_klinis_nadi">Nadi</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input id="fisik_klinis_nadi" name="fisik_klinis_nadi" style="font-size:11px"
                                 value=0></x-input>
                             <x-input-group-text for="fisik_klinis_nadi" label="x/menit"></x-input-group-text>
                         </x-input-group>
                         <label for="fisik_klinis_suhu">Suhu</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input id="fisik_klinis_suhu" name="fisik_klinis_suhu" style="font-size:11px"
                                 value=0></x-input>
                             <x-input-group-text for="fisik_klinis_suhu" label="°C"></x-input-group-text>
                         </x-input-group>
                         <label for="fisik_klinis_pernapasan">Pernapasan</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input id="fisik_klinis_pernapasan" name="fisik_klinis_pernapasan" style="font-size:11px"
                                 value=0></x-input>
                             <x-input-group-text for="fisik_klinis_pernapasan" label="x/menit"></x-input-group-text>
@@ -172,7 +172,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <label for="fisik_klinis_diare">Diare</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-radio-group name="fisik_klinis_diare"
                                 :radios="[
                                     'fisik_klinis_diare1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
@@ -209,7 +209,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <label for="riwayat_gizi_alergi_makanan">Alergi Makanan</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-radio-group name="riwayat_gizi_alergi_makanan"
                                 :radios="[
                                     'riwayat_gizi_alergi_makanan1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
@@ -222,7 +222,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <label for="riwayat_gizi_ketidaksukaan_makanan">Ketidaksukaan Makanan</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-radio-group name="riwayat_gizi_ketidaksukaan_makanan"
                                 :radios="[
                                     'riwayat_gizi_ketidaksukaan_makanan1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
@@ -235,7 +235,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <label for="riwayat_gizi_pantangan_makanan">Pantangan Makanan</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-radio-group name="riwayat_gizi_pantangan_makanan"
                                 :radios="[
                                     'riwayat_gizi_pantangan_makanan1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
@@ -248,7 +248,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <label for="riwayat_gizi_pola_makan">Pola Makan</label>
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-radio-group name="riwayat_gizi_pola_makan"
                                 :radios="[
                                     'riwayat_gizi_pola_makan1_anak' => ['value' => 'Ada', 'label' => 'Ada', 'checked' => true],
@@ -286,26 +286,26 @@
                             <div class="col-lg-6 col-md-12 col-sm-12">
                                 <label for=""><strong>Perhitungan Kebutuhan Zat Gizi</strong></label><br>
                                 <label for="intervensi_gizi_energi">Energi</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-input id="intervensi_gizi_energi" name="intervensi_gizi_energi"
                                         style="font-size: 11px" />
                                     <x-input-group-text for="intervensi_gizi_energi" label="Kkal"></x-input-group-text>
                                 </x-input-group>
                                 <label for="intervensi_gizi_protein">Protein</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-input id="intervensi_gizi_protein" name="intervensi_gizi_protein"
                                         style="font-size: 11px" />
                                     <x-input-group-text for="intervensi_gizi_proterin"
                                         label="gram"></x-input-group-text>
                                 </x-input-group>
                                 <label for="intervensi_gizi_lemak">Lemak</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-input id="intervensi_gizi_lemak" name="intervensi_gizi_lemak"
                                         style="font-size: 11px" />
                                     <x-input-group-text for="intervensi_gizi_lemak" label="gram"></x-input-group-text>
                                 </x-input-group>
                                 <label for="intervensi_gizi_karbohidrat">Karbohidrat</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-input id="intervensi_gizi_karbohidrat" name="intervensi_gizi_karbohidrat"
                                         style="font-size: 11px" />
                                     <x-input-group-text for="intervensi_gizi_karbohidrat"
@@ -318,7 +318,7 @@
                                 <x-input id="intervensi_gizi_jenis_diet" name="intervensi_gizi_jenis_diet"
                                     style="font-size: 11px" />
                                 <label for="intervensi_gizi_bentuk_makanan">Bentuk Makanan</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-radio-group name="intervensi_gizi_bentuk_makanan"
                                         :radios="[
                                             'intervensi_gizi_bentuk_makanan1_anak' => ['value' => 'Biasa', 'label' => 'Biasa', 'checked' => true],
@@ -327,7 +327,7 @@
                                         ]" />
                                 </x-input-group>
                                 <label for="intervensi_gizi_rute_pemberian">Rute Pemberian</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-radio-group name="intervensi_gizi_rute_pemberian"
                                         :radios="[
                                             'intervensi_gizi_rute_pemberian1_anak' => ['value' => 'Oral', 'label' => 'Oral', 'checked' => true],
@@ -336,7 +336,7 @@
                                         ]" />
                                 </x-input-group>
                                 <label for="intervensi_gizi_frekuensi">Frekuensi</label>
-                                <x-input-group class="input-group-sm">
+                                <x-input-group>
                                     <x-input id="intervensi_gizi_frekuensi" name="intervensi_gizi_frekuensi"
                                         style="font-size: 11px" />
                                     <x-input-group-text for="intervensi_gizi_frekuensi"

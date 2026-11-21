@@ -321,7 +321,7 @@
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label small fw-bold mb-1">Petugas yang Menyerahkan :</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
                                                 <input type="text" class="form-control" name="nip_menyerahkan" id="transfer_nip_menyerahkan" readonly style="max-width: 130px;" />
                                                 <input type="text" class="form-control" name="nama_menyerahkan" id="transfer_nama_menyerahkan" readonly />
@@ -329,7 +329,7 @@
                                         </div>
                                         <div class="col-md-6 position-relative">
                                             <label class="form-label small fw-bold mb-1">Petugas yang Menerima :</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <span class="input-group-text"><i class="bi bi-person-check-fill"></i></span>
                                                 <input type="text" class="form-control" name="nip_menerima" id="transfer_nip_menerima" placeholder="NIP..." readonly style="max-width: 130px;" />
                                                 <input type="text" class="form-control" name="nama_menerima" id="transfer_nama_menerima" placeholder="Ketik nama petugas penerima..." onkeyup="cariPetugasTransfer(this.value)" autocomplete="off" />
@@ -360,7 +360,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr><td colspan="7" class="text-center text-muted">Memuat data riwayat transfer...</td></tr>
+                                            <tr>
+                                                <td colspan="7" class="text-center text-muted">Memuat data riwayat transfer...</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -447,7 +449,7 @@
                 $('#transfer_pasien_nama').text(p.nm_pasien || '-');
                 $('#transfer_pasien_norm').text(p.no_rkm_medis || '-');
                 $('#transfer_pasien_norawat').text(no_rawat);
-                
+
                 const tglLahir = p.tgl_lahir ? splitTanggal(p.tgl_lahir) : '-';
                 const jk = p.jk === 'L' ? 'Laki-Laki' : 'Perempuan';
                 $('#transfer_pasien_ttl_jk').text(`${tglLahir} (${p.umur || '-'}) / ${jk}`);
@@ -517,7 +519,9 @@
         }
 
         function loadRiwayatTransfer(no_rawat) {
-            $.get(`${url}/transfer/pasien/antar-ruang`, { no_rawat: no_rawat }).done((response) => {
+            $.get(`${url}/transfer/pasien/antar-ruang`, {
+                no_rawat: no_rawat
+            }).done((response) => {
                 listTransferCache = response || [];
                 $('#countRiwayatTransfer').text(listTransferCache.length);
                 refreshBtnCetakTransfer();
@@ -679,7 +683,9 @@
             }
 
             const formData = $('#formTransferPasien').serializeArray();
-            let postData = { _token: "{{ csrf_token() }}" };
+            let postData = {
+                _token: "{{ csrf_token() }}"
+            };
             $.each(formData, function(i, field) {
                 postData[field.name] = field.value;
             });
@@ -825,7 +831,9 @@
                 let pos = getTransferCanvasTouchPos(canvasTransfer, e);
                 ctxTransfer.beginPath();
                 ctxTransfer.moveTo(pos.x, pos.y);
-            }, { passive: false });
+            }, {
+                passive: false
+            });
 
             canvasTransfer.addEventListener('touchmove', function(e) {
                 e.preventDefault();
@@ -836,12 +844,16 @@
                 ctxTransfer.strokeStyle = '#000';
                 ctxTransfer.lineTo(pos.x, pos.y);
                 ctxTransfer.stroke();
-            }, { passive: false });
+            }, {
+                passive: false
+            });
 
             canvasTransfer.addEventListener('touchend', function(e) {
                 e.preventDefault();
                 isDrawingTransfer = false;
-            }, { passive: false });
+            }, {
+                passive: false
+            });
         }
 
         function bukaModalTtdTransfer() {

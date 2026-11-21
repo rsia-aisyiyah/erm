@@ -350,7 +350,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold small mb-1">Tinggal Bersama</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <select class="form-select" name="tinggal_dengan" id="askep_tinggal_dengan" style="max-width: 45%;">
                                                     <option value="Orang Tua" selected>Orang Tua</option>
                                                     <option value="Suami / Istri">Suami / Istri</option>
@@ -363,7 +363,7 @@
 
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold small mb-1">Nilai Budaya / Khusus</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <select class="form-select" name="budaya" id="askep_budaya" style="max-width: 45%;">
                                                     <option value="Tidak Ada" selected>Tidak Ada</option>
                                                     <option value="Ada">Ada</option>
@@ -373,7 +373,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold small mb-1">Pendidikan Penanggung Jawab</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <select class="form-select" name="pendidikan_pj" id="askep_pendidikan_pj" style="max-width: 45%;">
                                                     <option value="SMA" selected>SMA / Sederajat</option>
                                                     <option value="SD">SD</option>
@@ -390,7 +390,7 @@
 
                                         <div class="col-12">
                                             <label class="form-label fw-semibold small mb-1">Edukasi Diberikan Kepada</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <select class="form-select" name="edukasi" id="askep_edukasi" style="max-width: 35%;">
                                                     <option value="Pasien" selected>Pasien</option>
                                                     <option value="Keluarga">Keluarga</option>
@@ -432,7 +432,7 @@
                                         </div>
                                         <div class="col-md-4 col-12">
                                             <label class="form-label fw-semibold small mb-1">Alat Bantu Jalan</label>
-                                            <div class="input-group input-group-sm">
+                                            <div class="input-group">
                                                 <select class="form-select" name="alat_bantu" id="askep_alat_bantu" style="max-width: 50%;">
                                                     <option value="Tidak" selected>Tidak</option>
                                                     <option value="Ya">Ya</option>
@@ -784,12 +784,14 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div class="input-group input-group-sm mb-2">
+                                                <div class="input-group mb-2">
                                                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
                                                     <input type="text" class="form-control border-start-0" id="cariMasalahAskep" placeholder="Cari masalah keperawatan...">
                                                 </div>
                                                 <div id="containerListMasalahAskep" style="max-height: 380px; overflow-y: auto;">
-                                                    <div class="text-center text-muted py-3 small"><div class="spinner-border spinner-border-sm me-1"></div> Memuat daftar masalah keperawatan...</div>
+                                                    <div class="text-center text-muted py-3 small">
+                                                        <div class="spinner-border spinner-border-sm me-1"></div> Memuat daftar masalah keperawatan...
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -847,40 +849,40 @@
 </div>
 
 @push('script')
-<script>
-    // Global Cache Master Masalah & Rencana Keperawatan IGD
-    window.masterAskepIgdData = [];
+    <script>
+        // Global Cache Master Masalah & Rencana Keperawatan IGD
+        window.masterAskepIgdData = [];
 
-    // Load Master Masalah & Rencana saat startup
-    function loadMasterAskepIgd(callback) {
-        if (window.masterAskepIgdData && window.masterAskepIgdData.length > 0) {
-            if (callback) callback(window.masterAskepIgdData);
-            return;
+        // Load Master Masalah & Rencana saat startup
+        function loadMasterAskepIgd(callback) {
+            if (window.masterAskepIgdData && window.masterAskepIgdData.length > 0) {
+                if (callback) callback(window.masterAskepIgdData);
+                return;
+            }
+
+            $.get('/erm/ugd/asesmen/keperawatan/master').done(function(response) {
+                window.masterAskepIgdData = response || [];
+                if (callback) callback(window.masterAskepIgdData);
+            }).fail(function() {
+                $('#containerListMasalahAskep').html('<div class="text-danger small py-2">Gagal memuat master masalah keperawatan.</div>');
+            });
         }
 
-        $.get('/erm/ugd/asesmen/keperawatan/master').done(function(response) {
-            window.masterAskepIgdData = response || [];
-            if (callback) callback(window.masterAskepIgdData);
-        }).fail(function() {
-            $('#containerListMasalahAskep').html('<div class="text-danger small py-2">Gagal memuat master masalah keperawatan.</div>');
-        });
-    }
+        // Render Master Masalah ke dalam Checklist UI
+        function renderMasterMasalahList(selectedMasalahCodes = [], selectedRencanaCodes = []) {
+            const container = $('#containerListMasalahAskep');
+            container.empty();
 
-    // Render Master Masalah ke dalam Checklist UI
-    function renderMasterMasalahList(selectedMasalahCodes = [], selectedRencanaCodes = []) {
-        const container = $('#containerListMasalahAskep');
-        container.empty();
+            if (!window.masterAskepIgdData || window.masterAskepIgdData.length === 0) {
+                container.html('<div class="text-muted small py-2">Tidak ada data master masalah keperawatan.</div>');
+                return;
+            }
 
-        if (!window.masterAskepIgdData || window.masterAskepIgdData.length === 0) {
-            container.html('<div class="text-muted small py-2">Tidak ada data master masalah keperawatan.</div>');
-            return;
-        }
-
-        let html = '';
-        window.masterAskepIgdData.forEach(function(m) {
-            const isChecked = selectedMasalahCodes.includes(m.kode_masalah);
-            const displayNum = String(m.urutan || m.kode_masalah).padStart(3, '0');
-            html += `
+            let html = '';
+            window.masterAskepIgdData.forEach(function(m) {
+                const isChecked = selectedMasalahCodes.includes(m.kode_masalah);
+                const displayNum = String(m.urutan || m.kode_masalah).padStart(3, '0');
+                html += `
                 <div class="card item-masalah-card border ${isChecked ? 'border-primary bg-primary-subtle' : 'border-light-subtle bg-white'} shadow-sm mb-1 p-2" id="card_masalah_${m.kode_masalah}" onclick="toggleMasalahCheckbox('${m.kode_masalah}')" style="cursor: pointer; transition: all 0.2s;">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="form-check mb-0">
@@ -895,97 +897,97 @@
                     </div>
                 </div>
             `;
-        });
+            });
 
-        container.html(html);
-        updateBadgeCountMasalah();
-        renderRencanaIntervensiList(selectedRencanaCodes);
-    }
-
-    // Toggle Masalah via Card / Label Click
-    function toggleMasalahCheckbox(kodeMasalah) {
-        const $chk = $(`#masalah_${kodeMasalah}`);
-        const nextState = !$chk.is(':checked');
-        $chk.prop('checked', nextState);
-        onMasalahChanged(kodeMasalah, nextState);
-    }
-
-    // Handler Utama Saat Masalah Berubah
-    function onMasalahChanged(kodeMasalah, isChecked) {
-        const $card = $(`#card_masalah_${kodeMasalah}`);
-        const $chk = $(`#masalah_${kodeMasalah}`);
-        $chk.prop('checked', isChecked);
-
-        if (isChecked) {
-            $card.removeClass('border-light-subtle bg-white').addClass('border-primary bg-primary-subtle');
-            $card.find('.badge-rencana-count').removeClass('bg-light text-muted border').addClass('bg-primary');
-        } else {
-            $card.removeClass('border-primary bg-primary-subtle').addClass('border-light-subtle bg-white');
-            $card.find('.badge-rencana-count').removeClass('bg-primary').addClass('bg-light text-muted border');
+            container.html(html);
+            updateBadgeCountMasalah();
+            renderRencanaIntervensiList(selectedRencanaCodes);
         }
 
-        updateBadgeCountMasalah();
+        // Toggle Masalah via Card / Label Click
+        function toggleMasalahCheckbox(kodeMasalah) {
+            const $chk = $(`#masalah_${kodeMasalah}`);
+            const nextState = !$chk.is(':checked');
+            $chk.prop('checked', nextState);
+            onMasalahChanged(kodeMasalah, nextState);
+        }
 
-        // Kumpulkan rencana aktif saat ini
-        let activeRencana = [];
-        $('.chk-rencana-askep:checked').each(function() {
-            activeRencana.push($(this).val());
-        });
+        // Handler Utama Saat Masalah Berubah
+        function onMasalahChanged(kodeMasalah, isChecked) {
+            const $card = $(`#card_masalah_${kodeMasalah}`);
+            const $chk = $(`#masalah_${kodeMasalah}`);
+            $chk.prop('checked', isChecked);
 
-        // Jika masalah di-uncheck, bersihkan rencana yang terkait masalah tersebut
-        if (!isChecked) {
-            const m = (window.masterAskepIgdData || []).find(item => item.kode_masalah === kodeMasalah);
-            if (m && m.master_rencana) {
-                const rencanaToRemove = m.master_rencana.map(r => r.kode_rencana);
-                activeRencana = activeRencana.filter(rCode => !rencanaToRemove.includes(rCode));
+            if (isChecked) {
+                $card.removeClass('border-light-subtle bg-white').addClass('border-primary bg-primary-subtle');
+                $card.find('.badge-rencana-count').removeClass('bg-light text-muted border').addClass('bg-primary');
+            } else {
+                $card.removeClass('border-primary bg-primary-subtle').addClass('border-light-subtle bg-white');
+                $card.find('.badge-rencana-count').removeClass('bg-primary').addClass('bg-light text-muted border');
             }
+
+            updateBadgeCountMasalah();
+
+            // Kumpulkan rencana aktif saat ini
+            let activeRencana = [];
+            $('.chk-rencana-askep:checked').each(function() {
+                activeRencana.push($(this).val());
+            });
+
+            // Jika masalah di-uncheck, bersihkan rencana yang terkait masalah tersebut
+            if (!isChecked) {
+                const m = (window.masterAskepIgdData || []).find(item => item.kode_masalah === kodeMasalah);
+                if (m && m.master_rencana) {
+                    const rencanaToRemove = m.master_rencana.map(r => r.kode_rencana);
+                    activeRencana = activeRencana.filter(rCode => !rencanaToRemove.includes(rCode));
+                }
+            }
+
+            renderRencanaIntervensiList(activeRencana);
         }
 
-        renderRencanaIntervensiList(activeRencana);
-    }
+        // Update Badge Total Masalah Terpilih
+        function updateBadgeCountMasalah() {
+            const totalChecked = $('.chk-masalah-askep:checked').length;
+            $('#badgeCountMasalahTerpilih').text(`${totalChecked} Terpilih`);
+        }
 
-    // Update Badge Total Masalah Terpilih
-    function updateBadgeCountMasalah() {
-        const totalChecked = $('.chk-masalah-askep:checked').length;
-        $('#badgeCountMasalahTerpilih').text(`${totalChecked} Terpilih`);
-    }
+        // Render Rencana Intervensi yang aktif sesuai masalah yang dicentang
+        function renderRencanaIntervensiList(selectedRencanaCodes = []) {
+            const container = $('#containerListRencanaAskep');
+            const checkedMasalah = [];
 
-    // Render Rencana Intervensi yang aktif sesuai masalah yang dicentang
-    function renderRencanaIntervensiList(selectedRencanaCodes = []) {
-        const container = $('#containerListRencanaAskep');
-        const checkedMasalah = [];
+            $('.chk-masalah-askep:checked').each(function() {
+                checkedMasalah.push($(this).val());
+            });
 
-        $('.chk-masalah-askep:checked').each(function() {
-            checkedMasalah.push($(this).val());
-        });
-
-        if (checkedMasalah.length === 0) {
-            container.html(`
+            if (checkedMasalah.length === 0) {
+                container.html(`
                 <div class="text-center text-muted py-4 small">
                     <i class="bi bi-arrow-left-circle me-1"></i> Centang salah satu masalah di sebelah kiri untuk memunculkan dan memilih rencana intervensi.
                 </div>
             `);
-            return;
-        }
+                return;
+            }
 
-        let html = '';
-        window.masterAskepIgdData.forEach(function(m) {
-            if (checkedMasalah.includes(m.kode_masalah)) {
-                const displayNum = String(m.urutan || m.kode_masalah).padStart(3, '0');
-                // Periksa apakah semua rencana dalam masalah ini tercentang
-                const totalRencana = (m.master_rencana || []).length;
-                let checkedCount = 0;
-                if (m.master_rencana && m.master_rencana.length > 0) {
-                    m.master_rencana.forEach(function(r) {
-                        const isRencanaChecked = (selectedRencanaCodes && selectedRencanaCodes.length > 0)
-                            ? selectedRencanaCodes.includes(r.kode_rencana)
-                            : false;
-                        if (isRencanaChecked) checkedCount++;
-                    });
-                }
-                const isAllChecked = totalRencana > 0 && (checkedCount === totalRencana);
+            let html = '';
+            window.masterAskepIgdData.forEach(function(m) {
+                if (checkedMasalah.includes(m.kode_masalah)) {
+                    const displayNum = String(m.urutan || m.kode_masalah).padStart(3, '0');
+                    // Periksa apakah semua rencana dalam masalah ini tercentang
+                    const totalRencana = (m.master_rencana || []).length;
+                    let checkedCount = 0;
+                    if (m.master_rencana && m.master_rencana.length > 0) {
+                        m.master_rencana.forEach(function(r) {
+                            const isRencanaChecked = (selectedRencanaCodes && selectedRencanaCodes.length > 0) ?
+                                selectedRencanaCodes.includes(r.kode_rencana) :
+                                false;
+                            if (isRencanaChecked) checkedCount++;
+                        });
+                    }
+                    const isAllChecked = totalRencana > 0 && (checkedCount === totalRencana);
 
-                html += `
+                    html += `
                     <div class="card border border-primary-subtle shadow-sm mb-2">
                         <div class="card-header bg-primary bg-opacity-10 py-1 px-2 d-flex align-items-center justify-content-between">
                             <span class="small fw-bold text-primary" style="font-size: 11.5px;">
@@ -1001,13 +1003,13 @@
                         <div class="card-body p-2 bg-white" id="rencana_group_${m.kode_masalah}">
                 `;
 
-                if (m.master_rencana && m.master_rencana.length > 0) {
-                    m.master_rencana.forEach(function(r) {
-                        const isRencanaChecked = (selectedRencanaCodes && selectedRencanaCodes.length > 0)
-                            ? selectedRencanaCodes.includes(r.kode_rencana)
-                            : false;
+                    if (m.master_rencana && m.master_rencana.length > 0) {
+                        m.master_rencana.forEach(function(r) {
+                            const isRencanaChecked = (selectedRencanaCodes && selectedRencanaCodes.length > 0) ?
+                                selectedRencanaCodes.includes(r.kode_rencana) :
+                                false;
 
-                        html += `
+                            html += `
                             <div class="form-check small py-1 mb-0 border-bottom border-light">
                                 <input class="form-check-input chk-rencana-askep" type="checkbox" name="rencana_keperawatan[]" value="${r.kode_rencana}" id="rencana_${r.kode_rencana}" ${isRencanaChecked ? 'checked' : ''} onchange="onRencanaItemChanged('${m.kode_masalah}')" style="cursor: pointer;">
                                 <label class="form-check-label cursor-pointer text-dark ms-1" for="rencana_${r.kode_rencana}" style="font-size: 11.5px; cursor: pointer;">
@@ -1015,701 +1017,703 @@
                                 </label>
                             </div>
                         `;
-                    });
-                } else {
-                    html += `<div class="text-muted small fst-italic" style="font-size: 11px;">Belum ada master intervensi spesifik.</div>`;
-                }
+                        });
+                    } else {
+                        html += `<div class="text-muted small fst-italic" style="font-size: 11px;">Belum ada master intervensi spesifik.</div>`;
+                    }
 
-                html += `
+                    html += `
                         </div>
                     </div>
                 `;
-            }
+                }
+            });
+
+            container.html(html);
+        }
+
+        // Filter Live Search Masalah Keperawatan
+        $(document).on('input', '#cariMasalahAskep', function() {
+            const query = $(this).val().toLowerCase().trim();
+            $('.item-masalah-card').each(function() {
+                const text = $(this).text().toLowerCase();
+                if (text.includes(query)) {
+                    $(this).removeClass('d-none');
+                } else {
+                    $(this).addClass('d-none');
+                }
+            });
         });
 
-        container.html(html);
-    }
+        // Toggle Pilih Semua Checkbox di Header Grup Rencana
+        function toggleSelectAllRencana(el, kodeMasalah) {
+            const isChecked = $(el).is(':checked');
+            $(`#rencana_group_${kodeMasalah} input.chk-rencana-askep`).prop('checked', isChecked);
+        }
 
-    // Filter Live Search Masalah Keperawatan
-    $(document).on('input', '#cariMasalahAskep', function() {
-        const query = $(this).val().toLowerCase().trim();
-        $('.item-masalah-card').each(function() {
-            const text = $(this).text().toLowerCase();
-            if (text.includes(query)) {
-                $(this).removeClass('d-none');
+        // Update Checkbox "Pilih Semua" di Header jika ada checkbox rencana yang diubah secara manual
+        function onRencanaItemChanged(kodeMasalah) {
+            const $group = $(`#rencana_group_${kodeMasalah}`);
+            const checkboxes = $group.find('input.chk-rencana-askep');
+            const allChecked = checkboxes.length > 0 && (checkboxes.length === checkboxes.filter(':checked').length);
+            $(`#selectAll_${kodeMasalah}`).prop('checked', allChecked);
+        }
+
+        // Tombol Global Reset / Uncheck Semua Masalah Keperawatan
+        function resetSemuaMasalahAskep() {
+            $('#containerListMasalahAskep .chk-masalah-askep').prop('checked', false);
+            $('#containerListMasalahAskep .item-masalah-card').removeClass('border-primary bg-primary-subtle').addClass('border-light-subtle bg-white');
+            $('#containerListMasalahAskep .badge-rencana-count').removeClass('bg-primary').addClass('bg-light text-muted border');
+            $('#cariMasalahAskep').val('');
+            $('#containerListMasalahAskep .item-masalah-card').removeClass('d-none');
+            updateBadgeCountMasalah();
+            renderRencanaIntervensiList([]);
+        }
+
+        // Tombol Salin Rencana Intervensi ke Textarea Catatan
+        $(document).on('click', '#btnSalinRencanaKeCatatan', function() {
+            const listText = [];
+            $('.chk-rencana-askep:checked').each(function() {
+                const labelText = $(this).siblings('label').text().trim();
+                if (labelText) listText.push(`- ${labelText}`);
+            });
+
+            if (listText.length === 0) {
+                Swal.fire('Informasi', 'Belum ada rencana intervensi yang dicentang.', 'info');
+                return;
+            }
+
+            const currentNote = $('#askep_rencana').val().trim();
+            const generatedText = listText.join('\n');
+
+            if (!currentNote || currentNote === '-') {
+                $('#askep_rencana').val(generatedText);
             } else {
-                $(this).addClass('d-none');
+                $('#askep_rencana').val(currentNote + '\n' + generatedText);
             }
-        });
-    });
 
-    // Toggle Pilih Semua Checkbox di Header Grup Rencana
-    function toggleSelectAllRencana(el, kodeMasalah) {
-        const isChecked = $(el).is(':checked');
-        $(`#rencana_group_${kodeMasalah} input.chk-rencana-askep`).prop('checked', isChecked);
-    }
-
-    // Update Checkbox "Pilih Semua" di Header jika ada checkbox rencana yang diubah secara manual
-    function onRencanaItemChanged(kodeMasalah) {
-        const $group = $(`#rencana_group_${kodeMasalah}`);
-        const checkboxes = $group.find('input.chk-rencana-askep');
-        const allChecked = checkboxes.length > 0 && (checkboxes.length === checkboxes.filter(':checked').length);
-        $(`#selectAll_${kodeMasalah}`).prop('checked', allChecked);
-    }
-
-    // Tombol Global Reset / Uncheck Semua Masalah Keperawatan
-    function resetSemuaMasalahAskep() {
-        $('#containerListMasalahAskep .chk-masalah-askep').prop('checked', false);
-        $('#containerListMasalahAskep .item-masalah-card').removeClass('border-primary bg-primary-subtle').addClass('border-light-subtle bg-white');
-        $('#containerListMasalahAskep .badge-rencana-count').removeClass('bg-primary').addClass('bg-light text-muted border');
-        $('#cariMasalahAskep').val('');
-        $('#containerListMasalahAskep .item-masalah-card').removeClass('d-none');
-        updateBadgeCountMasalah();
-        renderRencanaIntervensiList([]);
-    }
-
-    // Tombol Salin Rencana Intervensi ke Textarea Catatan
-    $(document).on('click', '#btnSalinRencanaKeCatatan', function() {
-        const listText = [];
-        $('.chk-rencana-askep:checked').each(function() {
-            const labelText = $(this).siblings('label').text().trim();
-            if (labelText) listText.push(`- ${labelText}`);
+            Swal.fire({
+                icon: 'success',
+                title: 'Tersalin!',
+                text: 'Rencana intervensi berhasil disalin ke Catatan Tambahan.',
+                timer: 1200,
+                showConfirmButton: false
+            });
         });
 
-        if (listText.length === 0) {
-            Swal.fire('Informasi', 'Belum ada rencana intervensi yang dicentang.', 'info');
-            return;
+        // Auto-Trigger Masalah Keperawatan dari Hasil Pengkajian Fisik
+        function autoTriggerMasalah(kodeMasalah, shouldCheck = true) {
+            const $chk = $(`#masalah_${kodeMasalah}`);
+            if ($chk.length > 0) {
+                if (shouldCheck && !$chk.is(':checked')) {
+                    onMasalahChanged(kodeMasalah, true);
+                }
+            }
         }
 
-        const currentNote = $('#askep_rencana').val().trim();
-        const generatedText = listText.join('\n');
-
-        if (!currentNote || currentNote === '-') {
-            $('#askep_rencana').val(generatedText);
-        } else {
-            $('#askep_rencana').val(currentNote + '\n' + generatedText);
-        }
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Tersalin!',
-            text: 'Rencana intervensi berhasil disalin ke Catatan Tambahan.',
-            timer: 1200,
-            showConfirmButton: false
+        // Listener Auto-Trigger
+        $('#askep_nyeri').on('change', function() {
+            if ($(this).val() === 'Nyeri Akut') {
+                autoTriggerMasalah('006', true); // 006 - Nyeri Akut
+            }
         });
-    });
 
-    // Auto-Trigger Masalah Keperawatan dari Hasil Pengkajian Fisik
-    function autoTriggerMasalah(kodeMasalah, shouldCheck = true) {
-        const $chk = $(`#masalah_${kodeMasalah}`);
-        if ($chk.length > 0) {
-            if (shouldCheck && !$chk.is(':checked')) {
-                onMasalahChanged(kodeMasalah, true);
+        $('#askep_integumen').on('change', function() {
+            if ($(this).val() !== 'TAK') {
+                autoTriggerMasalah('007', true); // 007 - Gangguan Integritas Kulit
+            }
+        });
+
+        // Handler Perubahan Status Perdarahan
+        function onPerdarahanChanged(elem) {
+            const val = $(elem).val();
+            if (val === 'Ada') {
+                $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').prop('disabled', false);
+                if ($('#askep_jumlah_perdarahan').val() === '-') {
+                    $('#askep_jumlah_perdarahan').val('');
+                }
+                if ($('#askep_warna_perdarahan').val() === '-') {
+                    $('#askep_warna_perdarahan').val('');
+                }
+                $('#askep_jumlah_perdarahan').focus();
+                autoTriggerMasalah('008', true); // 008 - Risiko Perdarahan
+            } else {
+                $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').prop('disabled', true).val('-');
             }
         }
-    }
 
-    // Listener Auto-Trigger
-    $('#askep_nyeri').on('change', function() {
-        if ($(this).val() === 'Nyeri Akut') {
-            autoTriggerMasalah('006', true); // 006 - Nyeri Akut
-        }
-    });
+        $(document).on('change', '#askep_perdarahan', function() {
+            onPerdarahanChanged(this);
+        });
 
-    $('#askep_integumen').on('change', function() {
-        if ($(this).val() !== 'TAK') {
-            autoTriggerMasalah('007', true); // 007 - Gangguan Integritas Kulit
-        }
-    });
-
-    // Handler Perubahan Status Perdarahan
-    function onPerdarahanChanged(elem) {
-        const val = $(elem).val();
-        if (val === 'Ada') {
-            $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').prop('disabled', false);
-            if ($('#askep_jumlah_perdarahan').val() === '-') {
-                $('#askep_jumlah_perdarahan').val('');
+        $('#askep_turgor').on('change', function() {
+            if ($(this).val() === 'Menurun') {
+                autoTriggerMasalah('004', true); // 004 - Risiko Ketidakseimbangan Cairan
             }
-            if ($('#askep_warna_perdarahan').val() === '-') {
-                $('#askep_warna_perdarahan').val('');
+        });
+
+        $('#askep_kbab').on('change blur', function() {
+            const val = $(this).val().toLowerCase();
+            if (val.includes('cair') || val.includes('diare')) {
+                autoTriggerMasalah('009', true); // 009 - Diare
             }
-            $('#askep_jumlah_perdarahan').focus();
-            autoTriggerMasalah('008', true); // 008 - Risiko Perdarahan
-        } else {
-            $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').prop('disabled', true).val('-');
-        }
-    }
+        });
 
-    $(document).on('change', '#askep_perdarahan', function() {
-        onPerdarahanChanged(this);
-    });
+        // Auto-Kalkulasi Risiko Jatuh (Get Up and Go Test)
+        function updateKalkulasiRisikoJatuh() {
+            const a = $('input[name="berjalan_a"]:checked').val() === 'Ya';
+            const b = $('input[name="berjalan_b"]:checked').val() === 'Ya';
+            const c = $('input[name="berjalan_c"]:checked').val() === 'Ya';
 
-    $('#askep_turgor').on('change', function() {
-        if ($(this).val() === 'Menurun') {
-            autoTriggerMasalah('004', true); // 004 - Risiko Ketidakseimbangan Cairan
-        }
-    });
+            let hasil = 'Tidak beresiko (tidak ditemukan a dan b)';
+            let badgeClass = 'bg-success';
+            let badgeText = 'Tidak Berisiko';
 
-    $('#askep_kbab').on('change blur', function() {
-        const val = $(this).val().toLowerCase();
-        if (val.includes('cair') || val.includes('diare')) {
-            autoTriggerMasalah('009', true); // 009 - Diare
-        }
-    });
+            if (a && b) {
+                hasil = 'Resiko tinggi (ditemukan a dan b)';
+                badgeClass = 'bg-danger';
+                badgeText = 'Risiko Tinggi';
+            } else if (a || b || c) {
+                hasil = 'Resiko rendah (ditemukan a/b)';
+                badgeClass = 'bg-warning text-dark';
+                badgeText = 'Risiko Rendah';
+            }
 
-    // Auto-Kalkulasi Risiko Jatuh (Get Up and Go Test)
-    function updateKalkulasiRisikoJatuh() {
-        const a = $('input[name="berjalan_a"]:checked').val() === 'Ya';
-        const b = $('input[name="berjalan_b"]:checked').val() === 'Ya';
-        const c = $('input[name="berjalan_c"]:checked').val() === 'Ya';
-
-        let hasil = 'Tidak beresiko (tidak ditemukan a dan b)';
-        let badgeClass = 'bg-success';
-        let badgeText = 'Tidak Berisiko';
-
-        if (a && b) {
-            hasil = 'Resiko tinggi (ditemukan a dan b)';
-            badgeClass = 'bg-danger';
-            badgeText = 'Risiko Tinggi';
-        } else if (a || b || c) {
-            hasil = 'Resiko rendah (ditemukan a/b)';
-            badgeClass = 'bg-warning text-dark';
-            badgeText = 'Risiko Rendah';
+            $('#askep_hasil').val(hasil);
+            $('#badgeHasilRisikoJatuh').attr('class', `badge ${badgeClass} px-2 py-1`).text(badgeText);
         }
 
-        $('#askep_hasil').val(hasil);
-        $('#badgeHasilRisikoJatuh').attr('class', `badge ${badgeClass} px-2 py-1`).text(badgeText);
-    }
+        $(document).on('change', '.hitung-risiko-jatuh', function() {
+            updateKalkulasiRisikoJatuh();
+        });
 
-    $(document).on('change', '.hitung-risiko-jatuh', function() {
-        updateKalkulasiRisikoJatuh();
-    });
+        // Update Visual Skala Nyeri Slider
+        function updateVisualSkalaNyeri(val) {
+            const intVal = parseInt(val) || 0;
+            let badgeClass = 'bg-success';
+            let text = `${intVal} - Tidak Nyeri`;
 
-    // Update Visual Skala Nyeri Slider
-    function updateVisualSkalaNyeri(val) {
-        const intVal = parseInt(val) || 0;
-        let badgeClass = 'bg-success';
-        let text = `${intVal} - Tidak Nyeri`;
+            if (intVal >= 7) {
+                badgeClass = 'bg-danger';
+                text = `${intVal} - Nyeri Berat / Hebat`;
+            } else if (intVal >= 4) {
+                badgeClass = 'bg-warning text-dark';
+                text = `${intVal} - Nyeri Sedang`;
+            } else if (intVal >= 1) {
+                badgeClass = 'bg-info text-dark';
+                text = `${intVal} - Nyeri Ringan`;
+            }
 
-        if (intVal >= 7) {
-            badgeClass = 'bg-danger';
-            text = `${intVal} - Nyeri Berat / Hebat`;
-        } else if (intVal >= 4) {
-            badgeClass = 'bg-warning text-dark';
-            text = `${intVal} - Nyeri Sedang`;
-        } else if (intVal >= 1) {
-            badgeClass = 'bg-info text-dark';
-            text = `${intVal} - Nyeri Ringan`;
+            $('#badgeSkalaNyeri').attr('class', `badge ${badgeClass} px-3 py-1 fs-6`).text(text);
         }
 
-        $('#badgeSkalaNyeri').attr('class', `badge ${badgeClass} px-3 py-1 fs-6`).text(text);
-    }
+        $('#askep_skala_nyeri').on('input change', function() {
+            updateVisualSkalaNyeri($(this).val());
+        });
 
-    $('#askep_skala_nyeri').on('input change', function() {
-        updateVisualSkalaNyeri($(this).val());
-    });
+        // Toggle Skrining Nyeri
+        $('#askep_nyeri').on('change', function() {
+            if ($(this).val() === 'Tidak Ada Nyeri') {
+                $('#panel_pqrst').slideUp(200);
+                $('#askep_skala_nyeri').val(0).trigger('change');
+            } else {
+                $('#panel_pqrst').slideDown(200);
+                if (parseInt($('#askep_skala_nyeri').val()) === 0) {
+                    $('#askep_skala_nyeri').val(3).trigger('change');
+                }
+            }
+        });
 
-    // Toggle Skrining Nyeri
-    $('#askep_nyeri').on('change', function() {
-        if ($(this).val() === 'Tidak Ada Nyeri') {
-            $('#panel_pqrst').slideUp(200);
+        // Toggle Status Kehamilan
+        $('#askep_status_kehamilan').on('change', function() {
+            if ($(this).val() === 'Hamil') {
+                $('#panel_detail_hamil').slideDown(200);
+            } else {
+                $('#panel_detail_hamil').slideUp(200);
+            }
+        });
+
+        // Set Semua Normal Fisik
+        function setSemuaNormalFisikAskep() {
+            $('#askep_tekanan').val('TAK').trigger('change');
+            $('#askep_pupil').val('Isokor').trigger('change');
+            $('#askep_neurosensorik').val('TAK').trigger('change');
+            $('#askep_integumen').val('TAK').trigger('change');
+            $('#askep_turgor').val('Baik').trigger('change');
+            $('#askep_edema').val('Tidak Ada').trigger('change');
+            $('#askep_mukosa').val('Lembab').trigger('change');
+            $('#askep_intoksikasi').val('Tidak Ada').trigger('change');
+            $('#askep_perdarahan').val('Tidak Ada').trigger('change');
+            $('#askep_jumlah_perdarahan').val('-').prop('disabled', true);
+            $('#askep_warna_perdarahan').val('-').prop('disabled', true);
+            $('#askep_bab').val('1');
+            $('#askep_xbab').val('Hari');
+            $('#askep_kbab').val('Lunak');
+            $('#askep_wbab').val('Kuning');
+            $('#askep_bak').val('4');
+            $('#askep_xbak').val('Hari');
+            $('#askep_wbak').val('Kuning Jernih');
+            $('#askep_lbak').val('-');
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: 'Pemeriksaan fisik diset Normal / TAK.',
+                timer: 1000,
+                showConfirmButton: false
+            });
+        }
+
+        // Switch Kategori Skrining Gizi (Dewasa / Anak)
+        function setKategoriSkriningGizi(kategori) {
+            $('#gizi_kategori_pasien').val(kategori);
+            if (kategori === 'Anak') {
+                $('#btnGiziAnak').addClass('active');
+                $('#btnGiziDewasa').removeClass('active');
+                $('#panel_gizi_anak').removeClass('d-none');
+                $('#panel_gizi_dewasa').addClass('d-none');
+                hitungSkorGiziAnak();
+            } else {
+                $('#btnGiziDewasa').addClass('active');
+                $('#btnGiziAnak').removeClass('active');
+                $('#panel_gizi_dewasa').removeClass('d-none');
+                $('#panel_gizi_anak').addClass('d-none');
+                hitungSkorGiziDewasa();
+            }
+        }
+
+        // Kalkulasi Skrining Gizi Dewasa (MST)
+        function hitungSkorGiziDewasa() {
+            const sg1Val = $('#select_gizi_dewasa_sg1').val() || 'Tidak Ada';
+            const sg1Score = parseInt($('#select_gizi_dewasa_sg1 option:selected').data('nilai') || 0);
+            const sg2Val = $('#select_gizi_dewasa_sg2').val() || 'Tidak';
+            const sg2Score = parseInt($('#select_gizi_dewasa_sg2 option:selected').data('nilai') || 0);
+
+            $('#gizi_sg1').val(sg1Val);
+            $('#gizi_nilai1').val(sg1Score);
+            $('#gizi_sg2').val(sg2Val);
+            $('#gizi_nilai2').val(sg2Score);
+            $('#gizi_sg3').val('-');
+            $('#gizi_nilai3').val(0);
+            $('#gizi_sg4').val('-');
+            $('#gizi_nilai4').val(0);
+
+            const total = sg1Score + sg2Score;
+            $('#gizi_total_skor').val(total);
+            $('#display_gizi_total_skor').text(total);
+
+            let risiko = 'Risiko Rendah';
+            let badgeClass = 'badge bg-success px-2 py-1';
+            if (total >= 2) {
+                risiko = 'Risiko Tinggi';
+                badgeClass = 'badge bg-danger px-2 py-1';
+            }
+            $('#gizi_tingkat_risiko').val(risiko);
+            $('#display_gizi_tingkat_risiko').attr('class', badgeClass).text(risiko);
+        }
+
+        // Kalkulasi Skrining Gizi Anak (Strong-Kids)
+        function hitungSkorGiziAnak() {
+            const sg1Val = $('#select_gizi_anak_sg1').val() || 'Tidak';
+            const sg1Score = parseInt($('#select_gizi_anak_sg1 option:selected').data('nilai') || 0);
+            const sg2Val = $('#select_gizi_anak_sg2').val() || 'Tidak';
+            const sg2Score = parseInt($('#select_gizi_anak_sg2 option:selected').data('nilai') || 0);
+            const sg3Val = $('#select_gizi_anak_sg3').val() || 'Tidak';
+            const sg3Score = parseInt($('#select_gizi_anak_sg3 option:selected').data('nilai') || 0);
+            const sg4Val = $('#select_gizi_anak_sg4').val() || 'Tidak';
+            const sg4Score = parseInt($('#select_gizi_anak_sg4 option:selected').data('nilai') || 0);
+
+            $('#gizi_sg1').val(sg1Val);
+            $('#gizi_nilai1').val(sg1Score);
+            $('#gizi_sg2').val(sg2Val);
+            $('#gizi_nilai2').val(sg2Score);
+            $('#gizi_sg3').val(sg3Val);
+            $('#gizi_nilai3').val(sg3Score);
+            $('#gizi_sg4').val(sg4Val);
+            $('#gizi_nilai4').val(sg4Score);
+
+            const total = sg1Score + sg2Score + sg3Score + sg4Score;
+            $('#gizi_total_skor').val(total);
+            $('#display_gizi_total_skor').text(total);
+
+            let risiko = 'Risiko Rendah';
+            let badgeClass = 'badge bg-success px-2 py-1';
+            if (total >= 4) {
+                risiko = 'Risiko Tinggi';
+                badgeClass = 'badge bg-danger px-2 py-1';
+            } else if (total >= 1) {
+                risiko = 'Risiko Sedang';
+                badgeClass = 'badge bg-warning text-dark px-2 py-1';
+            }
+            $('#gizi_tingkat_risiko').val(risiko);
+            $('#display_gizi_tingkat_risiko').attr('class', badgeClass).text(risiko);
+        }
+
+        // Reset Form Asesmen Keperawatan UGD
+        function resetFormAskepUgd() {
+            $('#formAskepUgd')[0].reset();
+
+            // Reset Anamnesis
+            $('#askep_keluhan_utama, #askep_rpd, #askep_rpo').val('-');
+
+            // Reset Kehamilan
+            $('#askep_status_kehamilan').val('Tidak Hamil').trigger('change');
+            $('#askep_gravida, #askep_para, #askep_abortus, #askep_hpht').val('-');
+
+            // Reset Fisik
+            $('#askep_tekanan').val('TAK');
+            $('#askep_pupil').val('Isokor');
+            $('#askep_neurosensorik').val('TAK');
+            $('#askep_integumen').val('TAK');
+            $('#askep_turgor').val('Baik');
+            $('#askep_edema').val('Tidak Ada');
+            $('#askep_mukosa').val('Lembab');
+            $('#askep_intoksikasi').val('Tidak Ada');
+            $('#askep_perdarahan').val('Tidak Ada');
+            $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').val('-').prop('disabled', true);
+            $('#askep_bab, #askep_xbab, #askep_kbab, #askep_wbab, #askep_bak, #askep_xbak, #askep_wbak, #askep_lbak').val('');
+
+            // Reset Psikososial & Fungsional
+            $('#askep_psikologis').val('Tidak Ada Masalah');
+            $('#askep_jiwa').val('Tidak');
+            $('#askep_perilaku, #askep_dilaporkan, #askep_sebutkan').val('-');
+            $('#askep_hubungan').val('Harmonis');
+            $('#askep_tinggal_dengan').val('Orang Tua');
+            $('#askep_ket_tinggal, #askep_budaya, #askep_ket_budaya, #askep_ket_pendidikan_pj, #askep_ket_edukasi, #askep_ket_bantu, #askep_ket_lapor').val('-');
+            $('#askep_pendidikan_pj').val('SMA');
+            $('#askep_edukasi').val('Pasien');
+            $('#askep_kemampuan').val('Mandiri');
+            $('#askep_aktifitas').val('Berjalan');
+            $('#askep_alat_bantu').val('Tidak');
+            $('#askep_lapor').val('Tidak');
+
+            // Reset Risiko Jatuh
+            $('input[name="berjalan_a"][value="Tidak"]').prop('checked', true);
+            $('input[name="berjalan_b"][value="Tidak"]').prop('checked', true);
+            $('input[name="berjalan_c"][value="Tidak"]').prop('checked', true);
+            updateKalkulasiRisikoJatuh();
+
+            // Reset Nyeri
+            $('#askep_nyeri').val('Tidak Ada Nyeri').trigger('change');
             $('#askep_skala_nyeri').val(0).trigger('change');
-        } else {
-            $('#panel_pqrst').slideDown(200);
-            if (parseInt($('#askep_skala_nyeri').val()) === 0) {
-                $('#askep_skala_nyeri').val(3).trigger('change');
-            }
-        }
-    });
+            $('#askep_provokes').val('Proses Penyakit');
+            $('#askep_ket_provokes, #askep_ket_quality, #askep_lokasi, #askep_ket_nyeri, #askep_ket_dokter').val('-');
+            $('#askep_quality').val('Seperti Tertusuk');
+            $('#askep_menyebar').val('Tidak');
+            $('#askep_durasi').val('-');
+            $('#askep_nyeri_hilang').val('Istirahat');
+            $('#askep_pada_dokter').val('Tidak');
 
-    // Toggle Status Kehamilan
-    $('#askep_status_kehamilan').on('change', function() {
-        if ($(this).val() === 'Hamil') {
-            $('#panel_detail_hamil').slideDown(200);
-        } else {
-            $('#panel_detail_hamil').slideUp(200);
-        }
-    });
-
-    // Set Semua Normal Fisik
-    function setSemuaNormalFisikAskep() {
-        $('#askep_tekanan').val('TAK').trigger('change');
-        $('#askep_pupil').val('Isokor').trigger('change');
-        $('#askep_neurosensorik').val('TAK').trigger('change');
-        $('#askep_integumen').val('TAK').trigger('change');
-        $('#askep_turgor').val('Baik').trigger('change');
-        $('#askep_edema').val('Tidak Ada').trigger('change');
-        $('#askep_mukosa').val('Lembab').trigger('change');
-        $('#askep_intoksikasi').val('Tidak Ada').trigger('change');
-        $('#askep_perdarahan').val('Tidak Ada').trigger('change');
-        $('#askep_jumlah_perdarahan').val('-').prop('disabled', true);
-        $('#askep_warna_perdarahan').val('-').prop('disabled', true);
-        $('#askep_bab').val('1');
-        $('#askep_xbab').val('Hari');
-        $('#askep_kbab').val('Lunak');
-        $('#askep_wbab').val('Kuning');
-        $('#askep_bak').val('4');
-        $('#askep_xbak').val('Hari');
-        $('#askep_wbak').val('Kuning Jernih');
-        $('#askep_lbak').val('-');
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: 'Pemeriksaan fisik diset Normal / TAK.',
-            timer: 1000,
-            showConfirmButton: false
-        });
-    }
-
-    // Switch Kategori Skrining Gizi (Dewasa / Anak)
-    function setKategoriSkriningGizi(kategori) {
-        $('#gizi_kategori_pasien').val(kategori);
-        if (kategori === 'Anak') {
-            $('#btnGiziAnak').addClass('active');
-            $('#btnGiziDewasa').removeClass('active');
-            $('#panel_gizi_anak').removeClass('d-none');
-            $('#panel_gizi_dewasa').addClass('d-none');
-            hitungSkorGiziAnak();
-        } else {
-            $('#btnGiziDewasa').addClass('active');
-            $('#btnGiziAnak').removeClass('active');
-            $('#panel_gizi_dewasa').removeClass('d-none');
-            $('#panel_gizi_anak').addClass('d-none');
+            // Reset Skrining Gizi
+            setKategoriSkriningGizi('Dewasa');
+            $('#select_gizi_dewasa_sg1').val('Tidak Ada');
+            $('#select_gizi_dewasa_sg2').val('Tidak');
+            $('#select_gizi_anak_sg1, #select_gizi_anak_sg2, #select_gizi_anak_sg3, #select_gizi_anak_sg4').val('Tidak');
             hitungSkorGiziDewasa();
-        }
-    }
+            $('#gizi_lapor').val('Tidak');
+            $('#gizi_ket_lapor').val('-');
 
-    // Kalkulasi Skrining Gizi Dewasa (MST)
-    function hitungSkorGiziDewasa() {
-        const sg1Val = $('#select_gizi_dewasa_sg1').val() || 'Tidak Ada';
-        const sg1Score = parseInt($('#select_gizi_dewasa_sg1 option:selected').data('nilai') || 0);
-        const sg2Val = $('#select_gizi_dewasa_sg2').val() || 'Tidak';
-        const sg2Score = parseInt($('#select_gizi_dewasa_sg2 option:selected').data('nilai') || 0);
-
-        $('#gizi_sg1').val(sg1Val);
-        $('#gizi_nilai1').val(sg1Score);
-        $('#gizi_sg2').val(sg2Val);
-        $('#gizi_nilai2').val(sg2Score);
-        $('#gizi_sg3').val('-');
-        $('#gizi_nilai3').val(0);
-        $('#gizi_sg4').val('-');
-        $('#gizi_nilai4').val(0);
-
-        const total = sg1Score + sg2Score;
-        $('#gizi_total_skor').val(total);
-        $('#display_gizi_total_skor').text(total);
-
-        let risiko = 'Risiko Rendah';
-        let badgeClass = 'badge bg-success px-2 py-1';
-        if (total >= 2) {
-            risiko = 'Risiko Tinggi';
-            badgeClass = 'badge bg-danger px-2 py-1';
-        }
-        $('#gizi_tingkat_risiko').val(risiko);
-        $('#display_gizi_tingkat_risiko').attr('class', badgeClass).text(risiko);
-    }
-
-    // Kalkulasi Skrining Gizi Anak (Strong-Kids)
-    function hitungSkorGiziAnak() {
-        const sg1Val = $('#select_gizi_anak_sg1').val() || 'Tidak';
-        const sg1Score = parseInt($('#select_gizi_anak_sg1 option:selected').data('nilai') || 0);
-        const sg2Val = $('#select_gizi_anak_sg2').val() || 'Tidak';
-        const sg2Score = parseInt($('#select_gizi_anak_sg2 option:selected').data('nilai') || 0);
-        const sg3Val = $('#select_gizi_anak_sg3').val() || 'Tidak';
-        const sg3Score = parseInt($('#select_gizi_anak_sg3 option:selected').data('nilai') || 0);
-        const sg4Val = $('#select_gizi_anak_sg4').val() || 'Tidak';
-        const sg4Score = parseInt($('#select_gizi_anak_sg4 option:selected').data('nilai') || 0);
-
-        $('#gizi_sg1').val(sg1Val);
-        $('#gizi_nilai1').val(sg1Score);
-        $('#gizi_sg2').val(sg2Val);
-        $('#gizi_nilai2').val(sg2Score);
-        $('#gizi_sg3').val(sg3Val);
-        $('#gizi_nilai3').val(sg3Score);
-        $('#gizi_sg4').val(sg4Val);
-        $('#gizi_nilai4').val(sg4Score);
-
-        const total = sg1Score + sg2Score + sg3Score + sg4Score;
-        $('#gizi_total_skor').val(total);
-        $('#display_gizi_total_skor').text(total);
-
-        let risiko = 'Risiko Rendah';
-        let badgeClass = 'badge bg-success px-2 py-1';
-        if (total >= 4) {
-            risiko = 'Risiko Tinggi';
-            badgeClass = 'badge bg-danger px-2 py-1';
-        } else if (total >= 1) {
-            risiko = 'Risiko Sedang';
-            badgeClass = 'badge bg-warning text-dark px-2 py-1';
-        }
-        $('#gizi_tingkat_risiko').val(risiko);
-        $('#display_gizi_tingkat_risiko').attr('class', badgeClass).text(risiko);
-    }
-
-    // Reset Form Asesmen Keperawatan UGD
-    function resetFormAskepUgd() {
-        $('#formAskepUgd')[0].reset();
-        
-        // Reset Anamnesis
-        $('#askep_keluhan_utama, #askep_rpd, #askep_rpo').val('-');
-        
-        // Reset Kehamilan
-        $('#askep_status_kehamilan').val('Tidak Hamil').trigger('change');
-        $('#askep_gravida, #askep_para, #askep_abortus, #askep_hpht').val('-');
-        
-        // Reset Fisik
-        $('#askep_tekanan').val('TAK');
-        $('#askep_pupil').val('Isokor');
-        $('#askep_neurosensorik').val('TAK');
-        $('#askep_integumen').val('TAK');
-        $('#askep_turgor').val('Baik');
-        $('#askep_edema').val('Tidak Ada');
-        $('#askep_mukosa').val('Lembab');
-        $('#askep_intoksikasi').val('Tidak Ada');
-        $('#askep_perdarahan').val('Tidak Ada');
-        $('#askep_jumlah_perdarahan, #askep_warna_perdarahan').val('-').prop('disabled', true);
-        $('#askep_bab, #askep_xbab, #askep_kbab, #askep_wbab, #askep_bak, #askep_xbak, #askep_wbak, #askep_lbak').val('');
-        
-        // Reset Psikososial & Fungsional
-        $('#askep_psikologis').val('Tidak Ada Masalah');
-        $('#askep_jiwa').val('Tidak');
-        $('#askep_perilaku, #askep_dilaporkan, #askep_sebutkan').val('-');
-        $('#askep_hubungan').val('Harmonis');
-        $('#askep_tinggal_dengan').val('Orang Tua');
-        $('#askep_ket_tinggal, #askep_budaya, #askep_ket_budaya, #askep_ket_pendidikan_pj, #askep_ket_edukasi, #askep_ket_bantu, #askep_ket_lapor').val('-');
-        $('#askep_pendidikan_pj').val('SMA');
-        $('#askep_edukasi').val('Pasien');
-        $('#askep_kemampuan').val('Mandiri');
-        $('#askep_aktifitas').val('Berjalan');
-        $('#askep_alat_bantu').val('Tidak');
-        $('#askep_lapor').val('Tidak');
-        
-        // Reset Risiko Jatuh
-        $('input[name="berjalan_a"][value="Tidak"]').prop('checked', true);
-        $('input[name="berjalan_b"][value="Tidak"]').prop('checked', true);
-        $('input[name="berjalan_c"][value="Tidak"]').prop('checked', true);
-        updateKalkulasiRisikoJatuh();
-        
-        // Reset Nyeri
-        $('#askep_nyeri').val('Tidak Ada Nyeri').trigger('change');
-        $('#askep_skala_nyeri').val(0).trigger('change');
-        $('#askep_provokes').val('Proses Penyakit');
-        $('#askep_ket_provokes, #askep_ket_quality, #askep_lokasi, #askep_ket_nyeri, #askep_ket_dokter').val('-');
-        $('#askep_quality').val('Seperti Tertusuk');
-        $('#askep_menyebar').val('Tidak');
-        $('#askep_durasi').val('-');
-        $('#askep_nyeri_hilang').val('Istirahat');
-        $('#askep_pada_dokter').val('Tidak');
-
-        // Reset Skrining Gizi
-        setKategoriSkriningGizi('Dewasa');
-        $('#select_gizi_dewasa_sg1').val('Tidak Ada');
-        $('#select_gizi_dewasa_sg2').val('Tidak');
-        $('#select_gizi_anak_sg1, #select_gizi_anak_sg2, #select_gizi_anak_sg3, #select_gizi_anak_sg4').val('Tidak');
-        hitungSkorGiziDewasa();
-        $('#gizi_lapor').val('Tidak');
-        $('#gizi_ket_lapor').val('-');
-        
-        // Reset Masalah & Rencana
-        $('#askep_rencana').val('-');
-        resetSemuaMasalahAskep();
-        if (window.masterAskepIgdData && window.masterAskepIgdData.length > 0) {
-            renderMasterMasalahList([], []);
-        }
-
-        // Tombol & Status
-        $('#btnCetakAskepUgd, #btnHapusAskepUgd').addClass('d-none');
-        $('#badgeStatusAskepUgd').attr('class', 'badge bg-light text-primary px-2 py-1').html('<i class="bi bi-file-earmark-plus me-1"></i> Data Baru');
-        $('#btnSimpanAskepUgd').html('<i class="bi bi-save me-1"></i> Simpan Asesmen');
-    }
-
-    // Buka Modal Asesmen Keperawatan UGD
-    function modalAskepUgd(noRawat) {
-        resetFormAskepUgd();
-        $('#askep_no_rawat').val(noRawat);
-
-        if ($.fn.datetimepicker) {
-            $('#askep_tanggal').datetimepicker({
-                format: 'Y-m-d H:i:s',
-                step: 1
-            });
-        }
-
-        // Ambil Data Registrasi Pasien
-        getRegPeriksa(noRawat).done(function(reg) {
-            const p = reg?.pasien || {};
-            $('#askep_info_no_rawat').text(reg?.no_rawat || noRawat);
-            $('#askep_info_no_rkm_medis').text(p?.no_rkm_medis || '-');
-            $('#askep_info_nm_pasien').text(p?.nm_pasien || '-');
-            $('#askep_info_tgl_lahir').text(`${p?.tgl_lahir ? formatTanggal(p.tgl_lahir) : '-'} (${p?.jk || '-'})`);
-            $('#askep_info_penjab').text(reg?.penjab?.png_jawab || '-');
-
-            // Jika Pasien Pria, sembunyikan section kehamilan
-            if ((p?.jk || '').toUpperCase() === 'L') {
-                $('#wrapper_status_hamil').hide();
-            } else {
-                $('#wrapper_status_hamil').show();
-            }
-
-            // Auto-detect usia pasien untuk Skrining Gizi (Anak < 18 thn vs Dewasa >= 18 thn)
-            if (p?.tgl_lahir) {
-                const birthDate = new Date(p.tgl_lahir);
-                const ageDifMs = Date.now() - birthDate.getTime();
-                const ageDate = new Date(ageDifMs);
-                const age = Math.abs(ageDate.getUTCFullYear() - 1970);
-                if (age < 18) {
-                    setKategoriSkriningGizi('Anak');
-                } else {
-                    setKategoriSkriningGizi('Dewasa');
-                }
-            }
-
-            // Pre-fill Riwayat Pemeriksaan Ralan jika entri baru
-            if (reg?.pemeriksaan_ralan && reg.pemeriksaan_ralan.length > 0) {
-                const pr = reg.pemeriksaan_ralan[0];
-                if (pr.keluhan) $('#askep_keluhan_utama').val(pr.keluhan);
-            }
-        });
-
-        // Load Master & Data Asesmen Keperawatan Pasien
-        loadMasterAskepIgd(function() {
-            $.get(`/erm/ugd/asesmen/keperawatan?no_rawat=${encodeURIComponent(noRawat)}`).done(function(response) {
-                if (response && response.no_rawat) {
-                    // MODE EDIT DATA
-                    $('#badgeStatusAskepUgd').attr('class', 'badge bg-success px-2 py-1').html('<i class="bi bi-check-circle-fill me-1"></i> Data Tersimpan');
-                    $('#btnCetakAskepUgd, #btnHapusAskepUgd').removeClass('d-none');
-                    $('#btnSimpanAskepUgd').html('<i class="bi bi-save me-1"></i> Perbarui Asesmen');
-
-                    // Isi seluruh field form
-                    $('#askep_tanggal').val(response.tanggal || '');
-                    $('#askep_informasi').val(response.informasi || 'Autoanamnesis');
-                    $('#askep_nip').val(response.nip || '');
-                    $('#askep_nm_petugas').val(response.pengkaji?.nama || response.nip || '');
-
-                    $('#askep_keluhan_utama').val(response.keluhan_utama || '-');
-                    $('#askep_rpd').val(response.rpd || '-');
-                    $('#askep_rpo').val(response.rpo || '-');
-
-                    $('#askep_status_kehamilan').val(response.status_kehamilan || 'Tidak Hamil').trigger('change');
-                    $('#askep_gravida').val(response.gravida || '-');
-                    $('#askep_para').val(response.para || '-');
-                    $('#askep_abortus').val(response.abortus || '-');
-                    $('#askep_hpht').val(response.hpht || '-');
-
-                    $('#askep_tekanan').val(response.tekanan || 'TAK');
-                    $('#askep_pupil').val(response.pupil || 'Isokor');
-                    $('#askep_neurosensorik').val(response.neurosensorik || 'TAK');
-                    $('#askep_integumen').val(response.integumen || 'TAK');
-                    $('#askep_turgor').val(response.turgor || 'Baik');
-                    $('#askep_edema').val(response.edema || 'Tidak Ada');
-                    $('#askep_mukosa').val(response.mukosa || 'Lembab');
-                    $('#askep_intoksikasi').val(response.intoksikasi || 'Tidak Ada');
-
-                    $('#askep_perdarahan').val(response.perdarahan || 'Tidak Ada').trigger('change');
-                    $('#askep_jumlah_perdarahan').val(response.jumlah_perdarahan || '-');
-                    $('#askep_warna_perdarahan').val(response.warna_perdarahan || '-');
-
-                    $('#askep_bab').val(response.bab && response.bab !== '-' ? response.bab : '');
-                    $('#askep_xbab').val(response.xbab && response.xbab !== '-' ? response.xbab : '');
-                    $('#askep_kbab').val(response.kbab && response.kbab !== '-' ? response.kbab : '');
-                    $('#askep_wbab').val(response.wbab && response.wbab !== '-' ? response.wbab : '');
-                    $('#askep_bak').val(response.bak && response.bak !== '-' ? response.bak : '');
-                    $('#askep_xbak').val(response.xbak && response.xbak !== '-' ? response.xbak : '');
-                    $('#askep_wbak').val(response.wbak && response.wbak !== '-' ? response.wbak : '');
-                    $('#askep_lbak').val(response.lbak && response.lbak !== '-' ? response.lbak : '');
-
-                    $('#askep_psikologis').val(response.psikologis || 'Tidak Ada Masalah');
-                    $('#askep_jiwa').val(response.jiwa || 'Tidak');
-                    $('#askep_perilaku').val(response.perilaku || '-');
-                    $('#askep_dilaporkan').val(response.dilaporkan || '-');
-                    $('#askep_sebutkan').val(response.sebutkan || '-');
-                    $('#askep_hubungan').val(response.hubungan || 'Harmonis');
-                    $('#askep_tinggal_dengan').val(response.tinggal_dengan || 'Orang Tua');
-                    $('#askep_ket_tinggal').val(response.ket_tinggal || '-');
-                    $('#askep_budaya').val(response.budaya || 'Tidak Ada');
-                    $('#askep_ket_budaya').val(response.ket_budaya || '-');
-                    $('#askep_pendidikan_pj').val(response.pendidikan_pj || 'SMA');
-                    $('#askep_ket_pendidikan_pj').val(response.ket_pendidikan_pj || '-');
-                    $('#askep_edukasi').val(response.edukasi || 'Pasien');
-                    $('#askep_ket_edukasi').val(response.ket_edukasi || '-');
-
-                    $('#askep_kemampuan').val(response.kemampuan || 'Mandiri');
-                    $('#askep_aktifitas').val(response.aktifitas || 'Berjalan');
-                    $('#askep_alat_bantu').val(response.alat_bantu || 'Tidak');
-                    $('#askep_ket_bantu').val(response.ket_bantu || '-');
-
-                    $(`input[name="berjalan_a"][value="${response.berjalan_a || 'Tidak'}"]`).prop('checked', true);
-                    $(`input[name="berjalan_b"][value="${response.berjalan_b || 'Tidak'}"]`).prop('checked', true);
-                    $(`input[name="berjalan_c"][value="${response.berjalan_c || 'Tidak'}"]`).prop('checked', true);
-                    updateKalkulasiRisikoJatuh();
-                    $('#askep_hasil').val(response.hasil || 'Tidak beresiko (tidak ditemukan a dan b)');
-                    $('#askep_lapor').val(response.lapor || 'Tidak');
-                    $('#askep_ket_lapor').val(response.ket_lapor || '-');
-
-                    $('#askep_nyeri').val(response.nyeri || 'Tidak Ada Nyeri').trigger('change');
-                    $('#askep_skala_nyeri').val(response.skala_nyeri || 0).trigger('change');
-                    $('#askep_provokes').val(response.provokes || 'Proses Penyakit');
-                    $('#askep_ket_provokes').val(response.ket_provokes || '-');
-                    $('#askep_quality').val(response.quality || 'Seperti Tertusuk');
-                    $('#askep_ket_quality').val(response.ket_quality || '-');
-                    $('#askep_lokasi').val(response.lokasi || '-');
-                    $('#askep_menyebar').val(response.menyebar || 'Tidak');
-                    $('#askep_durasi').val(response.durasi || '-');
-                    $('#askep_nyeri_hilang').val(response.nyeri_hilang || 'Istirahat');
-                    $('#askep_ket_nyeri').val(response.ket_nyeri || '-');
-                    $('#askep_pada_dokter').val(response.pada_dokter || 'Tidak');
-                    $('#askep_ket_dokter').val(response.ket_dokter || '-');
-
-                    // Data Skrining Gizi Pasien
-                    if (response.gizi) {
-                        const g = response.gizi;
-                        setKategoriSkriningGizi(g.kategori_pasien || 'Dewasa');
-                        if (g.kategori_pasien === 'Anak') {
-                            $('#select_gizi_anak_sg1').val(g.sg1 || 'Tidak');
-                            $('#select_gizi_anak_sg2').val(g.sg2 || 'Tidak');
-                            $('#select_gizi_anak_sg3').val(g.sg3 || 'Tidak');
-                            $('#select_gizi_anak_sg4').val(g.sg4 || 'Tidak');
-                            hitungSkorGiziAnak();
-                        } else {
-                            $('#select_gizi_dewasa_sg1').val(g.sg1 || 'Tidak Ada');
-                            $('#select_gizi_dewasa_sg2').val(g.sg2 || 'Tidak');
-                            hitungSkorGiziDewasa();
-                        }
-                        $('#gizi_lapor').val(g.lapor_gizi || 'Tidak');
-                        $('#gizi_ket_lapor').val(g.ket_lapor || '-');
-                    }
-
-                    $('#askep_rencana').val(response.rencana || '-');
-
-                    // Set checklist masalah & rencana (dengan alias/mapping kode lama jika ada)
-                    const legacyMasalahMap = {
-                        '013': '016', // ketidakefektifan pola nafas -> Pola Napas Tidak Efektif
-                        '014': '010', // hiperbilirubin -> Ikterik Neonatus
-                    };
-                    const selectedMasalahCodes = (response.masalah_keperawatan || []).map(m => legacyMasalahMap[m.kode_masalah] || m.kode_masalah);
-                    const selectedRencanaCodes = (response.rencana_keperawatan || []).map(r => r.kode_rencana);
-                    renderMasterMasalahList(selectedMasalahCodes, selectedRencanaCodes);
-                } else {
-                    // MODE BARU
-                    renderMasterMasalahList([], []);
-                }
-            }).fail(function() {
+            // Reset Masalah & Rencana
+            $('#askep_rencana').val('-');
+            resetSemuaMasalahAskep();
+            if (window.masterAskepIgdData && window.masterAskepIgdData.length > 0) {
                 renderMasterMasalahList([], []);
-            });
-        });
-
-        $('#modalAskepUgd').modal('show');
-    }
-
-    // Submit Simpan Asesmen Keperawatan UGD
-    $('#btnSimpanAskepUgd').on('click', function(e) {
-        e.preventDefault();
-
-        const noRawat = $('#askep_no_rawat').val();
-        const keluhan = $('#askep_keluhan_utama').val().trim();
-
-        if (!noRawat) {
-            Swal.fire('Peringatan', 'No. Rawat tidak valid.', 'warning');
-            return;
-        }
-
-        if (!keluhan || keluhan === '-') {
-            Swal.fire('Peringatan', 'Keluhan Utama (RPS) wajib diisi.', 'warning');
-            $('#askep_keluhan_utama').focus();
-            return;
-        }
-
-        // Standardize format tanggal ke YYYY-MM-DD HH:mm:ss
-        let tglVal = $('#askep_tanggal').val();
-        if (tglVal && typeof moment === 'function') {
-            if (moment(tglVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s'], true).isValid()) {
-                tglVal = moment(tglVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s']).format('YYYY-MM-DD HH:mm:ss');
-            } else if (moment(tglVal).isValid()) {
-                tglVal = moment(tglVal).format('YYYY-MM-DD HH:mm:ss');
             }
-            $('#askep_tanggal').val(tglVal);
+
+            // Tombol & Status
+            $('#btnCetakAskepUgd, #btnHapusAskepUgd').addClass('d-none');
+            $('#badgeStatusAskepUgd').attr('class', 'badge bg-light text-primary px-2 py-1').html('<i class="bi bi-file-earmark-plus me-1"></i> Data Baru');
+            $('#btnSimpanAskepUgd').html('<i class="bi bi-save me-1"></i> Simpan Asesmen');
         }
 
-        const formData = $('#formAskepUgd').serialize();
-        const $btn = $(this);
-        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...');
+        // Buka Modal Asesmen Keperawatan UGD
+        function modalAskepUgd(noRawat) {
+            resetFormAskepUgd();
+            $('#askep_no_rawat').val(noRawat);
 
-        $.ajax({
-            url: '/erm/ugd/asesmen/keperawatan/simpan',
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: response.message,
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                    $('#badgeStatusAskepUgd').attr('class', 'badge bg-success px-2 py-1').html('<i class="bi bi-check-circle-fill me-1"></i> Data Tersimpan');
-                    $('#btnCetakAskepUgd, #btnHapusAskepUgd').removeClass('d-none');
-                    $btn.html('<i class="bi bi-save me-1"></i> Perbarui Asesmen');
-                    if (typeof tbUgd === 'function') {
-                        tbUgd();
-                    } else if ($.fn.DataTable && $.fn.DataTable.isDataTable('#tb_ugd')) {
-                        $('#tb_ugd').DataTable().ajax.reload(null, false);
-                    }
+            if ($.fn.datetimepicker) {
+                $('#askep_tanggal').datetimepicker({
+                    format: 'Y-m-d H:i:s',
+                    step: 1
+                });
+            }
+
+            // Ambil Data Registrasi Pasien
+            getRegPeriksa(noRawat).done(function(reg) {
+                const p = reg?.pasien || {};
+                $('#askep_info_no_rawat').text(reg?.no_rawat || noRawat);
+                $('#askep_info_no_rkm_medis').text(p?.no_rkm_medis || '-');
+                $('#askep_info_nm_pasien').text(p?.nm_pasien || '-');
+                $('#askep_info_tgl_lahir').text(`${p?.tgl_lahir ? formatTanggal(p.tgl_lahir) : '-'} (${p?.jk || '-'})`);
+                $('#askep_info_penjab').text(reg?.penjab?.png_jawab || '-');
+
+                // Jika Pasien Pria, sembunyikan section kehamilan
+                if ((p?.jk || '').toUpperCase() === 'L') {
+                    $('#wrapper_status_hamil').hide();
                 } else {
-                    Swal.fire('Gagal', response.message || 'Terjadi kesalahan saat menyimpan.', 'error');
+                    $('#wrapper_status_hamil').show();
                 }
-            },
-            error: function(xhr) {
-                Swal.fire('Error', xhr.responseJSON?.message || 'Gagal menyimpan data ke server.', 'error');
-            },
-            complete: function() {
-                $btn.prop('disabled', false);
-            }
-        });
-    });
 
-    // Tombol Cetak PDF
-    $('#btnCetakAskepUgd').on('click', function() {
-        const noRawat = $('#askep_no_rawat').val();
-        if (noRawat) {
-            window.open(`/erm/ugd/asesmen/keperawatan/print?no_rawat=${encodeURIComponent(noRawat)}`, '_blank');
+                // Auto-detect usia pasien untuk Skrining Gizi (Anak < 18 thn vs Dewasa >= 18 thn)
+                if (p?.tgl_lahir) {
+                    const birthDate = new Date(p.tgl_lahir);
+                    const ageDifMs = Date.now() - birthDate.getTime();
+                    const ageDate = new Date(ageDifMs);
+                    const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+                    if (age < 18) {
+                        setKategoriSkriningGizi('Anak');
+                    } else {
+                        setKategoriSkriningGizi('Dewasa');
+                    }
+                }
+
+                // Pre-fill Riwayat Pemeriksaan Ralan jika entri baru
+                if (reg?.pemeriksaan_ralan && reg.pemeriksaan_ralan.length > 0) {
+                    const pr = reg.pemeriksaan_ralan[0];
+                    if (pr.keluhan) $('#askep_keluhan_utama').val(pr.keluhan);
+                }
+            });
+
+            // Load Master & Data Asesmen Keperawatan Pasien
+            loadMasterAskepIgd(function() {
+                $.get(`/erm/ugd/asesmen/keperawatan?no_rawat=${encodeURIComponent(noRawat)}`).done(function(response) {
+                    if (response && response.no_rawat) {
+                        // MODE EDIT DATA
+                        $('#badgeStatusAskepUgd').attr('class', 'badge bg-success px-2 py-1').html('<i class="bi bi-check-circle-fill me-1"></i> Data Tersimpan');
+                        $('#btnCetakAskepUgd, #btnHapusAskepUgd').removeClass('d-none');
+                        $('#btnSimpanAskepUgd').html('<i class="bi bi-save me-1"></i> Perbarui Asesmen');
+
+                        // Isi seluruh field form
+                        $('#askep_tanggal').val(response.tanggal || '');
+                        $('#askep_informasi').val(response.informasi || 'Autoanamnesis');
+                        $('#askep_nip').val(response.nip || '');
+                        $('#askep_nm_petugas').val(response.pengkaji?.nama || response.nip || '');
+
+                        $('#askep_keluhan_utama').val(response.keluhan_utama || '-');
+                        $('#askep_rpd').val(response.rpd || '-');
+                        $('#askep_rpo').val(response.rpo || '-');
+
+                        $('#askep_status_kehamilan').val(response.status_kehamilan || 'Tidak Hamil').trigger('change');
+                        $('#askep_gravida').val(response.gravida || '-');
+                        $('#askep_para').val(response.para || '-');
+                        $('#askep_abortus').val(response.abortus || '-');
+                        $('#askep_hpht').val(response.hpht || '-');
+
+                        $('#askep_tekanan').val(response.tekanan || 'TAK');
+                        $('#askep_pupil').val(response.pupil || 'Isokor');
+                        $('#askep_neurosensorik').val(response.neurosensorik || 'TAK');
+                        $('#askep_integumen').val(response.integumen || 'TAK');
+                        $('#askep_turgor').val(response.turgor || 'Baik');
+                        $('#askep_edema').val(response.edema || 'Tidak Ada');
+                        $('#askep_mukosa').val(response.mukosa || 'Lembab');
+                        $('#askep_intoksikasi').val(response.intoksikasi || 'Tidak Ada');
+
+                        $('#askep_perdarahan').val(response.perdarahan || 'Tidak Ada').trigger('change');
+                        $('#askep_jumlah_perdarahan').val(response.jumlah_perdarahan || '-');
+                        $('#askep_warna_perdarahan').val(response.warna_perdarahan || '-');
+
+                        $('#askep_bab').val(response.bab && response.bab !== '-' ? response.bab : '');
+                        $('#askep_xbab').val(response.xbab && response.xbab !== '-' ? response.xbab : '');
+                        $('#askep_kbab').val(response.kbab && response.kbab !== '-' ? response.kbab : '');
+                        $('#askep_wbab').val(response.wbab && response.wbab !== '-' ? response.wbab : '');
+                        $('#askep_bak').val(response.bak && response.bak !== '-' ? response.bak : '');
+                        $('#askep_xbak').val(response.xbak && response.xbak !== '-' ? response.xbak : '');
+                        $('#askep_wbak').val(response.wbak && response.wbak !== '-' ? response.wbak : '');
+                        $('#askep_lbak').val(response.lbak && response.lbak !== '-' ? response.lbak : '');
+
+                        $('#askep_psikologis').val(response.psikologis || 'Tidak Ada Masalah');
+                        $('#askep_jiwa').val(response.jiwa || 'Tidak');
+                        $('#askep_perilaku').val(response.perilaku || '-');
+                        $('#askep_dilaporkan').val(response.dilaporkan || '-');
+                        $('#askep_sebutkan').val(response.sebutkan || '-');
+                        $('#askep_hubungan').val(response.hubungan || 'Harmonis');
+                        $('#askep_tinggal_dengan').val(response.tinggal_dengan || 'Orang Tua');
+                        $('#askep_ket_tinggal').val(response.ket_tinggal || '-');
+                        $('#askep_budaya').val(response.budaya || 'Tidak Ada');
+                        $('#askep_ket_budaya').val(response.ket_budaya || '-');
+                        $('#askep_pendidikan_pj').val(response.pendidikan_pj || 'SMA');
+                        $('#askep_ket_pendidikan_pj').val(response.ket_pendidikan_pj || '-');
+                        $('#askep_edukasi').val(response.edukasi || 'Pasien');
+                        $('#askep_ket_edukasi').val(response.ket_edukasi || '-');
+
+                        $('#askep_kemampuan').val(response.kemampuan || 'Mandiri');
+                        $('#askep_aktifitas').val(response.aktifitas || 'Berjalan');
+                        $('#askep_alat_bantu').val(response.alat_bantu || 'Tidak');
+                        $('#askep_ket_bantu').val(response.ket_bantu || '-');
+
+                        $(`input[name="berjalan_a"][value="${response.berjalan_a || 'Tidak'}"]`).prop('checked', true);
+                        $(`input[name="berjalan_b"][value="${response.berjalan_b || 'Tidak'}"]`).prop('checked', true);
+                        $(`input[name="berjalan_c"][value="${response.berjalan_c || 'Tidak'}"]`).prop('checked', true);
+                        updateKalkulasiRisikoJatuh();
+                        $('#askep_hasil').val(response.hasil || 'Tidak beresiko (tidak ditemukan a dan b)');
+                        $('#askep_lapor').val(response.lapor || 'Tidak');
+                        $('#askep_ket_lapor').val(response.ket_lapor || '-');
+
+                        $('#askep_nyeri').val(response.nyeri || 'Tidak Ada Nyeri').trigger('change');
+                        $('#askep_skala_nyeri').val(response.skala_nyeri || 0).trigger('change');
+                        $('#askep_provokes').val(response.provokes || 'Proses Penyakit');
+                        $('#askep_ket_provokes').val(response.ket_provokes || '-');
+                        $('#askep_quality').val(response.quality || 'Seperti Tertusuk');
+                        $('#askep_ket_quality').val(response.ket_quality || '-');
+                        $('#askep_lokasi').val(response.lokasi || '-');
+                        $('#askep_menyebar').val(response.menyebar || 'Tidak');
+                        $('#askep_durasi').val(response.durasi || '-');
+                        $('#askep_nyeri_hilang').val(response.nyeri_hilang || 'Istirahat');
+                        $('#askep_ket_nyeri').val(response.ket_nyeri || '-');
+                        $('#askep_pada_dokter').val(response.pada_dokter || 'Tidak');
+                        $('#askep_ket_dokter').val(response.ket_dokter || '-');
+
+                        // Data Skrining Gizi Pasien
+                        if (response.gizi) {
+                            const g = response.gizi;
+                            setKategoriSkriningGizi(g.kategori_pasien || 'Dewasa');
+                            if (g.kategori_pasien === 'Anak') {
+                                $('#select_gizi_anak_sg1').val(g.sg1 || 'Tidak');
+                                $('#select_gizi_anak_sg2').val(g.sg2 || 'Tidak');
+                                $('#select_gizi_anak_sg3').val(g.sg3 || 'Tidak');
+                                $('#select_gizi_anak_sg4').val(g.sg4 || 'Tidak');
+                                hitungSkorGiziAnak();
+                            } else {
+                                $('#select_gizi_dewasa_sg1').val(g.sg1 || 'Tidak Ada');
+                                $('#select_gizi_dewasa_sg2').val(g.sg2 || 'Tidak');
+                                hitungSkorGiziDewasa();
+                            }
+                            $('#gizi_lapor').val(g.lapor_gizi || 'Tidak');
+                            $('#gizi_ket_lapor').val(g.ket_lapor || '-');
+                        }
+
+                        $('#askep_rencana').val(response.rencana || '-');
+
+                        // Set checklist masalah & rencana (dengan alias/mapping kode lama jika ada)
+                        const legacyMasalahMap = {
+                            '013': '016', // ketidakefektifan pola nafas -> Pola Napas Tidak Efektif
+                            '014': '010', // hiperbilirubin -> Ikterik Neonatus
+                        };
+                        const selectedMasalahCodes = (response.masalah_keperawatan || []).map(m => legacyMasalahMap[m.kode_masalah] || m.kode_masalah);
+                        const selectedRencanaCodes = (response.rencana_keperawatan || []).map(r => r.kode_rencana);
+                        renderMasterMasalahList(selectedMasalahCodes, selectedRencanaCodes);
+                    } else {
+                        // MODE BARU
+                        renderMasterMasalahList([], []);
+                    }
+                }).fail(function() {
+                    renderMasterMasalahList([], []);
+                });
+            });
+
+            $('#modalAskepUgd').modal('show');
         }
-    });
 
-    // Tombol Hapus Asesmen
-    $('#btnHapusAskepUgd').on('click', function() {
-        const noRawat = $('#askep_no_rawat').val();
-        if (!noRawat) return;
+        // Submit Simpan Asesmen Keperawatan UGD
+        $('#btnSimpanAskepUgd').on('click', function(e) {
+            e.preventDefault();
 
-        Swal.fire({
-            title: 'Hapus Asesmen Keperawatan?',
-            text: 'Data asesmen keperawatan UGD ini akan dihapus permanen.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.post('/erm/ugd/asesmen/keperawatan/hapus', { no_rawat: noRawat }, function(res) {
-                    if (res.success) {
-                        Swal.fire('Terhapus!', res.message, 'success');
-                        $('#modalAskepUgd').modal('hide');
+            const noRawat = $('#askep_no_rawat').val();
+            const keluhan = $('#askep_keluhan_utama').val().trim();
+
+            if (!noRawat) {
+                Swal.fire('Peringatan', 'No. Rawat tidak valid.', 'warning');
+                return;
+            }
+
+            if (!keluhan || keluhan === '-') {
+                Swal.fire('Peringatan', 'Keluhan Utama (RPS) wajib diisi.', 'warning');
+                $('#askep_keluhan_utama').focus();
+                return;
+            }
+
+            // Standardize format tanggal ke YYYY-MM-DD HH:mm:ss
+            let tglVal = $('#askep_tanggal').val();
+            if (tglVal && typeof moment === 'function') {
+                if (moment(tglVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s'], true).isValid()) {
+                    tglVal = moment(tglVal, ['YYYY-MM-DD HH:mm:ss', 'DD-MM-YYYY HH:mm:ss', 'D-M-Y H:i:s']).format('YYYY-MM-DD HH:mm:ss');
+                } else if (moment(tglVal).isValid()) {
+                    tglVal = moment(tglVal).format('YYYY-MM-DD HH:mm:ss');
+                }
+                $('#askep_tanggal').val(tglVal);
+            }
+
+            const formData = $('#formAskepUgd').serialize();
+            const $btn = $(this);
+            $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...');
+
+            $.ajax({
+                url: '/erm/ugd/asesmen/keperawatan/simpan',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                        $('#badgeStatusAskepUgd').attr('class', 'badge bg-success px-2 py-1').html('<i class="bi bi-check-circle-fill me-1"></i> Data Tersimpan');
+                        $('#btnCetakAskepUgd, #btnHapusAskepUgd').removeClass('d-none');
+                        $btn.html('<i class="bi bi-save me-1"></i> Perbarui Asesmen');
                         if (typeof tbUgd === 'function') {
                             tbUgd();
                         } else if ($.fn.DataTable && $.fn.DataTable.isDataTable('#tb_ugd')) {
                             $('#tb_ugd').DataTable().ajax.reload(null, false);
                         }
                     } else {
-                        Swal.fire('Gagal', res.message, 'error');
+                        Swal.fire('Gagal', response.message || 'Terjadi kesalahan saat menyimpan.', 'error');
                     }
-                }).fail(function(xhr) {
-                    Swal.fire('Error', xhr.responseJSON?.message || 'Gagal menghapus data.', 'error');
-                });
+                },
+                error: function(xhr) {
+                    Swal.fire('Error', xhr.responseJSON?.message || 'Gagal menyimpan data ke server.', 'error');
+                },
+                complete: function() {
+                    $btn.prop('disabled', false);
+                }
+            });
+        });
+
+        // Tombol Cetak PDF
+        $('#btnCetakAskepUgd').on('click', function() {
+            const noRawat = $('#askep_no_rawat').val();
+            if (noRawat) {
+                window.open(`/erm/ugd/asesmen/keperawatan/print?no_rawat=${encodeURIComponent(noRawat)}`, '_blank');
             }
         });
-    });
-</script>
+
+        // Tombol Hapus Asesmen
+        $('#btnHapusAskepUgd').on('click', function() {
+            const noRawat = $('#askep_no_rawat').val();
+            if (!noRawat) return;
+
+            Swal.fire({
+                title: 'Hapus Asesmen Keperawatan?',
+                text: 'Data asesmen keperawatan UGD ini akan dihapus permanen.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('/erm/ugd/asesmen/keperawatan/hapus', {
+                        no_rawat: noRawat
+                    }, function(res) {
+                        if (res.success) {
+                            Swal.fire('Terhapus!', res.message, 'success');
+                            $('#modalAskepUgd').modal('hide');
+                            if (typeof tbUgd === 'function') {
+                                tbUgd();
+                            } else if ($.fn.DataTable && $.fn.DataTable.isDataTable('#tb_ugd')) {
+                                $('#tb_ugd').DataTable().ajax.reload(null, false);
+                            }
+                        } else {
+                            Swal.fire('Gagal', res.message, 'error');
+                        }
+                    }).fail(function(xhr) {
+                        Swal.fire('Error', xhr.responseJSON?.message || 'Gagal menghapus data.', 'error');
+                    });
+                }
+            });
+        });
+    </script>
 @endpush

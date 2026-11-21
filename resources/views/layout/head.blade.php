@@ -12,6 +12,142 @@
     <link rel="stylesheet" href="{{ url('public/css/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css') }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap');
+
+        /* ==========================================================================
+           MASTER RESPONSIVE TYPOGRAPHY & COMPACT ERM DASHBOARD SYSTEM
+           Menjaga font & kontrol tetap proporsional dan muat dalam satu layar device
+           ========================================================================== */
+        :root {
+            /* Master Font Variables */
+            --font-master: 11.5px;
+            --font-xs: 9.5px;
+            --font-sm: 10.5px;
+            --font-base: 11.5px;
+            --font-md: 12px;
+            --font-lg: 13.5px;
+            --font-xl: 15px;
+
+            /* Master Compact Form Heights & Sizes */
+            --form-height: 30px;
+            --form-height-sm: 26px;
+            --form-height-lg: 36px;
+            --form-font-size: 11.5px;
+            --form-font-size-sm: 10.5px;
+            --form-padding-y: 3px;
+            --form-padding-x: 6px;
+            --form-radius: 6px;
+            --form-border: #d0d7de;
+            --form-primary: #0d6efd;
+            --form-text: #1e293b;
+            --form-muted: #94a3b8;
+
+            /* Master Compact Button Variables */
+            --btn-height: 30px;
+            --btn-height-sm: 26px;
+            --btn-radius: 6px;
+            --btn-padding-y: 4px;
+            --btn-padding-x: 10px;
+            --btn-font-size: 11.5px;
+            --btn-font-weight: 600;
+            --btn-transition: all 0.15s ease-in-out;
+
+            /* Master Table Sizing (Dense for Medical Records) */
+            --table-font-size: 11px;
+            --table-padding-y: 3.5px;
+            --table-padding-x: 6px;
+        }
+
+        /* Responsive Breakpoints untuk Master Font */
+        html {
+            font-size: var(--font-master);
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-size: var(--font-master);
+            line-height: 1.4;
+            color: #1e293b;
+        }
+
+        /* Large Monitor (> 1600px) */
+        @media (min-width: 1600px) {
+            :root {
+                --font-master: 12px;
+                --form-height: 27px;
+                --form-height-sm: 27px;
+                --btn-height: 32px;
+                --btn-height-sm: 27px;
+                --form-font-size: 12px;
+                --btn-font-size: 12px;
+                --table-font-size: 11.5px;
+                --table-padding-y: 4px;
+                --table-padding-x: 7px;
+            }
+        }
+
+        /* Standard Workstation / Laptop (1200px - 1599px) - Standar Ruang Perawatan & Poli */
+        @media (max-width: 1599.98px) {
+            :root {
+                --font-master: 11.5px;
+                --form-height: 30px;
+                --form-height-sm: 26px;
+                --btn-height: 30px;
+                --btn-height-sm: 26px;
+                --form-font-size: 11.5px;
+                --btn-font-size: 11.5px;
+                --table-font-size: 11px;
+                --table-padding-y: 3.5px;
+                --table-padding-x: 6px;
+            }
+        }
+
+        /* Small Laptop / Tablet Landscape (992px - 1199px) */
+        @media (max-width: 1199.98px) {
+            :root {
+                --font-master: 11px;
+                --form-height: 28px;
+                --form-height-sm: 25px;
+                --btn-height: 28px;
+                --btn-height-sm: 25px;
+                --form-font-size: 11px;
+                --btn-font-size: 11px;
+                --table-font-size: 10.5px;
+                --table-padding-y: 3px;
+                --table-padding-x: 5px;
+            }
+        }
+
+        /* Tablet Portrait (768px - 991px) */
+        @media (max-width: 991.98px) {
+            :root {
+                --font-master: 10.5px;
+                --form-height: 28px;
+                --form-height-sm: 24px;
+                --btn-height: 28px;
+                --btn-height-sm: 24px;
+                --form-font-size: 10.5px;
+                --btn-font-size: 10.5px;
+                --table-font-size: 10px;
+                --table-padding-y: 2.5px;
+                --table-padding-x: 4px;
+            }
+        }
+
+        /* Mobile Devices (< 768px) */
+        @media (max-width: 767.98px) {
+            :root {
+                --font-master: 10.5px;
+                --form-height: 30px;
+                --form-height-sm: 26px;
+                --btn-height: 30px;
+                --btn-height-sm: 26px;
+                --form-font-size: 11px;
+                --btn-font-size: 11px;
+                --table-font-size: 10px;
+                --table-padding-y: 3px;
+                --table-padding-x: 4px;
+            }
+        }
     </style>
     {{-- <link href="/erm/public/css/select2/select2.min.css" rel="stylesheet" /> --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -511,7 +647,7 @@
             height: 28px;
         }
 
-        .form-control-sm {
+        .form-control-sm:not(textarea) {
             font-size: 12px;
             height: 28px;
             border-radius: 6px;
@@ -680,113 +816,153 @@
             border-width: 0;
         }
 
-        tr @media (min-width: 367px) {
-
-            /* .batasan-lebar { */
-            /* width: 497px;
-                margin-left: auto;
-                margin-right: auto;
-            } */
+        @media (min-width: 368px) {
             .order-sm-2 {
                 order: 2 !important;
             }
         }
 
-        @media (max-width: 1500px) {
-            table {
-                font-size: 11px !important;
-            }
-
-            table tbody th,
-            table tbody td {
-                padding: 6px 8px;
-            }
-
-            label,
-            input,
-            select,
-            button,
-            textarea,
-            a {
-                font-size: 11px !important;
-                font-style: normal;
-            }
-
-            .form-check-label {
-                font-size: 11px !important;
-            }
-
-            .sidebar .nav-link {
-                font-weight: 500;
-                color: #333;
-                font-size: 11px !important;
-                padding: 8px 12px;
-            }
-
-            h1,
-            .h1 {
-                font-size: 1.75rem !important;
-            }
-
-            h2,
-            .h2 {
-                font-size: 1.5rem !important;
-            }
-
-            h3,
-            .h3 {
-                font-size: 1.25rem !important;
-            }
-
-            h4,
-            .h4 {
-                font-size: 1rem !important;
-            }
-
-            h5,
-            .h5 {
-                font-size: 0.875rem !important;
-            }
-
-            h6,
-            .h6 {
-                font-size: 0.75rem !important;
-            }
-
-
+        /* Headings: proporsional dan hemat ruang vertikal layar */
+        h1,
+        .h1 {
+            font-size: 1.35rem !important;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 0.35rem;
         }
 
-        /*    select2*/
+        h2,
+        .h2 {
+            font-size: 1.2rem !important;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 0.3rem;
+        }
 
-        /* Ukuran teks di dalam pilihan multiple (tag) */
+        h3,
+        .h3 {
+            font-size: 1.1rem !important;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.25rem;
+        }
+
+        h4,
+        .h4 {
+            font-size: 1rem !important;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.25rem;
+        }
+
+        h5,
+        .h5 {
+            font-size: 0.9rem !important;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.2rem;
+        }
+
+        h6,
+        .h6 {
+            font-size: 0.8rem !important;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.2rem;
+        }
+
+        /* Tabel Kompak: seluruh kolom & data pasien muat dalam satu layar */
+        table {
+            font-size: var(--table-font-size, 11px) !important;
+        }
+
+        table tbody th,
+        table tbody td,
+        table thead th {
+            padding: var(--table-padding-y, 3.5px) var(--table-padding-x, 6px) !important;
+            vertical-align: middle !important;
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+            font-size: var(--font-sm, 10.5px) !important;
+            padding: 6px 10px;
+        }
+
+        .form-check-label {
+            font-size: var(--font-sm, 10.5px) !important;
+        }
+
+        /* ==========================================================================
+           SELECT2: Terintegrasi Presisi dengan Tinggi Form Control & Font Master
+           ========================================================================== */
+        .select2-container--default .select2-selection--single {
+            height: var(--form-height) !important;
+            min-height: var(--form-height) !important;
+            border: 1px solid var(--form-border);
+            border-radius: var(--form-radius);
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            padding-left: 8px;
+            padding-right: 22px;
+            color: var(--form-text);
+            font-size: var(--form-font-size);
+            line-height: calc(var(--form-height) - 2px) !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: calc(var(--form-height) - 2px) !important;
+            right: 6px;
+            top: 1px;
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default.select2-container--open .select2-selection--single,
+        .select2-container--default.select2-container--focus .select2-selection--single {
+            border-color: var(--form-primary);
+            box-shadow: 0 0 0 2px rgba(13, 110, 253, .15);
+        }
+
+        .select2-selection--multiple {
+            min-height: var(--form-height) !important;
+            padding: 1px 4px;
+            border: 1px solid var(--form-border);
+            border-radius: var(--form-radius);
+            font-size: var(--form-font-size) !important;
+        }
 
         .select2-selection--multiple .select2-selection__choice__display {
-            font-size: 12px !important;
-            /* ubah ukuran sesuai selera, misal 12–13px */
-            padding: 2px 6px;
-            /* atur padding biar proporsional */
-            margin-top: 3px;
+            font-size: var(--form-font-size-sm, 10.5px) !important;
+            padding: 1px 5px;
+            margin-top: 1px;
         }
 
-        /* Ukuran teks di input search-nya */
         .select2-selection--multiple .select2-search__field {
-            font-size: 12px !important;
+            font-size: var(--form-font-size) !important;
+            margin-top: 2px;
         }
 
-        /* Border dan tinggi area utama */
-        .select2-selection--multiple {
-            min-height: 34px;
-            /* pastikan tidak terlalu tinggi */
-            padding: 2px;
-            font-size: 12px !important;
+        .select2-dropdown {
+            border: 1px solid var(--form-border);
+            border-radius: var(--form-radius);
+            box-shadow: 0 6px 16px rgba(15, 23, 42, .08);
+            font-size: var(--form-font-size);
+            overflow: hidden;
         }
 
-        /* Placeholder dan hasil dropdown */
         .select2-results__option {
-            font-size: 12px;
+            padding: 4px 8px;
+            font-size: var(--form-font-size);
         }
 
-        /* Sweetalert & Select2 container z-index agar selalu di atas modal bertumpuk */
+        /* SweetAlert2 & Select2 Z-Index */
         .swal2-container {
             z-index: 2000 !important;
         }
@@ -795,64 +971,45 @@
             z-index: 2050 !important;
         }
 
-        /* button */
-
-        /* ==========================================
-   MODERN BOOTSTRAP 5 BUTTON OVERRIDE
-   Responsive | Clean | Modern UI
-========================================== */
-
-        :root {
-            --btn-radius: 8px;
-            --btn-padding-y: 0.625rem;
-            --btn-padding-x: 1.125rem;
-            --btn-font-size: 0.875rem;
-            --btn-font-weight: 600;
-            --btn-transition: all 0.2s ease-in-out;
-        }
-
-        /* Base Button */
+        /* ==========================================================================
+           MODERN COMPACT BUTTON OVERRIDE (Bootstrap 5)
+           Responsif | Hemat Ruang Layar | Elegan
+           ========================================================================== */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-
+            gap: 0.35rem;
+            height: var(--btn-height);
+            min-height: var(--btn-height);
             padding: var(--btn-padding-y) var(--btn-padding-x);
             border-radius: var(--btn-radius);
-
             font-size: var(--btn-font-size);
             font-weight: var(--btn-font-weight);
-            line-height: 1.5;
+            line-height: 1;
             letter-spacing: 0.01em;
-
             border-width: 1px;
             transition: var(--btn-transition);
-
             white-space: nowrap;
             cursor: pointer;
-            box-shadow: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         }
 
-        /* Hover */
         .btn:hover {
             transform: translateY(-1px);
         }
 
-        /* Active */
         .btn:active {
             transform: translateY(0);
             box-shadow: none !important;
         }
 
-        /* Focus */
         .btn:focus,
         .btn:focus-visible {
             outline: none;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+            box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.18);
         }
 
-        /* Disabled */
         .btn:disabled,
         .btn.disabled {
             opacity: 0.55;
@@ -861,69 +1018,71 @@
             box-shadow: none;
         }
 
-        /* Primary */
+        .btn-sm {
+            height: var(--btn-height-sm) !important;
+            min-height: var(--btn-height-sm) !important;
+            padding: 2px 7px !important;
+            font-size: var(--form-font-size-sm, 10.5px) !important;
+            border-radius: calc(var(--btn-radius) - 1px) !important;
+        }
+
+        .btn-lg {
+            height: 36px !important;
+            min-height: 36px !important;
+            padding: 5px 12px !important;
+            font-size: 12.5px !important;
+            border-radius: 8px;
+        }
+
         .btn-primary {
-            box-shadow: 0 2px 5px rgba(13, 110, 253, 0.15);
+            box-shadow: 0 1px 3px rgba(13, 110, 253, 0.18);
         }
 
-        .btn-primary:hover {
-            box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
-        }
-
-        /* Secondary */
         .btn-secondary {
-            box-shadow: 0 2px 5px rgba(108, 117, 125, 0.12);
+            box-shadow: 0 1px 3px rgba(108, 117, 125, 0.12);
         }
 
-        /* Success */
         .btn-success {
-            box-shadow: 0 2px 5px rgba(25, 135, 84, 0.15);
+            box-shadow: 0 1px 3px rgba(25, 135, 84, 0.18);
         }
 
-        /* Danger */
         .btn-danger {
-            box-shadow: 0 2px 5px rgba(220, 53, 69, 0.15);
+            box-shadow: 0 1px 3px rgba(220, 53, 69, 0.18);
         }
 
-        /* Warning */
         .btn-warning {
-            box-shadow: 0 2px 5px rgba(255, 193, 7, 0.15);
+            box-shadow: 0 1px 3px rgba(255, 193, 7, 0.18);
         }
 
-        /* Info */
         .btn-info {
-            box-shadow: 0 2px 5px rgba(13, 202, 240, 0.15);
+            box-shadow: 0 1px 3px rgba(13, 202, 240, 0.18);
         }
 
-        /* Light */
         .btn-light {
-            border-color: #e9ecef;
-            background-color: #f8f9fa;
-            color: #343a40;
+            border-color: #e2e8f0;
+            background-color: #f8fafc;
+            color: #334155;
         }
 
         .btn-light:hover {
-            background-color: #e9ecef;
-            border-color: #dee2e6;
-            color: #212529;
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #0f172a;
         }
 
-        /* Dark */
         .btn-dark {
-            box-shadow: 0 2px 5px rgba(33, 37, 41, 0.15);
+            box-shadow: 0 1px 3px rgba(33, 37, 41, 0.18);
         }
 
-        /* Outline Buttons */
         [class*="btn-outline-"] {
             background-color: transparent;
             box-shadow: none;
         }
 
         [class*="btn-outline-"]:hover {
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
         }
 
-        /* Link Button */
         .btn-link {
             box-shadow: none;
             text-decoration: none;
@@ -934,27 +1093,10 @@
             text-decoration: underline;
         }
 
-        /* Button Sizes */
-        .btn-sm {
-            --btn-radius: 6px;
-            --btn-padding-y: 0.375rem;
-            --btn-padding-x: 0.75rem;
-            --btn-font-size: 0.8rem;
-        }
-
-        .btn-lg {
-            --btn-radius: 10px;
-            --btn-padding-y: 0.8rem;
-            --btn-padding-x: 1.5rem;
-            --btn-font-size: 1rem;
-        }
-
-        /* Rounded Button */
         .btn.rounded-pill {
             border-radius: 50rem;
         }
 
-        /* Icon inside Button */
         .btn i,
         .btn svg,
         .btn .bi {
@@ -963,7 +1105,6 @@
             flex-shrink: 0;
         }
 
-        /* Button Group */
         .btn-group>.btn,
         .btn-group-vertical>.btn {
             transform: none;
@@ -973,70 +1114,266 @@
             z-index: 2;
         }
 
-        /* Block Button */
         .btn-block,
         .btn.w-100 {
             width: 100%;
         }
 
-        /* ==========================================
-   RESPONSIVE BREAKPOINTS
-========================================== */
 
-        /* Tablet */
-        @media (max-width: 991.98px) {
-            .btn {
-                padding: 0.6rem 1rem;
-                font-size: 0.875rem;
-            }
-
-            .btn-lg {
-                padding: 0.75rem 1.25rem;
-            }
+        /* ==========================================================================
+           GLOBAL COMPACT FORM CONTROLS
+           Input, Select, Textarea, Label yang proporsional & muat satu layar
+           ========================================================================== */
+        .form-control:not(textarea),
+        .form-select,
+        input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+        select {
+            height: var(--form-height);
+            min-height: var(--form-height);
+            padding: var(--form-padding-y) var(--form-padding-x);
+            border: 1px solid var(--form-border);
+            border-radius: var(--form-radius);
+            background-color: #fff;
+            color: var(--form-text);
+            font-size: var(--form-font-size);
+            font-weight: 500;
+            line-height: 1.35;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
+            transition: border-color .15s ease, box-shadow .15s ease;
         }
 
-        /* Mobile */
-        @media (max-width: 575.98px) {
-            .btn {
-                --btn-radius: 7px;
-                --btn-padding-y: 0.55rem;
-                --btn-padding-x: 0.85rem;
-
-                font-size: 0.8125rem;
-                white-space: normal;
-            }
-
-            .btn-lg {
-                padding: 0.7rem 1rem;
-                font-size: 0.9rem;
-            }
-
-            .btn-group {
-                flex-wrap: wrap;
-            }
-
-            .btn-group>.btn {
-                flex: 1 1 auto;
-            }
-
-            /* Responsive utility */
-            .btn-responsive {
-                width: 100%;
-            }
+        .form-control-sm:not(textarea),
+        .form-select-sm,
+        .input-sm {
+            height: var(--form-height-sm) !important;
+            min-height: var(--form-height-sm) !important;
+            padding: 2px 6px !important;
+            font-size: var(--form-font-size-sm, 10.5px) !important;
+            border-radius: calc(var(--form-radius) - 1px) !important;
         }
 
-        /* Touch Device */
-        @media (hover: none) {
-            .btn:hover {
-                transform: none;
-            }
+        /* TEXTAREA: Menghormati atribut rows dan cols HTML bawaan */
+        textarea,
+        textarea.form-control,
+        textarea.form-control-sm {
+            height: auto !important;
+            min-height: auto !important;
+            max-height: none;
+            padding: 5px 8px;
+            border: 1px solid var(--form-border);
+            border-radius: var(--form-radius);
+            background-color: #fff;
+            color: var(--form-text);
+            font-size: var(--form-font-size);
+            line-height: 1.4;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
+            transition: border-color .15s ease, box-shadow .15s ease;
         }
 
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            .btn {
-                transition: none;
-            }
+        /* Menghormati atribut rows pada textarea */
+        textarea[rows],
+        textarea[rows].form-control,
+        textarea[rows].form-control-sm {
+            height: auto !important;
+            min-height: auto !important;
+        }
+
+        /* Menghormati atribut cols pada textarea */
+        textarea[cols],
+        textarea[cols].form-control,
+        textarea[cols].form-control-sm {
+            width: auto !important;
+            max-width: 100%;
+            display: inline-block;
+        }
+
+        .form-label,
+        label {
+            margin-bottom: 2px;
+            color: #475569;
+            font-size: var(--font-sm, 10.5px);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .form-control::placeholder,
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--form-muted);
+            font-weight: 400;
+            opacity: 1;
+            font-size: var(--form-font-size);
+        }
+
+        .form-control:hover,
+        .form-select:hover,
+        input:not([type="checkbox"]):not([type="radio"]):hover,
+        select:hover,
+        textarea:hover {
+            border-color: #b8c8dc;
+        }
+
+        .form-control:focus,
+        .form-select:focus,
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--form-primary);
+            outline: 0;
+            box-shadow: 0 0 0 2px rgba(13, 110, 253, .15);
+        }
+
+        .form-control:disabled,
+        .form-select:disabled,
+        input:disabled,
+        select:disabled,
+        textarea:disabled {
+            background-color: #f1f5f9;
+            color: #94a3b8;
+            border-color: #e2e8f0;
+            cursor: not-allowed;
+            opacity: 1;
+        }
+
+        .form-control[readonly],
+        input[readonly],
+        textarea[readonly] {
+            background-color: #f8fafc;
+            color: #64748b;
+        }
+
+
+        /* ==========================================================================
+           INPUT GROUP & SIZE VARIANTS
+           ========================================================================== */
+        .input-group {
+            --ig-height: var(--form-height);
+            --ig-font-size: var(--form-font-size);
+            --ig-padding-x: 6px;
+            flex-wrap: nowrap;
+        }
+
+        .input-group>.form-control:not(textarea),
+        .input-group>.form-select,
+        .input-group>.input-group-text,
+        .input-group>.btn,
+        .input-group>button {
+            height: var(--ig-height);
+            min-height: var(--ig-height);
+            font-size: var(--ig-font-size);
+        }
+
+        .input-group-text {
+            display: flex;
+            align-items: center;
+            padding: 0 var(--ig-padding-x);
+            border: 1px solid var(--form-border);
+            background-color: #f8fafc;
+            color: #64748b;
+            font-size: var(--ig-font-size);
+        }
+
+        .input-group.input-group-sm {
+            --ig-height: var(--form-height-sm);
+            --ig-font-size: var(--form-font-size-sm, 10.5px);
+            --ig-padding-x: 6px;
+        }
+
+        .input-group.input-group-sm>.form-control:not(textarea),
+        .input-group.input-group-sm>.form-select {
+            height: var(--ig-height);
+            min-height: var(--ig-height);
+            padding: 2px var(--ig-padding-x);
+            font-size: var(--ig-font-size);
+        }
+
+        .input-group.input-group-sm>.input-group-text,
+        .input-group.input-group-sm>.btn,
+        .input-group.input-group-sm>button {
+            height: var(--ig-height);
+            min-height: var(--ig-height);
+            padding: 0 var(--ig-padding-x);
+            font-size: var(--ig-font-size);
+        }
+
+        .input-group.input-group-lg {
+            --ig-height: var(--form-height-lg);
+            --ig-font-size: 13px;
+            --ig-padding-x: 12px;
+        }
+
+        .input-group.input-group-lg>.form-control:not(textarea),
+        .input-group.input-group-lg>.form-select {
+            height: var(--ig-height);
+            min-height: var(--ig-height);
+            padding: 5px var(--ig-padding-x);
+            font-size: var(--ig-font-size);
+        }
+
+        .input-group.input-group-lg>.input-group-text,
+        .input-group.input-group-lg>.btn,
+        .input-group.input-group-lg>button {
+            height: var(--ig-height);
+            min-height: var(--ig-height);
+            padding: 0 var(--ig-padding-x);
+            font-size: var(--ig-font-size);
+        }
+
+        /* Select2 di dalam Input Group */
+        .input-group.input-group-sm .select2-container--default .select2-selection--single {
+            height: var(--ig-height) !important;
+            min-height: var(--ig-height) !important;
+        }
+
+        .input-group.input-group-sm .select2-selection--single .select2-selection__rendered {
+            line-height: calc(var(--ig-height) - 2px) !important;
+            font-size: var(--ig-font-size);
+        }
+
+        .input-group.input-group-sm .select2-selection--single .select2-selection__arrow {
+            height: calc(var(--ig-height) - 2px) !important;
+        }
+
+        /* Input Group: Border-radius Presisi Tanpa Celah */
+        .input-group> :not(:last-child) {
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        .input-group> :not(:first-child) {
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            margin-left: -1px;
+        }
+
+        .input-group> :first-child {
+            border-top-left-radius: var(--form-radius) !important;
+            border-bottom-left-radius: var(--form-radius) !important;
+        }
+
+        .input-group> :last-child {
+            border-top-right-radius: var(--form-radius) !important;
+            border-bottom-right-radius: var(--form-radius) !important;
+        }
+
+        /* ==========================================================================
+           MODAL & CARD PADDING OPTIMIZATION
+           Memastikan modal CPPT, SOAP, dan asuhan muat utuh di layar
+           ========================================================================== */
+        .modal-header {
+            padding: 8px 14px !important;
+        }
+
+        .modal-body {
+            padding: 10px 14px !important;
+        }
+
+        .modal-footer {
+            padding: 6px 14px !important;
+        }
+
+        .card-body {
+            padding: 10px 12px;
         }
     </style>
 </head>

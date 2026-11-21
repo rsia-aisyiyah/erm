@@ -71,7 +71,7 @@
 
                         <div class="col-md-3">
                             <label for="td">TD</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="td" name="td" placeholder="mmHg" />
                                 <x-input-group-text>mmHg</x-input-group-text>
                             </x-input-group>
@@ -79,7 +79,7 @@
 
                         <div class="col-md-2">
                             <label for="nadi">Nadi</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="nadi" name="nadi" />
                                 <x-input-group-text>x/m</x-input-group-text>
                             </x-input-group>
@@ -87,7 +87,7 @@
 
                         <div class="col-md-2">
                             <label for="rr">RR</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="rr" name="rr" placeholder="x/menit" />
                                 <x-input-group-text>x/m</x-input-group-text>
                             </x-input-group>
@@ -95,7 +95,7 @@
 
                         <div class="col-md-2">
                             <label for="suhu">Suhu</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="suhu" name="suhu" placeholder="°C" />
                                 <x-input-group-text>°C</x-input-group-text>
                             </x-input-group>
@@ -108,7 +108,7 @@
 
                         <div class="col-md-2">
                             <label for="bb">BB</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="bb" name="bb" value="0" />
                                 <x-input-group-text>Kg</x-input-group-text>
                             </x-input-group>
@@ -116,28 +116,28 @@
 
                         <div class="col-md-2">
                             <label for="tb">TB</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input id="tb" name="tb" value="0" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
                         </div>
                         <div class="col-md-2">
                             <label for="lp">LP</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="lp" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
                         </div>
                         <div class="col-md-2">
                             <label for="lk">LK</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="lk" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
                         </div>
                         <div class="col-md-2">
                             <label for="ld">LD</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="ld" />
                                 <x-input-group-text>cm</x-input-group-text>
                             </x-input-group>
@@ -471,7 +471,7 @@
 
                         <div class="col-md-3">
                             <label for="ket_lapor">Jam Lapor</label>
-                            <x-input-group class="input-group-sm">
+                            <x-input-group>
                                 <x-input name="ket_lapor" type="time" value="00:00:00" disabled />
                                 <x-input-group-text>WIB</x-input-group-text>
                             </x-input-group>
@@ -849,7 +849,10 @@
                 }).done((response) => {
                     let optPetugas = ''
                     if (Object.keys(response).length > 0) {
-                        const { petugas, pasien } = response
+                        const {
+                            petugas,
+                            pasien
+                        } = response
                         setDataForm(formAskepAwalAnak, response);
                         optPetugas = new Option(response.pegawai?.nama, response.pegawai?.nik, true, true);
                         formAskepAwalAnak.find('select[name=nip]').append(optPetugas).trigger('change');
@@ -917,7 +920,7 @@
             }
         })
 
-        formAskepAwalAnak.on('change', 'select[name^="sg"]', function () {
+        formAskepAwalAnak.on('change', 'select[name^="sg"]', function() {
             const name = $(this).attr('name');
             const index = name.replace('sg', '');
             const jawaban = $(this).val();
@@ -931,6 +934,7 @@
                 .trigger('change');
             hitungSkorGiziAnak();
         });
+
         function hitungSkorGiziAnak() {
             let total = 0;
             for (let i = 1; i <= 4; i++) {
@@ -945,11 +949,11 @@
         formAskepAwalAnak.on(
             'change',
             'input[name="berjalan_a"], input[name="berjalan_b"], input[name="berjalan_c"]',
-            function () {
+            function() {
                 hitungResikoJatuhAnak(formAskepAwalAnak)
             }
         );
-        formAskepAwalAnak.find('input[name=lapor]').on('change', function (e) {
+        formAskepAwalAnak.find('input[name=lapor]').on('change', function(e) {
 
             if (e.currentTarget.value == 'Ya') {
                 const jam = moment().format('HH:mm:ss')
@@ -962,7 +966,7 @@
                     .val('00:00:00');
             }
         })
-        formAskepAwalAnak.find('input[name=pada_dokter]').on('change', function (e) {
+        formAskepAwalAnak.find('input[name=pada_dokter]').on('change', function(e) {
 
             if (e.currentTarget.value == 'Ya') {
                 const jam = moment().format('HH:mm:ss')
@@ -975,7 +979,7 @@
                     .val('00:00:00');
             }
         })
-        rangeSkalaNyeriAnak.on('change', function (e) {
+        rangeSkalaNyeriAnak.on('change', function(e) {
             formAskepAwalAnak.find('span[id=nilai_skala_nyeri]')
                 .text(e.currentTarget.value);
         });
@@ -992,6 +996,7 @@
                 alert('Nomor rawat tidak ditemukan!');
             }
         }
+
         function showModalRiwayatPersalinanAskep() {
             const no_rkm_medis = formInfoAskepAwalAnak.find('input[name="no_rkm_medis"]').val()
             $('#modalRiwayatPersalinan').modal('show')
@@ -1009,8 +1014,7 @@
                 ajax: {
                     url: "{{ route('asesmen-keperawatan.master-masalah.anak.get') }}",
                 },
-                columns: [
-                    {
+                columns: [{
                         data: '',
                         render: (data, type, row) => {
                             return `
@@ -1033,7 +1037,7 @@
                         }
                     }
                 ],
-                initComplete: function () {
+                initComplete: function() {
                     $.get(`{{ route('asesmen-keperawatan.anak.masalah') }}`, {
                         no_rawat: formInfoAskepAwalAnak.find('input[name=no_rawat]').val()
                     }).done((response) => {
@@ -1111,8 +1115,7 @@
                     },
 
                 },
-                columns: [
-                    {
+                columns: [{
                         data: '',
                         render: (data, type, row) => {
                             return `
@@ -1132,7 +1135,7 @@
                         data: 'rencana_keperawatan'
                     }
                 ],
-                initComplete: function () {
+                initComplete: function() {
                     $.get(`{{ route('asesmen-keperawatan.anak.rencana') }}`, {
                         no_rawat: formInfoAskepAwalAnak.find('input[name=no_rawat]').val()
                     }).done((response) => {
@@ -1194,7 +1197,7 @@
             }
             $('#formAskepAwalAnak select[name=nyeri]').val(nyeri)
         }
-        formAskepAwalAnak.find('select[name=pada_dokter]').on('change', function (e) {
+        formAskepAwalAnak.find('select[name=pada_dokter]').on('change', function(e) {
             if (e.currentTarget.value == 'Ya') {
                 const jam = moment().format('HH:mm:ss');
                 formAskepAwalAnak.find('input[name=ket_dokter]')
@@ -1206,6 +1209,7 @@
                     .val('00:00:00');
             }
         })
+
         function showFormRiwayatImunisasi() {
             $('#modalRiwayatImunisasi').modal('show')
             const no_rkm_medis = formInfoAskepAwalAnak.find('input[name="no_rkm_medis"]').val()

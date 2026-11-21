@@ -5,7 +5,7 @@
                 <tr>
                     <td width="10%">Dilakukan Oleh :</td>
                     <td width="60%" colspan="2">
-                        <div class="input-group input-group-sm">
+                        <div class="input-group">
                             <div class="input-group-text"><i class="bi bi-person"></i></div>
                             <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder=""
                                 readonly>

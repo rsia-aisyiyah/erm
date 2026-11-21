@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <label for="pemeriksaan">Pemeriksaan Penunjang</label>
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <div class="input-group-text">
                                             <input class="form-check-input mt-0" type="checkbox" aria-label="" name="pemeriksaan_penunjang" id="laboratorium" value="Laboratorium">
                                             <label class="form-check-label" for="laboratorium">
@@ -104,7 +104,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <div class="input-group-text">
                                             <input class="form-check-input mt-0" type="checkbox" aria-label="" name="pemeriksaan_penunjang" id="ecg" value="ECG">
                                             <label class="form-check-label" for="ecg">
@@ -115,7 +115,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <div class="input-group-text">
                                             <input class="form-check-input mt-0" type="checkbox" aria-label="" name="pemeriksaan_penunjang" id="radiologi" value="Radiologi">
                                             <label class="form-check-label" for="radiologi">
@@ -148,7 +148,7 @@
                             <label for="masalah">Nutrisi</label>
                             <div class="row gy-2">
                                 <div class="col-sm-12">
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <div class="input-group-text">
                                             <input class="form-check-input mt-0" type="checkbox" value="Diet" aria-label="" name="diet" id="diet">
                                             <label class="form-check-label" for="diet">
@@ -159,7 +159,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <div class="input-group-text">
                                             <input class="form-check-input mt-0" type="checkbox" value="Batasan Cairan" aria-label="" name="diet" id="batasan">
                                             <label class="form-check-label" for="batasan">
@@ -204,7 +204,7 @@
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-6">
                             <label for="aktivitas">Pengobatan</label>
-                            <div class="input-group input-group-sm mb-2">
+                            <div class="input-group mb-2">
                                 <div class="input-group-text">
                                     <input class="form-check-input mt-0" type="radio" value="Sesuai Instruksi Medis" aria-label="" name="pengobatan" id="pengobatan1">
                                     <label class="form-check-label" for="pengobatan1">
@@ -213,7 +213,7 @@
                                 </div>
                                 <input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" name="ket_pengobatan1" id="ket_pengobatan1" style="font-size:11px" disabled>
                             </div>
-                            <div class="input-group input-group-sm">
+                            <div class="input-group">
                                 <div class="input-group-text">
                                     <input class="form-check-input mt-0" type="radio" value="Revisi Pengobatan" aria-label="" name="pengobatan" id="pengobatan2">
                                     <label class="form-check-label" for="pengobatan2">

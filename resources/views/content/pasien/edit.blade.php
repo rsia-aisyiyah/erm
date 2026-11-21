@@ -15,7 +15,7 @@
                 <div class="row mb-1">
                     <label for="no_rkm_medis" class="col-sm-3 col-form-label">No. Rekam Medis</label>
                     <div class="col-sm-9">
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input class="form-control" id="no_rkm_medis" name="no_rkm_medis" value="{{ $pasien->no_rkm_medis }}" disabled />
                             <button type="button" class="btn btn-secondary btn-sm" id="setNoRkmMedis" name="setNoRkmMedis" disabled><i class="bi bi-search"></i></button>
                         </x-input-group>
@@ -57,7 +57,7 @@
                     </div>
                     <label for="tgl_lahir" class="col-sm-2 col-form-label">Tgl. Lahir</label>
                     <div class="col-sm-4">
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input class="form-control" id="tgl_lahir" name="tgl_lahir" autocomplete="off" />
                             <button class="btn btn-secondary" type="button" id="resetTglLahir" name="resetTglLahir"><i class="bi bi-arrow-clockwise"></i></button>
                         </x-input-group>
@@ -66,7 +66,7 @@
                 <div class="row mb-1">
                     <label for="umur" class="col-sm-3 col-form-label">Umur</label>
                     <div class="col-sm-4">
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input class="form-control" name="umurTahun" id="umurTahun"></x-input>
                             <x-input-group-text>Th</x-input-group-text>
                             <x-input class="form-control" name="umurBulan" id="umurBulan"></x-input>
@@ -292,7 +292,7 @@
                 <div class="row mb-1">
                     <label for="alamat" class="col-sm-2 col-form-label">Alamat PJ</label>
                     <div class="col-sm-10">
-                        <x-input-group class="input-group-sm">
+                        <x-input-group>
                             <x-input class="form-control" id="alamatpj" name="alamatpj" value="{{ $pasien->alamatpj }}" />
                             <x-input-group-text>
                                 <input class="form-check-input" type="checkbox" id="checkAlamatPj" name="checkAlamatPj" value="Car">

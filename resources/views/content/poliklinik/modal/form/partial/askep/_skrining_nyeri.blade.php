@@ -69,7 +69,7 @@
 
             <div class="col-md-2">
                 <label for="durasi">Durasi Nyeri</label>
-                <x-input-group class="input-group-sm">
+                <x-input-group>
                     <x-input name="durasi" />
                     <x-input-group-text>mnt</x-input-group-text>
                 </x-input-group>

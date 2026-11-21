@@ -2,7 +2,7 @@
 <div class="modal fade" id="modalSubstitusiObat" tabindex="-1" aria-labelledby="modalSubstitusiObatLabel" aria-hidden="true" style="z-index: 1080;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
-            
+
             <div class="modal-header bg-warning text-dark py-2 px-3">
                 <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-arrow-left-right fs-5"></i>
@@ -62,7 +62,7 @@
                     <!-- Input Obat Pengganti -->
                     <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
                         <label class="form-label small fw-bold mb-1">Cari Obat Pengganti (Depo / Gudang)</label>
-                        <div class="input-group input-group-sm mb-1 position-relative">
+                        <div class="input-group mb-1 position-relative">
                             <input type="text" class="form-control" id="substitusi_cari_obat_baru" placeholder="Ketik nama obat pengganti..." autocomplete="off">
                             <button class="btn btn-outline-secondary" type="button" id="btnCariObatSubstitusi">
                                 <i class="bi bi-search"></i>
@@ -102,62 +102,65 @@
 </div>
 
 @push('script')
-<script>
-    // Buka Modal Substitusi
-    function bukaModalSubstitusi(noPermintaan, kodeLama, namaLama, jmlLama, aturanLama, noRawat = '', kdDokter = '', namaDokter = '') {
-        $('#substitusi_no_permintaan').val(noPermintaan);
-        $('#substitusi_no_rawat').val(noRawat);
-        $('#substitusi_kode_brng_lama').val(kodeLama);
-        $('#substitusi_kd_dokter').val(kdDokter);
-        $('#substitusi_nama_dokter').val(namaDokter);
+    <script>
+        // Buka Modal Substitusi
+        function bukaModalSubstitusi(noPermintaan, kodeLama, namaLama, jmlLama, aturanLama, noRawat = '', kdDokter = '', namaDokter = '') {
+            $('#substitusi_no_permintaan').val(noPermintaan);
+            $('#substitusi_no_rawat').val(noRawat);
+            $('#substitusi_kode_brng_lama').val(kodeLama);
+            $('#substitusi_kd_dokter').val(kdDokter);
+            $('#substitusi_nama_dokter').val(namaDokter);
 
-        $('#lblSubstitusiNamaLama').text(namaLama);
-        $('#lblSubstitusiKodeLama').text(kodeLama);
-        $('#lblSubstitusiJmlLama').text(jmlLama);
+            $('#lblSubstitusiNamaLama').text(namaLama);
+            $('#lblSubstitusiKodeLama').text(kodeLama);
+            $('#lblSubstitusiJmlLama').text(jmlLama);
 
-        const dokterDisplay = namaDokter || 'Dokter Register';
-        $('#lblSubstitusiNamaDokter').text(dokterDisplay);
-        $('#lblSubstitusiNamaDokterConsent').text(dokterDisplay);
+            const dokterDisplay = namaDokter || 'Dokter Register';
+            $('#lblSubstitusiNamaDokter').text(dokterDisplay);
+            $('#lblSubstitusiNamaDokterConsent').text(dokterDisplay);
 
-        $('#chkSubstitusiKonfirmasiDokter').prop('checked', false);
-        $('#substitusi_catatan_konfirmasi').val('');
+            $('#chkSubstitusiKonfirmasiDokter').prop('checked', false);
+            $('#substitusi_catatan_konfirmasi').val('');
 
-        $('#substitusi_kode_brng_baru').val('');
-        $('#substitusi_cari_obat_baru').val('');
-        $('#lblSubstitusiObatTerpilih').text('-');
-        $('#lblSubstitusiStokDepo').text('0');
-        $('#substitusi_jml_baru').val(jmlLama);
-        $('#substitusi_aturan_pakai_baru').val(aturanLama || '-');
-        $('#substitusi_dropdown_obat').addClass('d-none').empty();
-
-        $('#modalSubstitusiObat').modal('show');
-    }
-
-    // Live search obat baru untuk substitusi
-    let timeoutSearchSub = null;
-    $('#substitusi_cari_obat_baru').on('keyup', function() {
-        const query = $(this).val().trim();
-        clearTimeout(timeoutSearchSub);
-        if (query.length < 2) {
+            $('#substitusi_kode_brng_baru').val('');
+            $('#substitusi_cari_obat_baru').val('');
+            $('#lblSubstitusiObatTerpilih').text('-');
+            $('#lblSubstitusiStokDepo').text('0');
+            $('#substitusi_jml_baru').val(jmlLama);
+            $('#substitusi_aturan_pakai_baru').val(aturanLama || '-');
             $('#substitusi_dropdown_obat').addClass('d-none').empty();
-            return;
+
+            $('#modalSubstitusiObat').modal('show');
         }
 
-        timeoutSearchSub = setTimeout(function() {
-            $.get("{{ url('/obat/cari') }}", { nama: query, gudang: 'RM' }).done(function(res) {
-                const data = res?.data || [];
-                const $drop = $('#substitusi_dropdown_obat');
-                $drop.empty();
-                if (!data || data.length === 0) {
-                    $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
-                } else {
-                    data.forEach(function(item) {
-                        let totalStok = 0;
-                        if (item.gudang_barang && item.gudang_barang.length > 0) {
-                            totalStok = item.gudang_barang[0].stok || 0;
-                        }
-                        const sat = item.kode_satuan?.satuan || item.kode_sat || 'Sat';
-                        const a = $(`
+        // Live search obat baru untuk substitusi
+        let timeoutSearchSub = null;
+        $('#substitusi_cari_obat_baru').on('keyup', function() {
+            const query = $(this).val().trim();
+            clearTimeout(timeoutSearchSub);
+            if (query.length < 2) {
+                $('#substitusi_dropdown_obat').addClass('d-none').empty();
+                return;
+            }
+
+            timeoutSearchSub = setTimeout(function() {
+                $.get("{{ url('/obat/cari') }}", {
+                    nama: query,
+                    gudang: 'RM'
+                }).done(function(res) {
+                    const data = res?.data || [];
+                    const $drop = $('#substitusi_dropdown_obat');
+                    $drop.empty();
+                    if (!data || data.length === 0) {
+                        $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
+                    } else {
+                        data.forEach(function(item) {
+                            let totalStok = 0;
+                            if (item.gudang_barang && item.gudang_barang.length > 0) {
+                                totalStok = item.gudang_barang[0].stok || 0;
+                            }
+                            const sat = item.kode_satuan?.satuan || item.kode_sat || 'Sat';
+                            const a = $(`
                             <a href="javascript:void(0)" class="list-group-item list-group-item-action p-2" style="font-size:11.5px;">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <strong>${item.nama_brng}</strong>
@@ -166,89 +169,95 @@
                                 <small class="text-muted font-monospace">${item.kode_brng}</small>
                             </a>
                         `);
-                        a.on('click', function() {
-                            $('#substitusi_kode_brng_baru').val(item.kode_brng);
-                            $('#lblSubstitusiObatTerpilih').text(item.nama_brng);
-                            $('#lblSubstitusiStokDepo').text(`${totalStok} ${sat}`);
-                            $('#substitusi_cari_obat_baru').val(item.nama_brng);
-                            $drop.addClass('d-none');
+                            a.on('click', function() {
+                                $('#substitusi_kode_brng_baru').val(item.kode_brng);
+                                $('#lblSubstitusiObatTerpilih').text(item.nama_brng);
+                                $('#lblSubstitusiStokDepo').text(`${totalStok} ${sat}`);
+                                $('#substitusi_cari_obat_baru').val(item.nama_brng);
+                                $drop.addClass('d-none');
+                            });
+                            $drop.append(a);
                         });
-                        $drop.append(a);
-                    });
-                }
-                $drop.removeClass('d-none');
-            });
-        }, 300);
-    });
-
-    // Simpan Substitusi
-    $('#btnSimpanSubstitusi').on('click', function() {
-        const noPermintaan = $('#substitusi_no_permintaan').val();
-        const kodeLama = $('#substitusi_kode_brng_lama').val();
-        const kodeBaru = $('#substitusi_kode_brng_baru').val();
-        const jml = $('#substitusi_jml_baru').val();
-        const aturan = $('#substitusi_aturan_pakai_baru').val();
-
-        if (!kodeBaru) {
-            Swal.fire('Peringatan', 'Silahkan pilih obat pengganti terlebih dahulu.', 'warning');
-            return;
-        }
-
-        const isKonfirmasi = $('#chkSubstitusiKonfirmasiDokter').is(':checked');
-        if (!isKonfirmasi) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Konfirmasi Dokter Diperlukan',
-                text: 'Harap pastikan penggantian obat sudah dikonfirmasi kepada Dokter Register dan centang checklist konfirmasi sebelum melanjutkan.',
-                confirmButtonColor: '#ffc107',
-            });
-            return;
-        }
-
-        const noRawat = $('#substitusi_no_rawat').val();
-        const kdDokter = $('#substitusi_kd_dokter').val();
-        const namaDokter = $('#substitusi_nama_dokter').val();
-        const catatan = $('#substitusi_catatan_konfirmasi').val();
-
-        $.ajax({
-            url: "{{ route('farmasi.permintaan-ranap.substitusi') }}",
-            type: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                no_permintaan: noPermintaan,
-                no_rawat: noRawat,
-                kode_brng_lama: kodeLama,
-                nama_brng_lama: $('#lblSubstitusiNamaLama').text(),
-                kode_brng_baru: kodeBaru,
-                nama_brng_baru: $('#lblSubstitusiObatTerpilih').text(),
-                jml: jml,
-                aturan_pakai: aturan,
-                kd_dokter: kdDokter,
-                nama_dokter: namaDokter,
-                konfirmasi_dokter: 1,
-                catatan: catatan
-            },
-            beforeSend: function() {
-                Swal.fire({ title: 'Memproses Substitusi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-            },
-            success: function(resp) {
-                Swal.fire('Berhasil!', resp.message || 'Obat berhasil disubstitusi.', 'success');
-                $('#modalSubstitusiObat').modal('hide');
-                if (typeof loadPermintaanRanapFarmasi === 'function') {
-                    loadPermintaanRanapFarmasi();
-                }
-                if (typeof showDetailPermintaanObat === 'function') {
-                    showDetailPermintaanObat(noPermintaan);
-                }
-                if (typeof bukaDetailRanapFarmasi === 'function') {
-                    bukaDetailRanapFarmasi(noPermintaan);
-                }
-            },
-            error: function(xhr) {
-                const msg = xhr.responseJSON?.message || 'Gagal mensubstitusi obat.';
-                Swal.fire('Gagal!', msg, 'error');
-            }
+                    }
+                    $drop.removeClass('d-none');
+                });
+            }, 300);
         });
-    });
-</script>
+
+        // Simpan Substitusi
+        $('#btnSimpanSubstitusi').on('click', function() {
+            const noPermintaan = $('#substitusi_no_permintaan').val();
+            const kodeLama = $('#substitusi_kode_brng_lama').val();
+            const kodeBaru = $('#substitusi_kode_brng_baru').val();
+            const jml = $('#substitusi_jml_baru').val();
+            const aturan = $('#substitusi_aturan_pakai_baru').val();
+
+            if (!kodeBaru) {
+                Swal.fire('Peringatan', 'Silahkan pilih obat pengganti terlebih dahulu.', 'warning');
+                return;
+            }
+
+            const isKonfirmasi = $('#chkSubstitusiKonfirmasiDokter').is(':checked');
+            if (!isKonfirmasi) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Konfirmasi Dokter Diperlukan',
+                    text: 'Harap pastikan penggantian obat sudah dikonfirmasi kepada Dokter Register dan centang checklist konfirmasi sebelum melanjutkan.',
+                    confirmButtonColor: '#ffc107',
+                });
+                return;
+            }
+
+            const noRawat = $('#substitusi_no_rawat').val();
+            const kdDokter = $('#substitusi_kd_dokter').val();
+            const namaDokter = $('#substitusi_nama_dokter').val();
+            const catatan = $('#substitusi_catatan_konfirmasi').val();
+
+            $.ajax({
+                url: "{{ route('farmasi.permintaan-ranap.substitusi') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_permintaan: noPermintaan,
+                    no_rawat: noRawat,
+                    kode_brng_lama: kodeLama,
+                    nama_brng_lama: $('#lblSubstitusiNamaLama').text(),
+                    kode_brng_baru: kodeBaru,
+                    nama_brng_baru: $('#lblSubstitusiObatTerpilih').text(),
+                    jml: jml,
+                    aturan_pakai: aturan,
+                    kd_dokter: kdDokter,
+                    nama_dokter: namaDokter,
+                    konfirmasi_dokter: 1,
+                    catatan: catatan
+                },
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Memproses Substitusi...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function(resp) {
+                    Swal.fire('Berhasil!', resp.message || 'Obat berhasil disubstitusi.', 'success');
+                    $('#modalSubstitusiObat').modal('hide');
+                    if (typeof loadPermintaanRanapFarmasi === 'function') {
+                        loadPermintaanRanapFarmasi();
+                    }
+                    if (typeof showDetailPermintaanObat === 'function') {
+                        showDetailPermintaanObat(noPermintaan);
+                    }
+                    if (typeof bukaDetailRanapFarmasi === 'function') {
+                        bukaDetailRanapFarmasi(noPermintaan);
+                    }
+                },
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Gagal mensubstitusi obat.';
+                    Swal.fire('Gagal!', msg, 'error');
+                }
+            });
+        });
+    </script>
 @endpush

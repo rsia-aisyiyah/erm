@@ -55,7 +55,7 @@
                 </div>
                 <div>
                     <label for="total_hasil">Total Skor</label>
-                    <x-input-group class="input-group-sm">
+                    <x-input-group>
                         <x-input name="total_hasil" />
                         <x-input-group-text>Skor</x-input-group-text>
                     </x-input-group>

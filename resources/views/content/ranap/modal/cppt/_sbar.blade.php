@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-lg-2 col-md-12">
                     <label for="tgl_pemeriksaan">Tgl & Jam Pemeriksaan</label>
-                    <x-input-group class="input-group-sm">
+                    <x-input-group>
                         <x-input-group-text>
                             <i class="bi bi-calendar3"></i>
                         </x-input-group-text>
@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <label for="petugas">Petugas</label>
-                    <x-input-group class="input-group-sm">
+                    <x-input-group>
                         <x-input-group-text>
                             <i class="bi bi-person-fill"></i>
                         </x-input-group-text>
@@ -161,7 +161,7 @@
             allowClear: false,
             delay: 0,
             scrollAfterSelect: false,
-            initSelection: function (element, callback) { },
+            initSelection: function(element, callback) {},
             ajax: {
                 url: 'dokter/cari',
                 dataType: 'json',
@@ -171,9 +171,9 @@
                     }
                     return query
                 },
-                processResults: function (data) {
+                processResults: function(data) {
                     return {
-                        results: $.map(data, function (item) {
+                        results: $.map(data, function(item) {
                             return {
                                 text: item.nm_dokter,
                                 id: item.kd_dokter

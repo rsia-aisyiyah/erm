@@ -88,7 +88,7 @@
                                 <!-- Cari Obat Autocomplete -->
                                 <div class="col-md-5 position-relative">
                                     <label class="form-label small fw-bold mb-1">Cari Obat / BHP Medis :</label>
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
                                         <input type="text" class="form-control" id="inputCariObatRalan" placeholder="Ketik nama obat..." autocomplete="off">
                                     </div>
@@ -97,7 +97,7 @@
                                 <!-- Jumlah -->
                                 <div class="col-md-2">
                                     <label class="form-label small fw-bold mb-1">Jumlah :</label>
-                                    <div class="input-group input-group-sm">
+                                    <div class="input-group">
                                         <input type="number" step="any" min="0.1" class="form-control" id="inputJmlObatRalan" placeholder="Jml" value="1" required>
                                         <span class="input-group-text small" id="lblSatuanObatRalan">Sat</span>
                                     </div>
@@ -479,211 +479,211 @@
 </div>
 
 @push('script')
-<script>
-    let currentNoResepRalan = '';
-    let currentKdBangsalRalan = 'RM7';
-    let currentIsValidatedRalan = false;
-    let currentRawatDataRalan = {};
+    <script>
+        let currentNoResepRalan = '';
+        let currentKdBangsalRalan = 'RM7';
+        let currentIsValidatedRalan = false;
+        let currentRawatDataRalan = {};
 
-    // Fungsi Utama Buka Modal Detail & Validasi Resep Ralan
-    function tampilResep(no_resep, kd_poli = '') {
-        currentNoResepRalan = no_resep;
-        $('#modalResepObat').modal('show');
-        loadDataDetailResepRalan(no_resep);
-    }
-
-    // Load Data Lengkap Resep Ralan dari Server
-    function loadDataDetailResepRalan(no_resep) {
-        $('#infoNoResep').text(no_resep);
-        $('#infoTglResep').text('Memuat...');
-        $('#ralanPasienNama').text('Memuat...');
-        $('#ralanJk').text('-');
-        $('#ralanNoRawat').text('-');
-        $('#ralanNoRm').text('-');
-        $('#ralanTglLahir').text('Memuat...');
-        $('#ralanUmurPasien').text('-');
-        $('#ralanPoliNama').text('-');
-        $('#ralanDokterNama').text('-');
-        $('#notifResep').val('Memuat resep by plan...').css('height', '110px');
-        $('#tbodyDetailResepRalan').html('<tr><td colspan="10" class="text-center text-muted py-3">Memuat daftar obat...</td></tr>');
-
-        $.get(`{{ url('/farmasi/resep-ralan/detail') }}/${no_resep}`).done(function(res) {
-            const resep = res.resep;
-            currentRawatDataRalan = resep;
-            currentKdBangsalRalan = res.kdBangsal || 'RM7';
-            currentIsValidatedRalan = res.is_validated;
-
-            // Render Header Info
-            const pasien = resep.reg_periksa?.pasien;
-            const regPeriksa = resep.reg_periksa;
-
-            $('#infoNoResep').text(resep.no_resep);
-            $('#infoTglResep').text(`${resep.tgl_peresepan} pk ${resep.jam_peresepan}`);
-            $('#ralanPasienNama').text(pasien?.nm_pasien || '-');
-            $('#ralanJk').text(pasien?.jk ? (pasien.jk === 'L' ? 'L' : 'P') : '-');
-            $('#ralanNoRawat').text(resep.no_rawat);
-            $('#ralanNoRm').text(pasien?.no_rkm_medis ? `RM: ${pasien.no_rkm_medis}` : '-');
-
-            let tglLahirStr = '-';
-            let umurStr = '-';
-            if (pasien?.tgl_lahir && pasien.tgl_lahir !== '0000-00-00') {
-                tglLahirStr = (typeof formatTanggal === 'function') ? formatTanggal(pasien.tgl_lahir) : pasien.tgl_lahir;
-                if (typeof hitungUmur === 'function') {
-                    umurStr = hitungUmur(pasien.tgl_lahir);
-                }
-            }
-            if ((umurStr === '-' || !umurStr) && regPeriksa?.umurdaftar) {
-                umurStr = `${regPeriksa.umurdaftar} ${regPeriksa.sttsumur || 'Th'}`;
-            }
-
-            $('#ralanTglLahir').text(tglLahirStr);
-            $('#ralanUmurPasien').text(umurStr);
-
-            $('#ralanPoliNama').text(regPeriksa?.poliklinik?.nm_poli || '-');
-            $('#ralanDokterNama').text(regPeriksa?.dokter?.nm_dokter || '-');
-            $('#ralanDepoNama').text(`${res.nmBangsal} (${currentKdBangsalRalan})`);
-
-            // Status Badge & Tombol Validasi
-            if (res.is_validated) {
-                $('#ralanStatusBadge').removeClass('bg-warning text-dark').addClass('bg-success text-white')
-                    .html(`<i class="bi bi-check-circle-fill me-1"></i> Tervalidasi pk ${resep.jam}`);
-                $('#btnValidasiResepRalan').prop('disabled', true).removeClass('btn-success').addClass('btn-secondary')
-                    .html('<i class="bi bi-check2-all me-1"></i> Resep Sudah Tervalidasi');
-                $('#cardFormTambahObat').addClass('d-none');
-            } else {
-                $('#ralanStatusBadge').removeClass('bg-success text-white').addClass('bg-warning text-dark')
-                    .html('<i class="bi bi-clock-history me-1"></i> BELUM VALIDASI');
-                $('#btnValidasiResepRalan').prop('disabled', false).removeClass('btn-secondary').addClass('btn-success')
-                    .html('<i class="bi bi-check2-circle me-1"></i> Validasi & Kurangi Stok');
-                $('#cardFormTambahObat').removeClass('d-none');
-            }
-
-            // Bind Tombol Telaah
-            const isTelaahRalan = !!(resep.telaah_farmasi || resep.telaahFarmasi);
-            if (isTelaahRalan) {
-                $('#btnModalTelaahRalan')
-                    .removeClass('btn-outline-danger fw-semibold')
-                    .addClass('text-white')
-                    .css('background-color', '#0f766e')
-                    .html('<i class="bi bi-shield-check me-1"></i> Telaah Farmasi <span class="badge bg-white text-dark ms-1" style="font-size:10px;">Sudah</span>');
-            } else {
-                $('#btnModalTelaahRalan')
-                    .removeClass('text-white')
-                    .css('background-color', '')
-                    .addClass('btn-outline-danger fw-semibold')
-                    .html('<i class="bi bi-shield-exclamation me-1"></i> Telaah Farmasi (Belum)');
-            }
-
-            $('#btnModalTelaahRalan').off('click').on('click', function() {
-                bukaModalTelaahFarmasi(
-                    resep.no_resep,
-                    resep.no_rawat,
-                    resep.reg_periksa?.pasien?.nm_pasien || '',
-                    resep.reg_periksa?.poliklinik?.nm_poli || ''
-                );
-            });
-
-            // SOAP Plan / RTL
-            const $notif = $('#notifResep');
-            if (res.soap_plan && res.soap_plan.trim() !== '' && res.soap_plan !== '-') {
-                $notif.val(res.soap_plan.trim());
-            } else {
-                $notif.val('Tidak ada catatan instruksi resep pada Plan SOAP dokter.');
-            }
-            setTimeout(function() {
-                $notif.css('height', 'auto');
-                const scrollH = $notif.prop('scrollHeight');
-                $notif.css('height', Math.max(110, scrollH + 12) + 'px');
-            }, 60);
-
-            // Simpan metode racik untuk select option
-            if (res.metode_racik) {
-                globalMetodeRacikList = res.metode_racik;
-                const $sel = $('#racikKdMetode');
-                $sel.empty();
-                res.metode_racik.forEach(function(m) {
-                    $sel.append(`<option value="${m.kd_racik}">${m.nm_racik}</option>`);
-                });
-            }
-
-            // Tombol tambah racikan baru
-            if (res.is_validated) {
-                $('#btnTambahRacikanBaru').addClass('d-none');
-            } else {
-                $('#btnTambahRacikanBaru').removeClass('d-none');
-            }
-
-            // Hitung akumulasi ringkasan biaya
-            let sumBiayaObat = 0;
-            let sumEmbalase = 0;
-            let sumTuslah = 0;
-
-            if (res.items) {
-                res.items.forEach(function(item) {
-                    sumBiayaObat += item.biaya_obat || (item.harga * item.jml);
-                    sumEmbalase += item.embalase || 0;
-                    sumTuslah += item.tuslah || 0;
-                });
-            }
-
-            if (res.racikans) {
-                res.racikans.forEach(function(r) {
-                    if (r.details) {
-                        r.details.forEach(function(d) {
-                            sumBiayaObat += d.biaya_obat || (d.harga * d.jml);
-                            sumEmbalase += d.embalase || 0;
-                            sumTuslah += d.tuslah || 0;
-                        });
-                    }
-                });
-            }
-
-            // Render Item Obat Non-Racikan & Racikan
-            const totalNonRacik = renderTbodyResepRalan(res.items);
-            const totalRacik = renderRacikanRalan(res.racikans);
-            const grandTotalSemua = totalNonRacik + totalRacik;
-
-            // Update Label Ringkasan
-            $('#lblSubtotalNonRacik').text(`Rp ${numberFormat(totalNonRacik)}`);
-            $('#lblRingkasanBiayaObat').text(`Rp ${numberFormat(sumBiayaObat)}`);
-            $('#lblRingkasanEmbalase').text(`Rp ${numberFormat(sumEmbalase)}`);
-            $('#lblRingkasanTuslah').text(`Rp ${numberFormat(sumTuslah)}`);
-            $('#lblGrandTotalRalan').text(`Rp ${numberFormat(grandTotalSemua)}`);
-        }).fail(function() {
-            Swal.fire('Error', 'Gagal memuat detail resep rawat jalan.', 'error');
-        });
-    }
-
-    // Render Tabel Daftar Obat Non-Racikan
-    function renderTbodyResepRalan(items) {
-        const $tbody = $('#tbodyDetailResepRalan');
-        $tbody.empty();
-
-        if (!items || items.length === 0) {
-            $tbody.html('<tr><td colspan="12" class="text-center text-muted py-3"><i>Belum ada item obat non-racikan yang diinput. Tambahkan obat dari form di atas jika ada.</i></td></tr>');
-            $('#badgeJumlahItemRalan').text('0 Item');
-            return 0;
+        // Fungsi Utama Buka Modal Detail & Validasi Resep Ralan
+        function tampilResep(no_resep, kd_poli = '') {
+            currentNoResepRalan = no_resep;
+            $('#modalResepObat').modal('show');
+            loadDataDetailResepRalan(no_resep);
         }
 
-        let grandTotal = 0;
-        $('#badgeJumlahItemRalan').text(`${items.length} Item`);
+        // Load Data Lengkap Resep Ralan dari Server
+        function loadDataDetailResepRalan(no_resep) {
+            $('#infoNoResep').text(no_resep);
+            $('#infoTglResep').text('Memuat...');
+            $('#ralanPasienNama').text('Memuat...');
+            $('#ralanJk').text('-');
+            $('#ralanNoRawat').text('-');
+            $('#ralanNoRm').text('-');
+            $('#ralanTglLahir').text('Memuat...');
+            $('#ralanUmurPasien').text('-');
+            $('#ralanPoliNama').text('-');
+            $('#ralanDokterNama').text('-');
+            $('#notifResep').val('Memuat resep by plan...').css('height', '110px');
+            $('#tbodyDetailResepRalan').html('<tr><td colspan="10" class="text-center text-muted py-3">Memuat daftar obat...</td></tr>');
 
-        items.forEach(function(item, idx) {
-            grandTotal += item.total;
-            const isStokCukup = item.stok_depo >= item.jml;
-            const stokBadge = isStokCukup
-                ? `<span class="badge bg-success rounded-pill font-monospace" style="font-size: 10.5px;">${item.stok_depo}</span>`
-                : `<span class="badge bg-danger rounded-pill font-monospace" style="font-size: 10.5px;" title="Stok depo kurang!">${item.stok_depo}</span>`;
+            $.get(`{{ url('/farmasi/resep-ralan/detail') }}/${no_resep}`).done(function(res) {
+                const resep = res.resep;
+                currentRawatDataRalan = resep;
+                currentKdBangsalRalan = res.kdBangsal || 'RM7';
+                currentIsValidatedRalan = res.is_validated;
 
-            let aksiButtons = '';
-            const btnEtiketItem = `
+                // Render Header Info
+                const pasien = resep.reg_periksa?.pasien;
+                const regPeriksa = resep.reg_periksa;
+
+                $('#infoNoResep').text(resep.no_resep);
+                $('#infoTglResep').text(`${resep.tgl_peresepan} pk ${resep.jam_peresepan}`);
+                $('#ralanPasienNama').text(pasien?.nm_pasien || '-');
+                $('#ralanJk').text(pasien?.jk ? (pasien.jk === 'L' ? 'L' : 'P') : '-');
+                $('#ralanNoRawat').text(resep.no_rawat);
+                $('#ralanNoRm').text(pasien?.no_rkm_medis ? `RM: ${pasien.no_rkm_medis}` : '-');
+
+                let tglLahirStr = '-';
+                let umurStr = '-';
+                if (pasien?.tgl_lahir && pasien.tgl_lahir !== '0000-00-00') {
+                    tglLahirStr = (typeof formatTanggal === 'function') ? formatTanggal(pasien.tgl_lahir) : pasien.tgl_lahir;
+                    if (typeof hitungUmur === 'function') {
+                        umurStr = hitungUmur(pasien.tgl_lahir);
+                    }
+                }
+                if ((umurStr === '-' || !umurStr) && regPeriksa?.umurdaftar) {
+                    umurStr = `${regPeriksa.umurdaftar} ${regPeriksa.sttsumur || 'Th'}`;
+                }
+
+                $('#ralanTglLahir').text(tglLahirStr);
+                $('#ralanUmurPasien').text(umurStr);
+
+                $('#ralanPoliNama').text(regPeriksa?.poliklinik?.nm_poli || '-');
+                $('#ralanDokterNama').text(regPeriksa?.dokter?.nm_dokter || '-');
+                $('#ralanDepoNama').text(`${res.nmBangsal} (${currentKdBangsalRalan})`);
+
+                // Status Badge & Tombol Validasi
+                if (res.is_validated) {
+                    $('#ralanStatusBadge').removeClass('bg-warning text-dark').addClass('bg-success text-white')
+                        .html(`<i class="bi bi-check-circle-fill me-1"></i> Tervalidasi pk ${resep.jam}`);
+                    $('#btnValidasiResepRalan').prop('disabled', true).removeClass('btn-success').addClass('btn-secondary')
+                        .html('<i class="bi bi-check2-all me-1"></i> Resep Sudah Tervalidasi');
+                    $('#cardFormTambahObat').addClass('d-none');
+                } else {
+                    $('#ralanStatusBadge').removeClass('bg-success text-white').addClass('bg-warning text-dark')
+                        .html('<i class="bi bi-clock-history me-1"></i> BELUM VALIDASI');
+                    $('#btnValidasiResepRalan').prop('disabled', false).removeClass('btn-secondary').addClass('btn-success')
+                        .html('<i class="bi bi-check2-circle me-1"></i> Validasi & Kurangi Stok');
+                    $('#cardFormTambahObat').removeClass('d-none');
+                }
+
+                // Bind Tombol Telaah
+                const isTelaahRalan = !!(resep.telaah_farmasi || resep.telaahFarmasi);
+                if (isTelaahRalan) {
+                    $('#btnModalTelaahRalan')
+                        .removeClass('btn-outline-danger fw-semibold')
+                        .addClass('text-white')
+                        .css('background-color', '#0f766e')
+                        .html('<i class="bi bi-shield-check me-1"></i> Telaah Farmasi <span class="badge bg-white text-dark ms-1" style="font-size:10px;">Sudah</span>');
+                } else {
+                    $('#btnModalTelaahRalan')
+                        .removeClass('text-white')
+                        .css('background-color', '')
+                        .addClass('btn-outline-danger fw-semibold')
+                        .html('<i class="bi bi-shield-exclamation me-1"></i> Telaah Farmasi (Belum)');
+                }
+
+                $('#btnModalTelaahRalan').off('click').on('click', function() {
+                    bukaModalTelaahFarmasi(
+                        resep.no_resep,
+                        resep.no_rawat,
+                        resep.reg_periksa?.pasien?.nm_pasien || '',
+                        resep.reg_periksa?.poliklinik?.nm_poli || ''
+                    );
+                });
+
+                // SOAP Plan / RTL
+                const $notif = $('#notifResep');
+                if (res.soap_plan && res.soap_plan.trim() !== '' && res.soap_plan !== '-') {
+                    $notif.val(res.soap_plan.trim());
+                } else {
+                    $notif.val('Tidak ada catatan instruksi resep pada Plan SOAP dokter.');
+                }
+                setTimeout(function() {
+                    $notif.css('height', 'auto');
+                    const scrollH = $notif.prop('scrollHeight');
+                    $notif.css('height', Math.max(110, scrollH + 12) + 'px');
+                }, 60);
+
+                // Simpan metode racik untuk select option
+                if (res.metode_racik) {
+                    globalMetodeRacikList = res.metode_racik;
+                    const $sel = $('#racikKdMetode');
+                    $sel.empty();
+                    res.metode_racik.forEach(function(m) {
+                        $sel.append(`<option value="${m.kd_racik}">${m.nm_racik}</option>`);
+                    });
+                }
+
+                // Tombol tambah racikan baru
+                if (res.is_validated) {
+                    $('#btnTambahRacikanBaru').addClass('d-none');
+                } else {
+                    $('#btnTambahRacikanBaru').removeClass('d-none');
+                }
+
+                // Hitung akumulasi ringkasan biaya
+                let sumBiayaObat = 0;
+                let sumEmbalase = 0;
+                let sumTuslah = 0;
+
+                if (res.items) {
+                    res.items.forEach(function(item) {
+                        sumBiayaObat += item.biaya_obat || (item.harga * item.jml);
+                        sumEmbalase += item.embalase || 0;
+                        sumTuslah += item.tuslah || 0;
+                    });
+                }
+
+                if (res.racikans) {
+                    res.racikans.forEach(function(r) {
+                        if (r.details) {
+                            r.details.forEach(function(d) {
+                                sumBiayaObat += d.biaya_obat || (d.harga * d.jml);
+                                sumEmbalase += d.embalase || 0;
+                                sumTuslah += d.tuslah || 0;
+                            });
+                        }
+                    });
+                }
+
+                // Render Item Obat Non-Racikan & Racikan
+                const totalNonRacik = renderTbodyResepRalan(res.items);
+                const totalRacik = renderRacikanRalan(res.racikans);
+                const grandTotalSemua = totalNonRacik + totalRacik;
+
+                // Update Label Ringkasan
+                $('#lblSubtotalNonRacik').text(`Rp ${numberFormat(totalNonRacik)}`);
+                $('#lblRingkasanBiayaObat').text(`Rp ${numberFormat(sumBiayaObat)}`);
+                $('#lblRingkasanEmbalase').text(`Rp ${numberFormat(sumEmbalase)}`);
+                $('#lblRingkasanTuslah').text(`Rp ${numberFormat(sumTuslah)}`);
+                $('#lblGrandTotalRalan').text(`Rp ${numberFormat(grandTotalSemua)}`);
+            }).fail(function() {
+                Swal.fire('Error', 'Gagal memuat detail resep rawat jalan.', 'error');
+            });
+        }
+
+        // Render Tabel Daftar Obat Non-Racikan
+        function renderTbodyResepRalan(items) {
+            const $tbody = $('#tbodyDetailResepRalan');
+            $tbody.empty();
+
+            if (!items || items.length === 0) {
+                $tbody.html('<tr><td colspan="12" class="text-center text-muted py-3"><i>Belum ada item obat non-racikan yang diinput. Tambahkan obat dari form di atas jika ada.</i></td></tr>');
+                $('#badgeJumlahItemRalan').text('0 Item');
+                return 0;
+            }
+
+            let grandTotal = 0;
+            $('#badgeJumlahItemRalan').text(`${items.length} Item`);
+
+            items.forEach(function(item, idx) {
+                grandTotal += item.total;
+                const isStokCukup = item.stok_depo >= item.jml;
+                const stokBadge = isStokCukup ?
+                    `<span class="badge bg-success rounded-pill font-monospace" style="font-size: 10.5px;">${item.stok_depo}</span>` :
+                    `<span class="badge bg-danger rounded-pill font-monospace" style="font-size: 10.5px;" title="Stok depo kurang!">${item.stok_depo}</span>`;
+
+                let aksiButtons = '';
+                const btnEtiketItem = `
                 <button type="button" class="btn btn-outline-primary btn-sm shadow-sm" style="padding: 4px 8px; font-size: 12px;" onclick="bukaModalEtiket(currentNoResepRalan, 'umum_${item.kode_brng}')" title="Cetak Etiket Item Ini">
                     <i class="bi bi-printer"></i>
                 </button>
             `;
 
-            if (!currentIsValidatedRalan) {
-                aksiButtons = `
+                if (!currentIsValidatedRalan) {
+                    aksiButtons = `
                     <div class="d-inline-flex gap-1 align-items-center">
                         ${btnEtiketItem}
                         <button type="button" class="btn btn-outline-warning btn-sm text-dark shadow-sm" style="padding: 4px 8px; font-size: 12px;" onclick="bukaModalEditItem('${item.kode_brng}', '${item.nama_brng.replace(/'/g, "\\'")}', ${item.jml}, '${(item.aturan_pakai || '').replace(/'/g, "\\'")}')" title="Ubah / Substitusi Obat">
@@ -694,16 +694,16 @@
                         </button>
                     </div>
                 `;
-            } else {
-                aksiButtons = `
+                } else {
+                    aksiButtons = `
                     <div class="d-inline-flex gap-1 align-items-center">
                         ${btnEtiketItem}
                         <span class="badge bg-light text-muted border">Terkunci</span>
                     </div>
                 `;
-            }
+                }
 
-            const tr = `
+                const tr = `
                 <tr>
                     <td class="text-center">${idx + 1}</td>
                     <td class="font-monospace text-muted" style="font-size: 11px;">${item.kode_brng}</td>
@@ -719,39 +719,39 @@
                     <td class="text-center">${aksiButtons}</td>
                 </tr>
             `;
-            $tbody.append(tr);
-        });
+                $tbody.append(tr);
+            });
 
-        return grandTotal;
-    }
-
-    // Render Racikan Terstruktur Lengkap
-    function renderRacikanRalan(racikans) {
-        const $card = $('#cardRacikanRalan');
-        const $box = $('#boxListRacikanRalan');
-        $box.empty();
-
-        if (!racikans || racikans.length === 0) {
-            $box.html('<div class="text-center text-muted py-3 bg-white border rounded"><i class="bi bi-info-circle me-1"></i> Belum ada obat racikan pada resep ini. Klik <strong>Buat Racikan Baru</strong> jika dokter meresepkan puyer/kapsul/racikan.</div>');
-            return 0;
+            return grandTotal;
         }
 
-        let totalBiayaSemuaRacik = 0;
+        // Render Racikan Terstruktur Lengkap
+        function renderRacikanRalan(racikans) {
+            const $card = $('#cardRacikanRalan');
+            const $box = $('#boxListRacikanRalan');
+            $box.empty();
 
-        racikans.forEach(function(r) {
-            totalBiayaSemuaRacik += r.total_biaya || 0;
-            let rowsDetailHtml = '';
+            if (!racikans || racikans.length === 0) {
+                $box.html('<div class="text-center text-muted py-3 bg-white border rounded"><i class="bi bi-info-circle me-1"></i> Belum ada obat racikan pada resep ini. Klik <strong>Buat Racikan Baru</strong> jika dokter meresepkan puyer/kapsul/racikan.</div>');
+                return 0;
+            }
 
-            if (r.details && r.details.length > 0) {
-                r.details.forEach(function(d, dIdx) {
-                    const isStokCukup = d.stok_depo >= d.jml;
-                    const stokBadge = isStokCukup
-                        ? `<span class="badge bg-success rounded-pill font-monospace" style="font-size: 10.5px;">${d.stok_depo}</span>`
-                        : `<span class="badge bg-danger rounded-pill font-monospace" style="font-size: 10.5px;" title="Stok depo kurang!">${d.stok_depo}</span>`;
+            let totalBiayaSemuaRacik = 0;
 
-                    let aksiDetBtn = '';
-                    if (!currentIsValidatedRalan) {
-                        aksiDetBtn = `
+            racikans.forEach(function(r) {
+                totalBiayaSemuaRacik += r.total_biaya || 0;
+                let rowsDetailHtml = '';
+
+                if (r.details && r.details.length > 0) {
+                    r.details.forEach(function(d, dIdx) {
+                        const isStokCukup = d.stok_depo >= d.jml;
+                        const stokBadge = isStokCukup ?
+                            `<span class="badge bg-success rounded-pill font-monospace" style="font-size: 10.5px;">${d.stok_depo}</span>` :
+                            `<span class="badge bg-danger rounded-pill font-monospace" style="font-size: 10.5px;" title="Stok depo kurang!">${d.stok_depo}</span>`;
+
+                        let aksiDetBtn = '';
+                        if (!currentIsValidatedRalan) {
+                            aksiDetBtn = `
                             <div class="d-inline-flex gap-1 align-items-center">
                                 <button type="button" class="btn btn-outline-warning btn-sm text-dark shadow-sm" style="padding: 3px 8px; font-size: 12px;" onclick="bukaModalEditItemRacikan(${r.no_racik}, '${d.kode_brng}', '${d.nama_brng.replace(/'/g, "\\'")}', ${d.jml}, ${d.kandungan})" title="Ubah / Substitusi Bahan">
                                     <i class="bi bi-pencil fs-6"></i>
@@ -761,11 +761,11 @@
                                 </button>
                             </div>
                         `;
-                    } else {
-                        aksiDetBtn = '<span class="badge bg-light text-muted border">Terkunci</span>';
-                    }
+                        } else {
+                            aksiDetBtn = '<span class="badge bg-light text-muted border">Terkunci</span>';
+                        }
 
-                    rowsDetailHtml += `
+                        rowsDetailHtml += `
                         <tr>
                             <td class="text-center">${dIdx + 1}</td>
                             <td class="font-monospace text-muted" style="font-size: 11px;">${d.kode_brng}</td>
@@ -781,20 +781,20 @@
                             <td class="text-center">${aksiDetBtn}</td>
                         </tr>
                     `;
-                });
-            } else {
-                rowsDetailHtml = `<tr><td colspan="12" class="text-center text-muted py-2 fst-italic">Belum ada bahan obat di racikan ini. Klik <strong>Tambah Obat</strong> untuk mengisi bahan racikan.</td></tr>`;
-            }
+                    });
+                } else {
+                    rowsDetailHtml = `<tr><td colspan="12" class="text-center text-muted py-2 fst-italic">Belum ada bahan obat di racikan ini. Klik <strong>Tambah Obat</strong> untuk mengisi bahan racikan.</td></tr>`;
+                }
 
-            let aksiHeaderBtn = `
+                let aksiHeaderBtn = `
                 <div class="d-inline-flex gap-1 align-items-center">
                     <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2.5 shadow-sm" onclick="bukaModalEtiket(currentNoResepRalan, 'racik_${r.no_racik}')" title="Cetak Etiket Racikan Ini">
                         <i class="bi bi-printer me-1"></i> Etiket
                     </button>
             `;
 
-            if (!currentIsValidatedRalan) {
-                aksiHeaderBtn += `
+                if (!currentIsValidatedRalan) {
+                    aksiHeaderBtn += `
                     <button type="button" class="btn btn-success btn-sm text-white shadow-sm py-1 px-2.5" onclick="bukaModalTambahItemRacikan(${r.no_racik}, '${r.nama_racik.replace(/'/g, "\\'")}')" title="Tambah Obat / Bahan ke racikan ini">
                         <i class="bi bi-plus-lg me-1"></i> Tambah Obat
                     </button>
@@ -805,10 +805,10 @@
                         <i class="bi bi-trash fs-6"></i>
                     </button>
                 `;
-            }
-            aksiHeaderBtn += '</div>';
+                }
+                aksiHeaderBtn += '</div>';
 
-            const html = `
+                const html = `
                 <div class="card border mb-3 shadow-sm bg-white">
                     <div class="card-header bg-light py-2 px-3 d-flex justify-content-between align-items-center">
                         <div>
@@ -853,38 +853,41 @@
                     </div>
                 </div>
             `;
-            $box.append(html);
-        });
+                $box.append(html);
+            });
 
-        return totalBiayaSemuaRacik;
-    }
-
-    // Live Search Autocomplete Obat
-    let timerCariObatRalan;
-    $('#inputCariObatRalan').on('keyup', function() {
-        const keyword = $(this).val().trim();
-        clearTimeout(timerCariObatRalan);
-        if (keyword.length < 2) {
-            $('#dropdownCariObatRalan').addClass('d-none').empty();
-            return;
+            return totalBiayaSemuaRacik;
         }
 
-        timerCariObatRalan = setTimeout(function() {
-            $.get("{{ url('/obat/cari') }}", { nama: keyword, gudang: currentKdBangsalRalan }).done(function(res) {
-                const list = res?.data || [];
-                const $drop = $('#dropdownCariObatRalan');
-                $drop.empty();
+        // Live Search Autocomplete Obat
+        let timerCariObatRalan;
+        $('#inputCariObatRalan').on('keyup', function() {
+            const keyword = $(this).val().trim();
+            clearTimeout(timerCariObatRalan);
+            if (keyword.length < 2) {
+                $('#dropdownCariObatRalan').addClass('d-none').empty();
+                return;
+            }
 
-                if (list.length === 0) {
-                    $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
-                } else {
-                    list.forEach(function(item) {
-                        let stok = 0;
-                        if (item.gudang_barang && item.gudang_barang.length > 0) {
-                            stok = item.gudang_barang[0].stok || 0;
-                        }
-                        const sat = item.kode_satuan?.satuan || item.kode_sat || '';
-                        const a = $(`
+            timerCariObatRalan = setTimeout(function() {
+                $.get("{{ url('/obat/cari') }}", {
+                    nama: keyword,
+                    gudang: currentKdBangsalRalan
+                }).done(function(res) {
+                    const list = res?.data || [];
+                    const $drop = $('#dropdownCariObatRalan');
+                    $drop.empty();
+
+                    if (list.length === 0) {
+                        $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
+                    } else {
+                        list.forEach(function(item) {
+                            let stok = 0;
+                            if (item.gudang_barang && item.gudang_barang.length > 0) {
+                                stok = item.gudang_barang[0].stok || 0;
+                            }
+                            const sat = item.kode_satuan?.satuan || item.kode_sat || '';
+                            const a = $(`
                             <a href="javascript:void(0)" class="list-group-item list-group-item-action p-2" style="font-size: 11.5px;">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <strong>${item.nama_brng}</strong>
@@ -893,147 +896,150 @@
                                 <small class="text-muted font-monospace">${item.kode_brng}</small>
                             </a>
                         `);
-                        a.on('click', function() {
-                            $('#inputKodeBrngRalan').val(item.kode_brng);
-                            $('#inputCariObatRalan').val(item.nama_brng);
-                            $('#lblSatuanObatRalan').text(sat);
-                            $('#lblNamaObatTerpilih').text(item.nama_brng);
-                            $('#lblStokDepoTerpilih').text(`Stok Depo: ${stok} ${sat}`);
-                            $('#boxInfoObatTerpilih').removeAttr('style');
-                            $drop.addClass('d-none');
-                            $('#inputJmlObatRalan').focus();
+                            a.on('click', function() {
+                                $('#inputKodeBrngRalan').val(item.kode_brng);
+                                $('#inputCariObatRalan').val(item.nama_brng);
+                                $('#lblSatuanObatRalan').text(sat);
+                                $('#lblNamaObatTerpilih').text(item.nama_brng);
+                                $('#lblStokDepoTerpilih').text(`Stok Depo: ${stok} ${sat}`);
+                                $('#boxInfoObatTerpilih').removeAttr('style');
+                                $drop.addClass('d-none');
+                                $('#inputJmlObatRalan').focus();
+                            });
+                            $drop.append(a);
                         });
-                        $drop.append(a);
-                    });
-                }
-                $drop.removeClass('d-none');
-            });
-        }, 300);
-    });
+                    }
+                    $drop.removeClass('d-none');
+                });
+            }, 300);
+        });
 
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('#inputCariObatRalan, #dropdownCariObatRalan').length) {
-            $('#dropdownCariObatRalan').addClass('d-none');
-        }
-    });
-
-    // Tambah Obat ke Resep
-    function tambahObatKeResep() {
-        const kodeBrng = $('#inputKodeBrngRalan').val();
-        const jml = $('#inputJmlObatRalan').val();
-        const aturan = $('#inputAturanPakaiRalan').val();
-
-        if (!kodeBrng) {
-            Swal.fire('Peringatan', 'Silahkan pilih obat dari daftar pencarian terlebih dahulu.', 'warning');
-            return;
-        }
-
-        if (!jml || jml <= 0) {
-            Swal.fire('Peringatan', 'Jumlah obat harus lebih dari 0.', 'warning');
-            return;
-        }
-
-        $.ajax({
-            url: "{{ route('farmasi.resep-ralan.tambah-obat') }}",
-            type: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                no_resep: currentNoResepRalan,
-                kode_brng: kodeBrng,
-                jml: jml,
-                aturan_pakai: aturan
-            },
-            beforeSend: function() {
-                $('#btnSubmitTambahObat').prop('disabled', true);
-            },
-            success: function(resp) {
-                $('#btnSubmitTambahObat').prop('disabled', false);
-                $('#inputKodeBrngRalan').val('');
-                $('#inputCariObatRalan').val('');
-                $('#inputJmlObatRalan').val('1');
-                $('#inputAturanPakaiRalan').val('');
-                $('#boxInfoObatTerpilih').attr('style', 'display: none !important;');
-
-                // Reload Data
-                loadDataDetailResepRalan(currentNoResepRalan);
-            },
-            error: function(xhr) {
-                $('#btnSubmitTambahObat').prop('disabled', false);
-                const msg = xhr.responseJSON?.message || 'Gagal menambahkan obat.';
-                Swal.fire('Gagal!', msg, 'error');
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#inputCariObatRalan, #dropdownCariObatRalan').length) {
+                $('#dropdownCariObatRalan').addClass('d-none');
             }
         });
-    }
 
-    // Helper Info Pasien Lengkap untuk Modal Popup Edit / Racikan
-    function getInfoPasienLengkap() {
-        const p = currentRawatDataRalan?.reg_periksa?.pasien;
-        const rp = currentRawatDataRalan?.reg_periksa;
-        let tglLahirU = (p?.tgl_lahir && p.tgl_lahir !== '0000-00-00')
-            ? ((typeof formatTanggal === 'function') ? formatTanggal(p.tgl_lahir) : p.tgl_lahir)
-            : '-';
-        let umurU = (p?.tgl_lahir && p.tgl_lahir !== '0000-00-00' && typeof hitungUmur === 'function')
-            ? hitungUmur(p.tgl_lahir)
-            : (rp?.umurdaftar ? `${rp.umurdaftar} ${rp.sttsumur || 'Th'}` : '-');
-        return {
-            nama: p?.nm_pasien || $('#ralanPasienNama').text() || '-',
-            no_resep: currentRawatDataRalan?.no_resep || currentNoResepRalan || '-',
-            tgl_lahir: tglLahirU,
-            umur: umurU,
-            jk: p?.jk ? (p.jk === 'L' ? 'L' : 'P') : ($('#ralanJk').text() || '-')
-        };
-    }
+        // Tambah Obat ke Resep
+        function tambahObatKeResep() {
+            const kodeBrng = $('#inputKodeBrngRalan').val();
+            const jml = $('#inputJmlObatRalan').val();
+            const aturan = $('#inputAturanPakaiRalan').val();
 
-    // Buka Modal Edit Item / Substitusi
-    function bukaModalEditItem(kode_brng, nama_brng, jml, aturan_pakai) {
-        $('#editItemKodeBrng').val(kode_brng);
-        $('#editItemKodeBrngBaru').val('');
-        $('#editItemNamaBrng').text(nama_brng);
-        $('#editItemKodeBrngDisplay').text(`Kode: ${kode_brng}`);
-        $('#editItemJml').val(jml);
-        $('#editItemAturan').val(aturan_pakai);
+            if (!kodeBrng) {
+                Swal.fire('Peringatan', 'Silahkan pilih obat dari daftar pencarian terlebih dahulu.', 'warning');
+                return;
+            }
 
-        // Pasang Info Pasien Ringkas
-        const infoP = getInfoPasienLengkap();
-        $('#editItemPasienNama').text(`${infoP.nama} (${infoP.jk})`);
-        $('#editItemPasienLahirUmur').html(`<i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <b>${infoP.tgl_lahir}</b> • Usia: <b>${infoP.umur}</b>`);
-        $('#editItemNoResep').text(`Resep: ${infoP.no_resep}`);
+            if (!jml || jml <= 0) {
+                Swal.fire('Peringatan', 'Jumlah obat harus lebih dari 0.', 'warning');
+                return;
+            }
 
-        // Reset state substitusi
-        $('#editInputCariObatBaru').val('');
-        $('#dropdownCariObatSubstitusi').addClass('d-none').empty();
-        $('#boxObatPenggantiTerpilih').addClass('d-none');
-        $('#btnResetGantiObat').addClass('d-none');
+            $.ajax({
+                url: "{{ route('farmasi.resep-ralan.tambah-obat') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: currentNoResepRalan,
+                    kode_brng: kodeBrng,
+                    jml: jml,
+                    aturan_pakai: aturan
+                },
+                beforeSend: function() {
+                    $('#btnSubmitTambahObat').prop('disabled', true);
+                },
+                success: function(resp) {
+                    $('#btnSubmitTambahObat').prop('disabled', false);
+                    $('#inputKodeBrngRalan').val('');
+                    $('#inputCariObatRalan').val('');
+                    $('#inputJmlObatRalan').val('1');
+                    $('#inputAturanPakaiRalan').val('');
+                    $('#boxInfoObatTerpilih').attr('style', 'display: none !important;');
 
-        $('#modalUbahItemRalan').modal('show');
-    }
+                    // Reload Data
+                    loadDataDetailResepRalan(currentNoResepRalan);
+                },
+                error: function(xhr) {
+                    $('#btnSubmitTambahObat').prop('disabled', false);
+                    const msg = xhr.responseJSON?.message || 'Gagal menambahkan obat.';
+                    Swal.fire('Gagal!', msg, 'error');
+                }
+            });
+        }
 
-    // Live search obat pengganti (Substitusi)
-    let timerCariSubstitusiRalan;
-    $('#editInputCariObatBaru').on('keyup', function() {
-        const keyword = $(this).val().trim();
-        clearTimeout(timerCariSubstitusiRalan);
-        if (keyword.length < 2) {
+        // Helper Info Pasien Lengkap untuk Modal Popup Edit / Racikan
+        function getInfoPasienLengkap() {
+            const p = currentRawatDataRalan?.reg_periksa?.pasien;
+            const rp = currentRawatDataRalan?.reg_periksa;
+            let tglLahirU = (p?.tgl_lahir && p.tgl_lahir !== '0000-00-00') ?
+                ((typeof formatTanggal === 'function') ? formatTanggal(p.tgl_lahir) : p.tgl_lahir) :
+                '-';
+            let umurU = (p?.tgl_lahir && p.tgl_lahir !== '0000-00-00' && typeof hitungUmur === 'function') ?
+                hitungUmur(p.tgl_lahir) :
+                (rp?.umurdaftar ? `${rp.umurdaftar} ${rp.sttsumur || 'Th'}` : '-');
+            return {
+                nama: p?.nm_pasien || $('#ralanPasienNama').text() || '-',
+                no_resep: currentRawatDataRalan?.no_resep || currentNoResepRalan || '-',
+                tgl_lahir: tglLahirU,
+                umur: umurU,
+                jk: p?.jk ? (p.jk === 'L' ? 'L' : 'P') : ($('#ralanJk').text() || '-')
+            };
+        }
+
+        // Buka Modal Edit Item / Substitusi
+        function bukaModalEditItem(kode_brng, nama_brng, jml, aturan_pakai) {
+            $('#editItemKodeBrng').val(kode_brng);
+            $('#editItemKodeBrngBaru').val('');
+            $('#editItemNamaBrng').text(nama_brng);
+            $('#editItemKodeBrngDisplay').text(`Kode: ${kode_brng}`);
+            $('#editItemJml').val(jml);
+            $('#editItemAturan').val(aturan_pakai);
+
+            // Pasang Info Pasien Ringkas
+            const infoP = getInfoPasienLengkap();
+            $('#editItemPasienNama').text(`${infoP.nama} (${infoP.jk})`);
+            $('#editItemPasienLahirUmur').html(`<i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <b>${infoP.tgl_lahir}</b> • Usia: <b>${infoP.umur}</b>`);
+            $('#editItemNoResep').text(`Resep: ${infoP.no_resep}`);
+
+            // Reset state substitusi
+            $('#editInputCariObatBaru').val('');
             $('#dropdownCariObatSubstitusi').addClass('d-none').empty();
-            return;
+            $('#boxObatPenggantiTerpilih').addClass('d-none');
+            $('#btnResetGantiObat').addClass('d-none');
+
+            $('#modalUbahItemRalan').modal('show');
         }
 
-        timerCariSubstitusiRalan = setTimeout(function() {
-            $.get("{{ url('/obat/cari') }}", { nama: keyword, gudang: currentKdBangsalRalan }).done(function(res) {
-                const list = res?.data || [];
-                const $drop = $('#dropdownCariObatSubstitusi');
-                $drop.empty();
+        // Live search obat pengganti (Substitusi)
+        let timerCariSubstitusiRalan;
+        $('#editInputCariObatBaru').on('keyup', function() {
+            const keyword = $(this).val().trim();
+            clearTimeout(timerCariSubstitusiRalan);
+            if (keyword.length < 2) {
+                $('#dropdownCariObatSubstitusi').addClass('d-none').empty();
+                return;
+            }
 
-                if (list.length === 0) {
-                    $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
-                } else {
-                    list.forEach(function(item) {
-                        let stok = 0;
-                        if (item.gudang_barang && item.gudang_barang.length > 0) {
-                            stok = item.gudang_barang[0].stok || 0;
-                        }
-                        const sat = item.kode_satuan?.satuan || item.kode_sat || '';
-                        const a = $(`
+            timerCariSubstitusiRalan = setTimeout(function() {
+                $.get("{{ url('/obat/cari') }}", {
+                    nama: keyword,
+                    gudang: currentKdBangsalRalan
+                }).done(function(res) {
+                    const list = res?.data || [];
+                    const $drop = $('#dropdownCariObatSubstitusi');
+                    $drop.empty();
+
+                    if (list.length === 0) {
+                        $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
+                    } else {
+                        list.forEach(function(item) {
+                            let stok = 0;
+                            if (item.gudang_barang && item.gudang_barang.length > 0) {
+                                stok = item.gudang_barang[0].stok || 0;
+                            }
+                            const sat = item.kode_satuan?.satuan || item.kode_sat || '';
+                            const a = $(`
                             <a href="javascript:void(0)" class="list-group-item list-group-item-action p-2" style="font-size: 11.5px;">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <strong>${item.nama_brng}</strong>
@@ -1042,328 +1048,351 @@
                                 <small class="text-muted font-monospace">${item.kode_brng}</small>
                             </a>
                         `);
-                        a.on('click', function() {
-                            $('#editItemKodeBrngBaru').val(item.kode_brng);
-                            $('#editInputCariObatBaru').val(item.nama_brng);
-                            $('#lblObatPenggantiTerpilih').text(`Obat Pengganti: ${item.nama_brng} (${item.kode_brng})`);
-                            $('#lblStokPenggantiTerpilih').text(`Stok Depo: ${stok} ${sat}`);
-                            $('#boxObatPenggantiTerpilih').removeClass('d-none');
-                            $('#btnResetGantiObat').removeClass('d-none');
-                            $drop.addClass('d-none');
+                            a.on('click', function() {
+                                $('#editItemKodeBrngBaru').val(item.kode_brng);
+                                $('#editInputCariObatBaru').val(item.nama_brng);
+                                $('#lblObatPenggantiTerpilih').text(`Obat Pengganti: ${item.nama_brng} (${item.kode_brng})`);
+                                $('#lblStokPenggantiTerpilih').text(`Stok Depo: ${stok} ${sat}`);
+                                $('#boxObatPenggantiTerpilih').removeClass('d-none');
+                                $('#btnResetGantiObat').removeClass('d-none');
+                                $drop.addClass('d-none');
+                            });
+                            $drop.append(a);
                         });
-                        $drop.append(a);
+                    }
+                    $drop.removeClass('d-none');
+                });
+            }, 300);
+        });
+
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#editInputCariObatBaru, #dropdownCariObatSubstitusi').length) {
+                $('#dropdownCariObatSubstitusi').addClass('d-none');
+            }
+        });
+
+        // Reset obat pengganti
+        function resetObatPengganti() {
+            $('#editItemKodeBrngBaru').val('');
+            $('#editInputCariObatBaru').val('');
+            $('#boxObatPenggantiTerpilih').addClass('d-none');
+            $('#btnResetGantiObat').addClass('d-none');
+            $('#dropdownCariObatSubstitusi').addClass('d-none').empty();
+        }
+
+        // Simpan Perubahan / Substitusi Item
+        function simpanPerubahanItemRalan() {
+            const kodeBrng = $('#editItemKodeBrng').val();
+            const kodeBrngBaru = $('#editItemKodeBrngBaru').val();
+            const jml = $('#editItemJml').val();
+            const aturan = $('#editItemAturan').val();
+
+            if (!jml || jml <= 0) {
+                Swal.fire('Peringatan', 'Jumlah obat harus lebih dari 0.', 'warning');
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('farmasi.resep-ralan.ubah-obat') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: currentNoResepRalan,
+                    kode_brng: kodeBrng,
+                    kode_brng_baru: kodeBrngBaru,
+                    jml: jml,
+                    aturan_pakai: aturan
+                },
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Menyimpan Perubahan...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function(resp) {
+                    Swal.close();
+                    $('#modalUbahItemRalan').modal('hide');
+                    loadDataDetailResepRalan(currentNoResepRalan);
+                },
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Gagal mengubah item resep.';
+                    Swal.fire('Gagal!', msg, 'error');
+                }
+            });
+        }
+
+        // Hapus Item Resep
+        function hapusItemResep(kode_brng, nama_brng) {
+            Swal.fire({
+                title: 'Hapus Item Obat?',
+                text: `Yakin ingin menghapus ${nama_brng} dari resep ini?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('farmasi.resep-ralan.hapus-obat') }}",
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_resep: currentNoResepRalan,
+                            kode_brng: kodeBrng
+                        },
+                        success: function() {
+                            loadDataDetailResepRalan(currentNoResepRalan);
+                        },
+                        error: function(xhr) {
+                            const msg = xhr.responseJSON?.message || 'Gagal menghapus item.';
+                            Swal.fire('Gagal!', msg, 'error');
+                        }
                     });
                 }
-                $drop.removeClass('d-none');
             });
-        }, 300);
-    });
-
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('#editInputCariObatBaru, #dropdownCariObatSubstitusi').length) {
-            $('#dropdownCariObatSubstitusi').addClass('d-none');
-        }
-    });
-
-    // Reset obat pengganti
-    function resetObatPengganti() {
-        $('#editItemKodeBrngBaru').val('');
-        $('#editInputCariObatBaru').val('');
-        $('#boxObatPenggantiTerpilih').addClass('d-none');
-        $('#btnResetGantiObat').addClass('d-none');
-        $('#dropdownCariObatSubstitusi').addClass('d-none').empty();
-    }
-
-    // Simpan Perubahan / Substitusi Item
-    function simpanPerubahanItemRalan() {
-        const kodeBrng = $('#editItemKodeBrng').val();
-        const kodeBrngBaru = $('#editItemKodeBrngBaru').val();
-        const jml = $('#editItemJml').val();
-        const aturan = $('#editItemAturan').val();
-
-        if (!jml || jml <= 0) {
-            Swal.fire('Peringatan', 'Jumlah obat harus lebih dari 0.', 'warning');
-            return;
         }
 
-        $.ajax({
-            url: "{{ route('farmasi.resep-ralan.ubah-obat') }}",
-            type: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                no_resep: currentNoResepRalan,
-                kode_brng: kodeBrng,
-                kode_brng_baru: kodeBrngBaru,
-                jml: jml,
-                aturan_pakai: aturan
-            },
-            beforeSend: function() {
-                Swal.fire({ title: 'Menyimpan Perubahan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-            },
-            success: function(resp) {
-                Swal.close();
-                $('#modalUbahItemRalan').modal('hide');
-                loadDataDetailResepRalan(currentNoResepRalan);
-            },
-            error: function(xhr) {
-                const msg = xhr.responseJSON?.message || 'Gagal mengubah item resep.';
-                Swal.fire('Gagal!', msg, 'error');
-            }
-        });
-    }
-
-    // Hapus Item Resep
-    function hapusItemResep(kode_brng, nama_brng) {
-        Swal.fire({
-            title: 'Hapus Item Obat?',
-            text: `Yakin ingin menghapus ${nama_brng} dari resep ini?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "{{ route('farmasi.resep-ralan.hapus-obat') }}",
-                    type: "DELETE",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        no_resep: currentNoResepRalan,
-                        kode_brng: kodeBrng
-                    },
-                    success: function() {
-                        loadDataDetailResepRalan(currentNoResepRalan);
-                    },
-                    error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Gagal menghapus item.';
-                        Swal.fire('Gagal!', msg, 'error');
-                    }
-                });
-            }
-        });
-    }
-
-    // Eksekusi Validasi Resep Ralan
-    function eksekusiValidasiRalan() {
-        Swal.fire({
-            title: 'Validasi Resep Obat?',
-            text: `Validasi resep ${currentNoResepRalan}? Stok depo obat akan dikurangi dan otomatis masuk ke billing pasien.`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#198754',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, Validasi Sekarang!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "{{ route('farmasi.resep-ralan.validasi') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        no_resep: currentNoResepRalan
-                    },
-                    beforeSend: function() {
-                        Swal.fire({
-                            title: 'Memproses Validasi Resep...',
-                            allowOutsideClick: false,
-                            didOpen: () => { Swal.showLoading(); }
-                        });
-                    },
-                    success: function(resp) {
-                        Swal.fire('Berhasil!', resp.message || 'Resep rawat jalan berhasil divalidasi.', 'success');
-                        $('#modalResepObat').modal('hide');
-                        if (typeof tbResep === 'function') {
-                            $('#tb_resep').DataTable().destroy();
-                            tbResep();
-                            hitungResep();
+        // Eksekusi Validasi Resep Ralan
+        function eksekusiValidasiRalan() {
+            Swal.fire({
+                title: 'Validasi Resep Obat?',
+                text: `Validasi resep ${currentNoResepRalan}? Stok depo obat akan dikurangi dan otomatis masuk ke billing pasien.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#198754',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Validasi Sekarang!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('farmasi.resep-ralan.validasi') }}",
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_resep: currentNoResepRalan
+                        },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Memproses Validasi Resep...',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                        },
+                        success: function(resp) {
+                            Swal.fire('Berhasil!', resp.message || 'Resep rawat jalan berhasil divalidasi.', 'success');
+                            $('#modalResepObat').modal('hide');
+                            if (typeof tbResep === 'function') {
+                                $('#tb_resep').DataTable().destroy();
+                                tbResep();
+                                hitungResep();
+                            }
+                            if (typeof loadResepRanapFarmasi === 'function') {
+                                loadResepRanapFarmasi();
+                            }
+                        },
+                        error: function(xhr) {
+                            const msg = xhr.responseJSON?.message || 'Gagal memvalidasi resep.';
+                            Swal.fire('Gagal!', msg, 'error');
                         }
-                        if (typeof loadResepRanapFarmasi === 'function') {
-                            loadResepRanapFarmasi();
+                    });
+                }
+            });
+        }
+
+        // ==========================================
+        // JS MANAJEMEN OBAT RACIKAN RALAN
+        // ==========================================
+
+        let globalMetodeRacikList = [];
+
+        // Buka Modal Tambah Header Racikan
+        function bukaModalTambahRacikan() {
+            $('#modalHeaderRacikanTitle').html('<i class="bi bi-mortarboard me-1"></i> Buat Racikan Baru');
+            $('#racikNoRacik').val('');
+            $('#racikNama').val('');
+            $('#racikJmlDr').val('10');
+            $('#racikAturanPakai').val('');
+            $('#racikKeterangan').val('-');
+
+            const infoP = getInfoPasienLengkap();
+            $('#racikPasienNama').text(`${infoP.nama} (${infoP.jk})`);
+            $('#racikPasienLahirUmur').html(`<i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <b>${infoP.tgl_lahir}</b> • Usia: <b>${infoP.umur}</b>`);
+            $('#racikNoResep').text(`Resep: ${infoP.no_resep}`);
+
+            if (globalMetodeRacikList && globalMetodeRacikList.length > 0) {
+                $('#racikKdMetode').val(globalMetodeRacikList[0].kd_racik);
+            }
+            $('#modalHeaderRacikanRalan').modal('show');
+        }
+
+        // Buka Modal Edit Header Racikan
+        function bukaModalEditHeaderRacikan(no_racik, nama_racik, kd_racik, jml_dr, aturan_pakai, keterangan) {
+            $('#modalHeaderRacikanTitle').html('<i class="bi bi-pencil-square me-1"></i> Ubah Info Racikan');
+            $('#racikNoRacik').val(no_racik);
+            $('#racikNama').val(nama_racik);
+            $('#racikKdMetode').val(kd_racik);
+            $('#racikJmlDr').val(jml_dr);
+            $('#racikAturanPakai').val(aturan_pakai);
+            $('#racikKeterangan').val(keterangan);
+
+            const infoP = getInfoPasienLengkap();
+            $('#racikPasienNama').text(`${infoP.nama} (${infoP.jk})`);
+            $('#racikPasienLahirUmur').html(`<i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <b>${infoP.tgl_lahir}</b> • Usia: <b>${infoP.umur}</b>`);
+            $('#racikNoResep').text(`Resep: ${infoP.no_resep}`);
+
+            $('#modalHeaderRacikanRalan').modal('show');
+        }
+
+        // Simpan Header Racikan (Tambah / Edit)
+        function simpanHeaderRacikanRalan() {
+            const noRacik = $('#racikNoRacik').val();
+            const nama = $('#racikNama').val().trim();
+            const kdMetode = $('#racikKdMetode').val();
+            const jmlDr = $('#racikJmlDr').val();
+            const aturan = $('#racikAturanPakai').val().trim();
+            const ket = $('#racikKeterangan').val().trim();
+
+            if (!nama) {
+                Swal.fire('Peringatan', 'Nama racikan wajib diisi.', 'warning');
+                return;
+            }
+            if (!jmlDr || jmlDr <= 0) {
+                Swal.fire('Peringatan', 'Jumlah bungkus racikan harus lebih dari 0.', 'warning');
+                return;
+            }
+
+            const isEdit = noRacik !== '';
+            const targetUrl = isEdit ?
+                "{{ route('farmasi.resep-ralan.ubah-racikan') }}" :
+                "{{ route('farmasi.resep-ralan.tambah-racikan') }}";
+
+            $.ajax({
+                url: targetUrl,
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: currentNoResepRalan,
+                    no_racik: noRacik,
+                    nama_racik: nama,
+                    kd_racik: kdMetode,
+                    jml_dr: jmlDr,
+                    aturan_pakai: aturan,
+                    keterangan: ket
+                },
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Menyimpan Racikan...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
                         }
-                    },
-                    error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Gagal memvalidasi resep.';
-                        Swal.fire('Gagal!', msg, 'error');
-                    }
-                });
-            }
-        });
-    }
-
-    // ==========================================
-    // JS MANAJEMEN OBAT RACIKAN RALAN
-    // ==========================================
-
-    let globalMetodeRacikList = [];
-
-    // Buka Modal Tambah Header Racikan
-    function bukaModalTambahRacikan() {
-        $('#modalHeaderRacikanTitle').html('<i class="bi bi-mortarboard me-1"></i> Buat Racikan Baru');
-        $('#racikNoRacik').val('');
-        $('#racikNama').val('');
-        $('#racikJmlDr').val('10');
-        $('#racikAturanPakai').val('');
-        $('#racikKeterangan').val('-');
-
-        const infoP = getInfoPasienLengkap();
-        $('#racikPasienNama').text(`${infoP.nama} (${infoP.jk})`);
-        $('#racikPasienLahirUmur').html(`<i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <b>${infoP.tgl_lahir}</b> • Usia: <b>${infoP.umur}</b>`);
-        $('#racikNoResep').text(`Resep: ${infoP.no_resep}`);
-
-        if (globalMetodeRacikList && globalMetodeRacikList.length > 0) {
-            $('#racikKdMetode').val(globalMetodeRacikList[0].kd_racik);
-        }
-        $('#modalHeaderRacikanRalan').modal('show');
-    }
-
-    // Buka Modal Edit Header Racikan
-    function bukaModalEditHeaderRacikan(no_racik, nama_racik, kd_racik, jml_dr, aturan_pakai, keterangan) {
-        $('#modalHeaderRacikanTitle').html('<i class="bi bi-pencil-square me-1"></i> Ubah Info Racikan');
-        $('#racikNoRacik').val(no_racik);
-        $('#racikNama').val(nama_racik);
-        $('#racikKdMetode').val(kd_racik);
-        $('#racikJmlDr').val(jml_dr);
-        $('#racikAturanPakai').val(aturan_pakai);
-        $('#racikKeterangan').val(keterangan);
-
-        const infoP = getInfoPasienLengkap();
-        $('#racikPasienNama').text(`${infoP.nama} (${infoP.jk})`);
-        $('#racikPasienLahirUmur').html(`<i class="bi bi-calendar2-heart text-danger me-1"></i>Lahir: <b>${infoP.tgl_lahir}</b> • Usia: <b>${infoP.umur}</b>`);
-        $('#racikNoResep').text(`Resep: ${infoP.no_resep}`);
-
-        $('#modalHeaderRacikanRalan').modal('show');
-    }
-
-    // Simpan Header Racikan (Tambah / Edit)
-    function simpanHeaderRacikanRalan() {
-        const noRacik = $('#racikNoRacik').val();
-        const nama = $('#racikNama').val().trim();
-        const kdMetode = $('#racikKdMetode').val();
-        const jmlDr = $('#racikJmlDr').val();
-        const aturan = $('#racikAturanPakai').val().trim();
-        const ket = $('#racikKeterangan').val().trim();
-
-        if (!nama) {
-            Swal.fire('Peringatan', 'Nama racikan wajib diisi.', 'warning');
-            return;
-        }
-        if (!jmlDr || jmlDr <= 0) {
-            Swal.fire('Peringatan', 'Jumlah bungkus racikan harus lebih dari 0.', 'warning');
-            return;
+                    });
+                },
+                success: function(resp) {
+                    Swal.close();
+                    $('#modalHeaderRacikanRalan').modal('hide');
+                    loadDataDetailResepRalan(currentNoResepRalan);
+                },
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Gagal menyimpan racikan.';
+                    Swal.fire('Gagal!', msg, 'error');
+                }
+            });
         }
 
-        const isEdit = noRacik !== '';
-        const targetUrl = isEdit
-            ? "{{ route('farmasi.resep-ralan.ubah-racikan') }}"
-            : "{{ route('farmasi.resep-ralan.tambah-racikan') }}";
+        // Hapus Seluruh Racikan
+        function hapusRacikan(no_racik, nama_racik) {
+            Swal.fire({
+                title: 'Hapus Racikan?',
+                text: `Yakin ingin menghapus seluruh racikan "${nama_racik}" beserta obat di dalamnya?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('farmasi.resep-ralan.hapus-racikan') }}",
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_resep: currentNoResepRalan,
+                            no_racik: noRacik
+                        },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Menghapus Racikan...',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                        },
+                        success: function() {
+                            Swal.close();
+                            loadDataDetailResepRalan(currentNoResepRalan);
+                        },
+                        error: function(xhr) {
+                            const msg = xhr.responseJSON?.message || 'Gagal menghapus racikan.';
+                            Swal.fire('Gagal!', msg, 'error');
+                        }
+                    });
+                }
+            });
+        }
 
-        $.ajax({
-            url: targetUrl,
-            type: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                no_resep: currentNoResepRalan,
-                no_racik: noRacik,
-                nama_racik: nama,
-                kd_racik: kdMetode,
-                jml_dr: jmlDr,
-                aturan_pakai: aturan,
-                keterangan: ket
-            },
-            beforeSend: function() {
-                Swal.fire({ title: 'Menyimpan Racikan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-            },
-            success: function(resp) {
-                Swal.close();
-                $('#modalHeaderRacikanRalan').modal('hide');
-                loadDataDetailResepRalan(currentNoResepRalan);
-            },
-            error: function(xhr) {
-                const msg = xhr.responseJSON?.message || 'Gagal menyimpan racikan.';
-                Swal.fire('Gagal!', msg, 'error');
-            }
-        });
-    }
-
-    // Hapus Seluruh Racikan
-    function hapusRacikan(no_racik, nama_racik) {
-        Swal.fire({
-            title: 'Hapus Racikan?',
-            text: `Yakin ingin menghapus seluruh racikan "${nama_racik}" beserta obat di dalamnya?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "{{ route('farmasi.resep-ralan.hapus-racikan') }}",
-                    type: "DELETE",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        no_resep: currentNoResepRalan,
-                        no_racik: noRacik
-                    },
-                    beforeSend: function() {
-                        Swal.fire({ title: 'Menghapus Racikan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-                    },
-                    success: function() {
-                        Swal.close();
-                        loadDataDetailResepRalan(currentNoResepRalan);
-                    },
-                    error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Gagal menghapus racikan.';
-                        Swal.fire('Gagal!', msg, 'error');
-                    }
-                });
-            }
-        });
-    }
-
-    // Buka Modal Tambah Obat ke Racikan
-    function bukaModalTambahItemRacikan(no_racik, nama_racik) {
-        $('#tambahItemRacikNoRacik').val(no_racik);
-        $('#tambahItemRacikKodeBrng').val('');
-        $('#tambahItemRacikNamaRacikDisplay').text(nama_racik);
-        $('#tambahItemRacikInputCari').val('');
-        $('#tambahItemRacikJml').val('1');
-        $('#tambahItemRacikKandungan').val('0');
-        $('#dropdownCariObatItemRacik').addClass('d-none').empty();
-        $('#boxItemRacikTerpilih').addClass('d-none');
-        $('#modalTambahItemRacikanRalan').modal('show');
-    }
-
-    // Live search obat untuk tambah item racikan
-    let timerCariObatItemRacik;
-    $('#tambahItemRacikInputCari').on('keyup', function() {
-        const keyword = $(this).val().trim();
-        clearTimeout(timerCariObatItemRacik);
-        if (keyword.length < 2) {
+        // Buka Modal Tambah Obat ke Racikan
+        function bukaModalTambahItemRacikan(no_racik, nama_racik) {
+            $('#tambahItemRacikNoRacik').val(no_racik);
+            $('#tambahItemRacikKodeBrng').val('');
+            $('#tambahItemRacikNamaRacikDisplay').text(nama_racik);
+            $('#tambahItemRacikInputCari').val('');
+            $('#tambahItemRacikJml').val('1');
+            $('#tambahItemRacikKandungan').val('0');
             $('#dropdownCariObatItemRacik').addClass('d-none').empty();
-            return;
+            $('#boxItemRacikTerpilih').addClass('d-none');
+            $('#modalTambahItemRacikanRalan').modal('show');
         }
 
-        timerCariObatItemRacik = setTimeout(function() {
-            $.get("{{ url('/obat/cari') }}", { nama: keyword, gudang: currentKdBangsalRalan }).done(function(res) {
-                const list = res?.data || [];
-                const $drop = $('#dropdownCariObatItemRacik');
-                $drop.empty();
+        // Live search obat untuk tambah item racikan
+        let timerCariObatItemRacik;
+        $('#tambahItemRacikInputCari').on('keyup', function() {
+            const keyword = $(this).val().trim();
+            clearTimeout(timerCariObatItemRacik);
+            if (keyword.length < 2) {
+                $('#dropdownCariObatItemRacik').addClass('d-none').empty();
+                return;
+            }
 
-                if (list.length === 0) {
-                    $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
-                } else {
-                    list.forEach(function(item) {
-                        let stok = 0;
-                        if (item.gudang_barang && item.gudang_barang.length > 0) {
-                            stok = item.gudang_barang[0].stok || 0;
-                        }
-                        const sat = item.kode_satuan?.satuan || item.kode_sat || '';
-                        const a = $(`
+            timerCariObatItemRacik = setTimeout(function() {
+                $.get("{{ url('/obat/cari') }}", {
+                    nama: keyword,
+                    gudang: currentKdBangsalRalan
+                }).done(function(res) {
+                    const list = res?.data || [];
+                    const $drop = $('#dropdownCariObatItemRacik');
+                    $drop.empty();
+
+                    if (list.length === 0) {
+                        $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
+                    } else {
+                        list.forEach(function(item) {
+                            let stok = 0;
+                            if (item.gudang_barang && item.gudang_barang.length > 0) {
+                                stok = item.gudang_barang[0].stok || 0;
+                            }
+                            const sat = item.kode_satuan?.satuan || item.kode_sat || '';
+                            const a = $(`
                             <a href="javascript:void(0)" class="list-group-item list-group-item-action p-2" style="font-size: 11.5px;">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <strong>${item.nama_brng}</strong>
@@ -1372,237 +1401,258 @@
                                 <small class="text-muted font-monospace">${item.kode_brng}</small>
                             </a>
                         `);
-                        a.on('click', function() {
-                            $('#tambahItemRacikKodeBrng').val(item.kode_brng);
-                            $('#tambahItemRacikInputCari').val(item.nama_brng);
-                            $('#lblItemRacikTerpilih').text(`${item.nama_brng} (${item.kode_brng})`);
-                            $('#lblStokItemRacikTerpilih').text(`Stok Depo: ${stok} ${sat}`);
-                            $('#boxItemRacikTerpilih').removeClass('d-none');
-                            $drop.addClass('d-none');
-                            $('#tambahItemRacikJml').focus();
+                            a.on('click', function() {
+                                $('#tambahItemRacikKodeBrng').val(item.kode_brng);
+                                $('#tambahItemRacikInputCari').val(item.nama_brng);
+                                $('#lblItemRacikTerpilih').text(`${item.nama_brng} (${item.kode_brng})`);
+                                $('#lblStokItemRacikTerpilih').text(`Stok Depo: ${stok} ${sat}`);
+                                $('#boxItemRacikTerpilih').removeClass('d-none');
+                                $drop.addClass('d-none');
+                                $('#tambahItemRacikJml').focus();
+                            });
+                            $drop.append(a);
                         });
-                        $drop.append(a);
-                    });
-                }
-                $drop.removeClass('d-none');
-            });
-        }, 300);
-    });
-
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('#tambahItemRacikInputCari, #dropdownCariObatItemRacik').length) {
-            $('#dropdownCariObatItemRacik').addClass('d-none');
-        }
-    });
-
-    // Simpan Item Obat Baru ke Racikan
-    function simpanItemKeRacikanRalan() {
-        const noRacik = $('#tambahItemRacikNoRacik').val();
-        const kodeBrng = $('#tambahItemRacikKodeBrng').val();
-        const jml = $('#tambahItemRacikJml').val();
-        const kandungan = $('#tambahItemRacikKandungan').val() || 0;
-
-        if (!kodeBrng) {
-            Swal.fire('Peringatan', 'Silahkan pilih obat dari daftar pencarian terlebih dahulu.', 'warning');
-            return;
-        }
-        if (!jml || jml <= 0) {
-            Swal.fire('Peringatan', 'Jumlah obat racikan harus lebih dari 0.', 'warning');
-            return;
-        }
-
-        $.ajax({
-            url: "{{ route('farmasi.resep-ralan.tambah-item-racikan') }}",
-            type: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                no_resep: currentNoResepRalan,
-                no_racik: noRacik,
-                kode_brng: kodeBrng,
-                jml: jml,
-                kandungan: kandungan
-            },
-            beforeSend: function() {
-                Swal.fire({ title: 'Menambahkan Bahan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-            },
-            success: function() {
-                Swal.close();
-                $('#modalTambahItemRacikanRalan').modal('hide');
-                loadDataDetailResepRalan(currentNoResepRalan);
-            },
-            error: function(xhr) {
-                const msg = xhr.responseJSON?.message || 'Gagal menambahkan bahan obat.';
-                Swal.fire('Gagal!', msg, 'error');
-            }
-        });
-    }
-
-    // Buka Modal Edit / Substitusi Item Obat di Racikan
-    function bukaModalEditItemRacikan(no_racik, kode_brng, nama_brng, jml, kandungan) {
-        $('#editRacikItemNoRacik').val(no_racik);
-        $('#editRacikItemKodeBrng').val(kode_brng);
-        $('#editRacikItemKodeBrngBaru').val('');
-        $('#editRacikItemNamaBrng').text(nama_brng);
-        $('#editRacikItemKodeBrngDisplay').text(`Kode: ${kode_brng}`);
-        $('#editRacikItemJml').val(jml);
-        $('#editRacikItemKandungan').val(kandungan || 0);
-
-        // Reset state substitusi
-        $('#editRacikInputCariObatBaru').val('');
-        $('#dropdownCariObatSubstitusiRacik').addClass('d-none').empty();
-        $('#boxObatPenggantiTerpilihRacik').addClass('d-none');
-        $('#btnResetGantiObatRacik').addClass('d-none');
-
-        $('#modalUbahItemRacikanRalan').modal('show');
-    }
-
-    // Live search obat pengganti racikan (Substitusi)
-    let timerCariSubstitusiRacik;
-    $('#editRacikInputCariObatBaru').on('keyup', function() {
-        const keyword = $(this).val().trim();
-        clearTimeout(timerCariSubstitusiRacik);
-        if (keyword.length < 2) {
-            $('#dropdownCariObatSubstitusiRacik').addClass('d-none').empty();
-            return;
-        }
-
-        timerCariSubstitusiRacik = setTimeout(function() {
-            $.get("{{ url('/obat/cari') }}", { nama: keyword, gudang: currentKdBangsalRalan }).done(function(res) {
-                const list = res?.data || [];
-                const $drop = $('#dropdownCariObatSubstitusiRacik');
-                $drop.empty();
-
-                if (list.length === 0) {
-                    $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
-                } else {
-                    list.forEach(function(item) {
-                        let stok = 0;
-                        if (item.gudang_barang && item.gudang_barang.length > 0) {
-                            stok = item.gudang_barang[0].stok || 0;
-                        }
-                        const sat = item.kode_satuan?.satuan || item.kode_sat || '';
-                        const a = $(`
-                            <a href="javascript:void(0)" class="list-group-item list-group-item-action p-2" style="font-size: 11.5px;">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <strong>${item.nama_brng}</strong>
-                                    <span class="badge ${stok > 0 ? 'bg-success' : 'bg-danger'}">${stok} ${sat}</span>
-                                </div>
-                                <small class="text-muted font-monospace">${item.kode_brng}</small>
-                            </a>
-                        `);
-                        a.on('click', function() {
-                            $('#editRacikItemKodeBrngBaru').val(item.kode_brng);
-                            $('#editRacikInputCariObatBaru').val(item.nama_brng);
-                            $('#lblObatPenggantiTerpilihRacik').text(`Bahan Pengganti: ${item.nama_brng} (${item.kode_brng})`);
-                            $('#lblStokPenggantiTerpilihRacik').text(`Stok Depo: ${stok} ${sat}`);
-                            $('#boxObatPenggantiTerpilihRacik').removeClass('d-none');
-                            $('#btnResetGantiObatRacik').removeClass('d-none');
-                            $drop.addClass('d-none');
-                        });
-                        $drop.append(a);
-                    });
-                }
-                $drop.removeClass('d-none');
-            });
-        }, 300);
-    });
-
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('#editRacikInputCariObatBaru, #dropdownCariObatSubstitusiRacik').length) {
-            $('#dropdownCariObatSubstitusiRacik').addClass('d-none');
-        }
-    });
-
-    // Reset obat pengganti racikan
-    function resetObatPenggantiRacik() {
-        $('#editRacikItemKodeBrngBaru').val('');
-        $('#editRacikInputCariObatBaru').val('');
-        $('#boxObatPenggantiTerpilihRacik').addClass('d-none');
-        $('#btnResetGantiObatRacik').addClass('d-none');
-        $('#dropdownCariObatSubstitusiRacik').addClass('d-none').empty();
-    }
-
-    // Simpan Perubahan / Substitusi Item di Racikan
-    function simpanPerubahanItemRacikanRalan() {
-        const noRacik = $('#editRacikItemNoRacik').val();
-        const kodeBrng = $('#editRacikItemKodeBrng').val();
-        const kodeBrngBaru = $('#editRacikItemKodeBrngBaru').val();
-        const jml = $('#editRacikItemJml').val();
-        const kandungan = $('#editRacikItemKandungan').val() || 0;
-
-        if (!jml || jml <= 0) {
-            Swal.fire('Peringatan', 'Jumlah obat racikan harus lebih dari 0.', 'warning');
-            return;
-        }
-
-        $.ajax({
-            url: "{{ route('farmasi.resep-ralan.ubah-item-racikan') }}",
-            type: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                no_resep: currentNoResepRalan,
-                no_racik: noRacik,
-                kode_brng: kodeBrng,
-                kode_brng_baru: kodeBrngBaru,
-                jml: jml,
-                kandungan: kandungan
-            },
-            beforeSend: function() {
-                Swal.fire({ title: 'Menyimpan Perubahan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-            },
-            success: function() {
-                Swal.close();
-                $('#modalUbahItemRacikanRalan').modal('hide');
-                loadDataDetailResepRalan(currentNoResepRalan);
-            },
-            error: function(xhr) {
-                const msg = xhr.responseJSON?.message || 'Gagal mengubah bahan racikan.';
-                Swal.fire('Gagal!', msg, 'error');
-            }
-        });
-    }
-
-    // Hapus Item dari Racikan
-    function hapusItemRacikan(no_racik, kode_brng, nama_brng) {
-        Swal.fire({
-            title: 'Hapus Bahan Racikan?',
-            text: `Yakin ingin menghapus ${nama_brng} dari racikan ini?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "{{ route('farmasi.resep-ralan.hapus-item-racikan') }}",
-                    type: "DELETE",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        no_resep: currentNoResepRalan,
-                        no_racik: noRacik,
-                        kode_brng: kodeBrng
-                    },
-                    beforeSend: function() {
-                        Swal.fire({ title: 'Menghapus Bahan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-                    },
-                    success: function() {
-                        Swal.close();
-                        loadDataDetailResepRalan(currentNoResepRalan);
-                    },
-                    error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Gagal menghapus bahan.';
-                        Swal.fire('Gagal!', msg, 'error');
                     }
+                    $drop.removeClass('d-none');
                 });
+            }, 300);
+        });
+
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#tambahItemRacikInputCari, #dropdownCariObatItemRacik').length) {
+                $('#dropdownCariObatItemRacik').addClass('d-none');
             }
         });
-    }
 
-    function numberFormat(val) {
-        if (!val) return '0';
-        return Number(val).toLocaleString('id-ID');
-    }
-</script>
+        // Simpan Item Obat Baru ke Racikan
+        function simpanItemKeRacikanRalan() {
+            const noRacik = $('#tambahItemRacikNoRacik').val();
+            const kodeBrng = $('#tambahItemRacikKodeBrng').val();
+            const jml = $('#tambahItemRacikJml').val();
+            const kandungan = $('#tambahItemRacikKandungan').val() || 0;
+
+            if (!kodeBrng) {
+                Swal.fire('Peringatan', 'Silahkan pilih obat dari daftar pencarian terlebih dahulu.', 'warning');
+                return;
+            }
+            if (!jml || jml <= 0) {
+                Swal.fire('Peringatan', 'Jumlah obat racikan harus lebih dari 0.', 'warning');
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('farmasi.resep-ralan.tambah-item-racikan') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: currentNoResepRalan,
+                    no_racik: noRacik,
+                    kode_brng: kodeBrng,
+                    jml: jml,
+                    kandungan: kandungan
+                },
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Menambahkan Bahan...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function() {
+                    Swal.close();
+                    $('#modalTambahItemRacikanRalan').modal('hide');
+                    loadDataDetailResepRalan(currentNoResepRalan);
+                },
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Gagal menambahkan bahan obat.';
+                    Swal.fire('Gagal!', msg, 'error');
+                }
+            });
+        }
+
+        // Buka Modal Edit / Substitusi Item Obat di Racikan
+        function bukaModalEditItemRacikan(no_racik, kode_brng, nama_brng, jml, kandungan) {
+            $('#editRacikItemNoRacik').val(no_racik);
+            $('#editRacikItemKodeBrng').val(kode_brng);
+            $('#editRacikItemKodeBrngBaru').val('');
+            $('#editRacikItemNamaBrng').text(nama_brng);
+            $('#editRacikItemKodeBrngDisplay').text(`Kode: ${kode_brng}`);
+            $('#editRacikItemJml').val(jml);
+            $('#editRacikItemKandungan').val(kandungan || 0);
+
+            // Reset state substitusi
+            $('#editRacikInputCariObatBaru').val('');
+            $('#dropdownCariObatSubstitusiRacik').addClass('d-none').empty();
+            $('#boxObatPenggantiTerpilihRacik').addClass('d-none');
+            $('#btnResetGantiObatRacik').addClass('d-none');
+
+            $('#modalUbahItemRacikanRalan').modal('show');
+        }
+
+        // Live search obat pengganti racikan (Substitusi)
+        let timerCariSubstitusiRacik;
+        $('#editRacikInputCariObatBaru').on('keyup', function() {
+            const keyword = $(this).val().trim();
+            clearTimeout(timerCariSubstitusiRacik);
+            if (keyword.length < 2) {
+                $('#dropdownCariObatSubstitusiRacik').addClass('d-none').empty();
+                return;
+            }
+
+            timerCariSubstitusiRacik = setTimeout(function() {
+                $.get("{{ url('/obat/cari') }}", {
+                    nama: keyword,
+                    gudang: currentKdBangsalRalan
+                }).done(function(res) {
+                    const list = res?.data || [];
+                    const $drop = $('#dropdownCariObatSubstitusiRacik');
+                    $drop.empty();
+
+                    if (list.length === 0) {
+                        $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Obat tidak ditemukan</div>');
+                    } else {
+                        list.forEach(function(item) {
+                            let stok = 0;
+                            if (item.gudang_barang && item.gudang_barang.length > 0) {
+                                stok = item.gudang_barang[0].stok || 0;
+                            }
+                            const sat = item.kode_satuan?.satuan || item.kode_sat || '';
+                            const a = $(`
+                            <a href="javascript:void(0)" class="list-group-item list-group-item-action p-2" style="font-size: 11.5px;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>${item.nama_brng}</strong>
+                                    <span class="badge ${stok > 0 ? 'bg-success' : 'bg-danger'}">${stok} ${sat}</span>
+                                </div>
+                                <small class="text-muted font-monospace">${item.kode_brng}</small>
+                            </a>
+                        `);
+                            a.on('click', function() {
+                                $('#editRacikItemKodeBrngBaru').val(item.kode_brng);
+                                $('#editRacikInputCariObatBaru').val(item.nama_brng);
+                                $('#lblObatPenggantiTerpilihRacik').text(`Bahan Pengganti: ${item.nama_brng} (${item.kode_brng})`);
+                                $('#lblStokPenggantiTerpilihRacik').text(`Stok Depo: ${stok} ${sat}`);
+                                $('#boxObatPenggantiTerpilihRacik').removeClass('d-none');
+                                $('#btnResetGantiObatRacik').removeClass('d-none');
+                                $drop.addClass('d-none');
+                            });
+                            $drop.append(a);
+                        });
+                    }
+                    $drop.removeClass('d-none');
+                });
+            }, 300);
+        });
+
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#editRacikInputCariObatBaru, #dropdownCariObatSubstitusiRacik').length) {
+                $('#dropdownCariObatSubstitusiRacik').addClass('d-none');
+            }
+        });
+
+        // Reset obat pengganti racikan
+        function resetObatPenggantiRacik() {
+            $('#editRacikItemKodeBrngBaru').val('');
+            $('#editRacikInputCariObatBaru').val('');
+            $('#boxObatPenggantiTerpilihRacik').addClass('d-none');
+            $('#btnResetGantiObatRacik').addClass('d-none');
+            $('#dropdownCariObatSubstitusiRacik').addClass('d-none').empty();
+        }
+
+        // Simpan Perubahan / Substitusi Item di Racikan
+        function simpanPerubahanItemRacikanRalan() {
+            const noRacik = $('#editRacikItemNoRacik').val();
+            const kodeBrng = $('#editRacikItemKodeBrng').val();
+            const kodeBrngBaru = $('#editRacikItemKodeBrngBaru').val();
+            const jml = $('#editRacikItemJml').val();
+            const kandungan = $('#editRacikItemKandungan').val() || 0;
+
+            if (!jml || jml <= 0) {
+                Swal.fire('Peringatan', 'Jumlah obat racikan harus lebih dari 0.', 'warning');
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('farmasi.resep-ralan.ubah-item-racikan') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_resep: currentNoResepRalan,
+                    no_racik: noRacik,
+                    kode_brng: kodeBrng,
+                    kode_brng_baru: kodeBrngBaru,
+                    jml: jml,
+                    kandungan: kandungan
+                },
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Menyimpan Perubahan...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function() {
+                    Swal.close();
+                    $('#modalUbahItemRacikanRalan').modal('hide');
+                    loadDataDetailResepRalan(currentNoResepRalan);
+                },
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Gagal mengubah bahan racikan.';
+                    Swal.fire('Gagal!', msg, 'error');
+                }
+            });
+        }
+
+        // Hapus Item dari Racikan
+        function hapusItemRacikan(no_racik, kode_brng, nama_brng) {
+            Swal.fire({
+                title: 'Hapus Bahan Racikan?',
+                text: `Yakin ingin menghapus ${nama_brng} dari racikan ini?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('farmasi.resep-ralan.hapus-item-racikan') }}",
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_resep: currentNoResepRalan,
+                            no_racik: noRacik,
+                            kode_brng: kodeBrng
+                        },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Menghapus Bahan...',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                        },
+                        success: function() {
+                            Swal.close();
+                            loadDataDetailResepRalan(currentNoResepRalan);
+                        },
+                        error: function(xhr) {
+                            const msg = xhr.responseJSON?.message || 'Gagal menghapus bahan.';
+                            Swal.fire('Gagal!', msg, 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+        function numberFormat(val) {
+            if (!val) return '0';
+            return Number(val).toLocaleString('id-ID');
+        }
+    </script>
 @endpush

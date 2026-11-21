@@ -48,7 +48,7 @@
     <div class="row gy-2 sectionMonitoring">
         <div class="col-lg-4 col-md-6 col-sm-12">
             <label for="petugas" class="form-label">Petugas</label>
-            <x-input-group class="input-group-sm">
+            <x-input-group>
                 <x-input id="nip" name="nip" value="{{ session()->get('pegawai')->nik }}" readonly />
                 <x-input id="petugas" name="petugas" value="{{ session()->get('pegawai')->nama }}" class="w-25"
                     readonly />
@@ -56,7 +56,7 @@
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
             <label for="tanggal" class="form-label">Tanggal</label>
-            <x-input-group class="input-group-sm">
+            <x-input-group>
                 <x-input-group-text>
                     <i class="bi bi-calendar3"></i>
                 </x-input-group-text>
@@ -73,10 +73,10 @@
                 <legend class="w-auto float-none" style="font-size: 13px">Pemicu / Provocataion (P)</legend>
                 <x-input-group>
                     <x-checkbox-group name="pemicu" :checkboxes="[
-        'pemicuAnak1' => ['value' => 'Benturan', 'label' => 'Benturan'],
-        'pemicuAnak2' => ['value' => 'Penyayatan', 'label' => 'Penyayatan'],
-        'pemicuAnak3' => ['value' => 'Lainnya', 'label' => 'Lainnya'],
-    ]" />
+                        'pemicuAnak1' => ['value' => 'Benturan', 'label' => 'Benturan'],
+                        'pemicuAnak2' => ['value' => 'Penyayatan', 'label' => 'Penyayatan'],
+                        'pemicuAnak3' => ['value' => 'Lainnya', 'label' => 'Lainnya'],
+                    ]" />
                     <x-input class="br-full" id="pemicu_lainnya" name="pemicu_lain" disabled></x-input>
                 </x-input-group>
             </fieldset>
@@ -87,12 +87,12 @@
                 <legend class="w-auto float-none" style="font-size: 13px">Kualitas / Quality (Q)</legend>
                 <x-input-group>
                     <x-checkbox-group name="kualitas" :checkboxes="[
-        'kualitasAnak1' => ['value' => 'Tertusuk', 'label' => 'Tertusuk'],
-        'kualitasAnak2' => ['value' => 'Tertekan', 'label' => 'Tertekan'],
-        'kualitasAnak3' => ['value' => 'Tertimpa Benda', 'label' => 'Tertimpa Benda'],
-        'kualitasAnak4' => ['value' => 'Diiris-iris', 'label' => 'Diiris-iris'],
-        'kualitasAnak5' => ['value' => 'Lainnya', 'label' => 'Lainnya'],
-    ]" />
+                        'kualitasAnak1' => ['value' => 'Tertusuk', 'label' => 'Tertusuk'],
+                        'kualitasAnak2' => ['value' => 'Tertekan', 'label' => 'Tertekan'],
+                        'kualitasAnak3' => ['value' => 'Tertimpa Benda', 'label' => 'Tertimpa Benda'],
+                        'kualitasAnak4' => ['value' => 'Diiris-iris', 'label' => 'Diiris-iris'],
+                        'kualitasAnak5' => ['value' => 'Lainnya', 'label' => 'Lainnya'],
+                    ]" />
                     <x-input class="br-full" id="kualitas_lain" name="kualitas_lain" disabled></x-input>
                 </x-input-group>
             </fieldset>
@@ -103,15 +103,15 @@
                 <legend class="w-auto float-none" style="font-size: 13px">Lokasi / Region (R)</legend>
                 <x-input-group>
                     <x-checkbox-group name="lokasi" :checkboxes="[
-        'lokasiAnak1' => ['value' => 'Perut', 'label' => 'Perut'],
-        'lokasiAnak2' => ['value' => 'Tangan Kanan', 'label' => 'Tangan Kanan'],
-        'lokasiAnak3' => ['value' => 'Tangan Kiri', 'label' => 'Tangan Kiri'],
-        'lokasiAnak4' => ['value' => 'Dada', 'label' => 'Dada'],
-        'lokasiAnak5' => ['value' => 'Kepala', 'label' => 'Kepala'],
-        'lokasiAnak6' => ['value' => 'Kaki Kanan', 'label' => 'Kaki Kanan'],
-        'lokasiAnak7' => ['value' => 'Kaki Kiri', 'label' => 'Kaki Kiri'],
-        'lokasiAnak8' => ['value' => 'Lainnya', 'label' => 'Lainnya'],
-    ]" />
+                        'lokasiAnak1' => ['value' => 'Perut', 'label' => 'Perut'],
+                        'lokasiAnak2' => ['value' => 'Tangan Kanan', 'label' => 'Tangan Kanan'],
+                        'lokasiAnak3' => ['value' => 'Tangan Kiri', 'label' => 'Tangan Kiri'],
+                        'lokasiAnak4' => ['value' => 'Dada', 'label' => 'Dada'],
+                        'lokasiAnak5' => ['value' => 'Kepala', 'label' => 'Kepala'],
+                        'lokasiAnak6' => ['value' => 'Kaki Kanan', 'label' => 'Kaki Kanan'],
+                        'lokasiAnak7' => ['value' => 'Kaki Kiri', 'label' => 'Kaki Kiri'],
+                        'lokasiAnak8' => ['value' => 'Lainnya', 'label' => 'Lainnya'],
+                    ]" />
                     <x-input class="br-full" id="lokasi_lain" name="lokasi_lain" disabled></x-input>
                 </x-input-group>
             </fieldset>
@@ -147,12 +147,12 @@
                         <label for="penanganan_non_farmakologi" class="form-label">Penanganan Non-Farmakologi</label>
                         <x-input-group>
                             <x-checkbox-group name="penanganan_non_farmakologi" :checkboxes="[
-        'penanganan_non_farmakologiAnak1' => ['value' => 'Istirahat', 'label' => 'Istirahat'],
-        'penanganan_non_farmakologiAnak2' => ['value' => 'Alih Perhatian', 'label' => 'Alih Perhatian'],
-        'penanganan_non_farmakologiAnak3' => ['value' => 'Reposisi', 'label' => 'Reposisi'],
-        'penanganan_non_farmakologiAnak4' => ['value' => 'Distraksi Relaksasi', 'label' => 'Distraksi Relaksasi'],
-        'penanganan_non_farmakologiAnak5' => ['value' => 'Lainnya', 'label' => 'Lainnya'],
-    ]" />
+                                'penanganan_non_farmakologiAnak1' => ['value' => 'Istirahat', 'label' => 'Istirahat'],
+                                'penanganan_non_farmakologiAnak2' => ['value' => 'Alih Perhatian', 'label' => 'Alih Perhatian'],
+                                'penanganan_non_farmakologiAnak3' => ['value' => 'Reposisi', 'label' => 'Reposisi'],
+                                'penanganan_non_farmakologiAnak4' => ['value' => 'Distraksi Relaksasi', 'label' => 'Distraksi Relaksasi'],
+                                'penanganan_non_farmakologiAnak5' => ['value' => 'Lainnya', 'label' => 'Lainnya'],
+                            ]" />
                             <x-input id="penanganan_non_farmakologi_lain" name="penanganan_non_farmakologi_lain"
                                 disabled class="br-full" />
                         </x-input-group>
@@ -343,8 +343,8 @@
 
         //                     const user = "{{ session()->get('pegawai')->nik }}";
         //                     const content = `
-        //                                         <button type="button" class="btn btn-sm btn-danger" onclick="deleteAsesmenNyeriAnak('${objek.no_rawat}', '${objek.tanggal}')"><i class="bi bi-trash me-1"></i> Hapus</button>
-        //                                         <button type="button" class="btn btn-sm btn-primary" onclick="editAsesmenNyeriAnak('${objek.no_rawat}', '${objek.tanggal}')"><i class="bi bi-pencil me-1"></i> Edit</button>`
+    //                                         <button type="button" class="btn btn-sm btn-danger" onclick="deleteAsesmenNyeriAnak('${objek.no_rawat}', '${objek.tanggal}')"><i class="bi bi-trash me-1"></i> Hapus</button>
+    //                                         <button type="button" class="btn btn-sm btn-primary" onclick="editAsesmenNyeriAnak('${objek.no_rawat}', '${objek.tanggal}')"><i class="bi bi-pencil me-1"></i> Edit</button>`
         //                     const action = user === objek['petugas']['nip'] ? content : '';
         //                     console.log(user, objek['petugas']);
         //                     values.push(action);
@@ -366,7 +366,9 @@
         // }
 
         function renderAsesmenNyeriAnak(no_rawat) {
-            $.get(`${url}/asesmen-nyeri-anak`, { no_rawat: no_rawat }).done((response) => {
+            $.get(`${url}/asesmen-nyeri-anak`, {
+                no_rawat: no_rawat
+            }).done((response) => {
                 const container = $('#containerAsesmenNyeri');
                 container.empty();
 
@@ -415,16 +417,24 @@
         // Helper untuk Skala Nyeri (Visual UX)
         function renderSkalaNyeriUI(skala, ket) {
             const images = {
-                0: 'skala_1.png', 1: 'skala_1-3.png', 2: 'skala_1-3.png',
-                3: 'skala_4-5.png', 4: 'skala_4-5.png', 5: 'skala_4-5.png',
-                6: 'skala_6.png', 7: 'skala_6-8-9.png', 8: 'skala_6-8-9.png',
-                9: 'skala_6-8-9.png', 10: 'skala_10.png'
+                0: 'skala_1.png',
+                1: 'skala_1-3.png',
+                2: 'skala_1-3.png',
+                3: 'skala_4-5.png',
+                4: 'skala_4-5.png',
+                5: 'skala_4-5.png',
+                6: 'skala_6.png',
+                7: 'skala_6-8-9.png',
+                8: 'skala_6-8-9.png',
+                9: 'skala_6-8-9.png',
+                10: 'skala_10.png'
             };
             // Sederhanakan mapping sesuai logic Anda
 
             const image = images[skala];
             return `<img src="${url}/public/img/${image}" width="60px" class="mb-2"><div class="h5 mb-0">${skala}</div><small class="text-muted">${ket}</small>`;
         }
+
         function renderActionButtons(objek) {
             // Sesuaikan dengan variabel session user yang Anda gunakan
             const loggedInNik = "{{ session()->get('pegawai')->nik }}";
@@ -586,7 +596,7 @@
             } else {
                 input.prop('disabled', true);
                 input.val('-');
-                if (formAsesmenNyeriAnak.find('#lokasi_lain').val() == '-') { }
+                if (formAsesmenNyeriAnak.find('#lokasi_lain').val() == '-') {}
             }
         })
 

@@ -2,7 +2,7 @@
 <div class="modal fade" id="modalEditAturanPakaiPermintaan" tabindex="-1" aria-labelledby="modalEditAturanPakaiLabel" aria-hidden="true" style="z-index: 1085;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
-            
+
             <div class="modal-header bg-primary text-white py-2 px-3">
                 <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-pencil-square fs-5"></i>
@@ -40,7 +40,7 @@
                                 <label class="form-label small fw-bold mb-1 text-dark">
                                     <i class="bi bi-box-seam text-primary me-1"></i> Jumlah:
                                 </label>
-                                <div class="input-group input-group-sm">
+                                <div class="input-group">
                                     <input type="number" class="form-control form-control-sm text-center fw-bold" id="edit_aturan_jml_val" min="0.1" step="any" required>
                                     <span class="input-group-text bg-light text-muted" id="lblEditAturanSatuanText" style="font-size: 11px;">Satuan</span>
                                 </div>
@@ -112,193 +112,201 @@
 </div>
 
 @push('script')
-<script>
-    function setEditPresetJam(mode) {
-        $('.chk-jam-edit').prop('checked', false);
+    <script>
+        function setEditPresetJam(mode) {
+            $('.chk-jam-edit').prop('checked', false);
 
-        if (mode === '1x_pagi') {
-            $('#edit_chk_jam07').prop('checked', true);
-        } else if (mode === '1x_malam') {
-            $('#edit_chk_jam19').prop('checked', true);
-        } else if (mode === '2x') {
-            $('#edit_chk_jam07, #edit_chk_jam19').prop('checked', true);
-        } else if (mode === '3x') {
-            $('#edit_chk_jam07, #edit_chk_jam13, #edit_chk_jam19').prop('checked', true);
-        } else if (mode === '4x') {
-            $('#edit_chk_jam07, #edit_chk_jam13, #edit_chk_jam19, #edit_chk_jam01').prop('checked', true);
-        } else if (mode === '8h') {
-            $('#edit_chk_jam06, #edit_chk_jam14, #edit_chk_jam22').prop('checked', true);
-        }
-    }
-
-    // Modal Edit Lengkap (Jumlah + Aturan Pakai + Jam)
-    function triggerEditAturanPakai(noPermintaan, kodeBrng) {
-        const itemKey = `${noPermintaan}_${kodeBrng}`;
-        const det = (window.activePermintaanItems && window.activePermintaanItems[itemKey]) ? window.activePermintaanItems[itemKey] : null;
-
-        const namaBrng = det?.data_barang?.nama_brng || det?.nama_brng || kodeBrng;
-        const sat = det?.data_barang?.kode_satuan?.satuan || det?.data_barang?.kode_sat || det?.satuan || '-';
-        const aturanPakai = det?.aturan_pakai || '';
-        const jml = det?.jml || 1;
-
-        $('#edit_aturan_no_permintaan').val(noPermintaan);
-        $('#edit_aturan_kode_brng').val(kodeBrng);
-        $('#lblEditAturanNamaObat').text(namaBrng);
-        $('#lblEditAturanKodeObat').text(kodeBrng);
-        $('#lblEditAturanSatuanObat').text(sat);
-        $('#lblEditAturanSatuanText').text(sat);
-        $('#edit_aturan_jml_val').val(jml);
-        $('#edit_aturan_pakai_val').val(aturanPakai);
-
-        $('.chk-jam-edit').prop('checked', false);
-        if (det) {
-            for (let h = 0; h <= 23; h++) {
-                const k = `jam${String(h).padStart(2, '0')}`;
-                if (det[k] === 'true' || det[k] === true || det[k] === '1' || det[k] === 1) {
-                    $(`#edit_chk_${k}`).prop('checked', true);
-                }
+            if (mode === '1x_pagi') {
+                $('#edit_chk_jam07').prop('checked', true);
+            } else if (mode === '1x_malam') {
+                $('#edit_chk_jam19').prop('checked', true);
+            } else if (mode === '2x') {
+                $('#edit_chk_jam07, #edit_chk_jam19').prop('checked', true);
+            } else if (mode === '3x') {
+                $('#edit_chk_jam07, #edit_chk_jam13, #edit_chk_jam19').prop('checked', true);
+            } else if (mode === '4x') {
+                $('#edit_chk_jam07, #edit_chk_jam13, #edit_chk_jam19, #edit_chk_jam01').prop('checked', true);
+            } else if (mode === '8h') {
+                $('#edit_chk_jam06, #edit_chk_jam14, #edit_chk_jam22').prop('checked', true);
             }
         }
 
-        $('#modalEditAturanPakaiPermintaan').modal('show');
-        setTimeout(() => {
-            $('#edit_aturan_jml_val').focus().select();
-        }, 300);
-    }
+        // Modal Edit Lengkap (Jumlah + Aturan Pakai + Jam)
+        function triggerEditAturanPakai(noPermintaan, kodeBrng) {
+            const itemKey = `${noPermintaan}_${kodeBrng}`;
+            const det = (window.activePermintaanItems && window.activePermintaanItems[itemKey]) ? window.activePermintaanItems[itemKey] : null;
 
-    // Quick Adjust Jumlah Obat via Prompt
-    function quickEditJumlah(noPermintaan, kodeBrng, currentJml, namaObat) {
-        Swal.fire({
-            title: 'Sesuaikan Jumlah Obat',
-            html: `
+            const namaBrng = det?.data_barang?.nama_brng || det?.nama_brng || kodeBrng;
+            const sat = det?.data_barang?.kode_satuan?.satuan || det?.data_barang?.kode_sat || det?.satuan || '-';
+            const aturanPakai = det?.aturan_pakai || '';
+            const jml = det?.jml || 1;
+
+            $('#edit_aturan_no_permintaan').val(noPermintaan);
+            $('#edit_aturan_kode_brng').val(kodeBrng);
+            $('#lblEditAturanNamaObat').text(namaBrng);
+            $('#lblEditAturanKodeObat').text(kodeBrng);
+            $('#lblEditAturanSatuanObat').text(sat);
+            $('#lblEditAturanSatuanText').text(sat);
+            $('#edit_aturan_jml_val').val(jml);
+            $('#edit_aturan_pakai_val').val(aturanPakai);
+
+            $('.chk-jam-edit').prop('checked', false);
+            if (det) {
+                for (let h = 0; h <= 23; h++) {
+                    const k = `jam${String(h).padStart(2, '0')}`;
+                    if (det[k] === 'true' || det[k] === true || det[k] === '1' || det[k] === 1) {
+                        $(`#edit_chk_${k}`).prop('checked', true);
+                    }
+                }
+            }
+
+            $('#modalEditAturanPakaiPermintaan').modal('show');
+            setTimeout(() => {
+                $('#edit_aturan_jml_val').focus().select();
+            }, 300);
+        }
+
+        // Quick Adjust Jumlah Obat via Prompt
+        function quickEditJumlah(noPermintaan, kodeBrng, currentJml, namaObat) {
+            Swal.fire({
+                title: 'Sesuaikan Jumlah Obat',
+                html: `
                 <div class="text-start mb-2" style="font-size: 13px;">
                     <span class="text-muted d-block">Nama Obat:</span>
                     <strong class="text-primary">${namaObat}</strong>
                 </div>
             `,
-            input: 'number',
-            inputValue: currentJml,
-            inputAttributes: {
-                min: '0.1',
-                step: 'any',
-                autofocus: 'autofocus'
-            },
-            showCancelButton: true,
-            confirmButtonText: '<i class="bi bi-check-lg me-1"></i> Simpan',
-            cancelButtonText: 'Batal',
-            confirmButtonColor: '#0d6efd',
-            inputValidator: (val) => {
-                if (!val || parseFloat(val) <= 0) {
-                    return 'Jumlah obat harus lebih besar dari 0!';
-                }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "{{ route('farmasi.permintaan-ranap.ubah-aturan-pakai') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        no_permintaan: noPermintaan,
-                        kode_brng: kodeBrng,
-                        jml: parseFloat(result.value)
-                    },
-                    beforeSend: function() {
-                        Swal.fire({ title: 'Menyimpan Jumlah...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-                    },
-                    success: function(resp) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: resp.message || 'Jumlah obat berhasil diperbarui.',
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-                        if (typeof bukaDetailRanapFarmasi === 'function') {
-                            bukaDetailRanapFarmasi(noPermintaan);
-                        }
-                        if (typeof showDetailPermintaanObat === 'function') {
-                            showDetailPermintaanObat(noPermintaan);
-                        }
-                    },
-                    error: function(xhr) {
-                        Swal.fire('Gagal!', xhr.responseJSON?.message || 'Gagal mengubah jumlah obat.', 'error');
+                input: 'number',
+                inputValue: currentJml,
+                inputAttributes: {
+                    min: '0.1',
+                    step: 'any',
+                    autofocus: 'autofocus'
+                },
+                showCancelButton: true,
+                confirmButtonText: '<i class="bi bi-check-lg me-1"></i> Simpan',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#0d6efd',
+                inputValidator: (val) => {
+                    if (!val || parseFloat(val) <= 0) {
+                        return 'Jumlah obat harus lebih besar dari 0!';
                     }
-                });
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('farmasi.permintaan-ranap.ubah-aturan-pakai') }}",
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_permintaan: noPermintaan,
+                            kode_brng: kodeBrng,
+                            jml: parseFloat(result.value)
+                        },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Menyimpan Jumlah...',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                        },
+                        success: function(resp) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: resp.message || 'Jumlah obat berhasil diperbarui.',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
+                            if (typeof bukaDetailRanapFarmasi === 'function') {
+                                bukaDetailRanapFarmasi(noPermintaan);
+                            }
+                            if (typeof showDetailPermintaanObat === 'function') {
+                                showDetailPermintaanObat(noPermintaan);
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Gagal!', xhr.responseJSON?.message || 'Gagal mengubah jumlah obat.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+        // Simpan dari Modal Lengkap
+        $('#btnSimpanEditAturanPakai').off('click').on('click', function() {
+            const noPermintaan = $('#edit_aturan_no_permintaan').val();
+            const kodeBrng = $('#edit_aturan_kode_brng').val();
+            const jml = $('#edit_aturan_jml_val').val();
+            const aturanPakai = $('#edit_aturan_pakai_val').val().trim();
+
+            if (!jml || parseFloat(jml) <= 0) {
+                Swal.fire('Peringatan', 'Jumlah obat harus lebih besar dari 0.', 'warning');
+                return;
             }
-        });
-    }
 
-    // Simpan dari Modal Lengkap
-    $('#btnSimpanEditAturanPakai').off('click').on('click', function() {
-        const noPermintaan = $('#edit_aturan_no_permintaan').val();
-        const kodeBrng = $('#edit_aturan_kode_brng').val();
-        const jml = $('#edit_aturan_jml_val').val();
-        const aturanPakai = $('#edit_aturan_pakai_val').val().trim();
-
-        if (!jml || parseFloat(jml) <= 0) {
-            Swal.fire('Peringatan', 'Jumlah obat harus lebih besar dari 0.', 'warning');
-            return;
-        }
-
-        if (!aturanPakai) {
-            Swal.fire('Peringatan', 'Aturan pakai tidak boleh kosong.', 'warning');
-            return;
-        }
-
-        const dataPost = {
-            _token: "{{ csrf_token() }}",
-            no_permintaan: noPermintaan,
-            kode_brng: kodeBrng,
-            jml: parseFloat(jml),
-            aturan_pakai: aturanPakai
-        };
-
-        for (let h = 0; h <= 23; h++) {
-            const key = `jam${String(h).padStart(2, '0')}`;
-            dataPost[key] = $(`#edit_chk_${key}`).is(':checked') ? 'true' : 'false';
-        }
-
-        $.ajax({
-            url: "{{ route('farmasi.permintaan-ranap.ubah-aturan-pakai') }}",
-            type: "POST",
-            data: dataPost,
-            beforeSend: function() {
-                Swal.fire({
-                    title: 'Menyimpan Perubahan...',
-                    allowOutsideClick: false,
-                    didOpen: () => { Swal.showLoading(); }
-                });
-            },
-            success: function(resp) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: resp.message || 'Rincian obat berhasil diperbarui.',
-                    timer: 1200,
-                    showConfirmButton: false
-                });
-
-                $('#modalEditAturanPakaiPermintaan').modal('hide');
-
-                if (typeof bukaDetailRanapFarmasi === 'function') {
-                    bukaDetailRanapFarmasi(noPermintaan);
-                }
-                if (typeof showDetailPermintaanObat === 'function') {
-                    showDetailPermintaanObat(noPermintaan);
-                }
-                if (typeof loadPermintaanRanapFarmasi === 'function') {
-                    loadPermintaanRanapFarmasi();
-                }
-                if (typeof loadPermintaanObatPasien === 'function') {
-                    loadPermintaanObatPasien();
-                }
-            },
-            error: function(xhr) {
-                const msg = xhr.responseJSON?.message || 'Gagal memperbarui rincian obat.';
-                Swal.fire('Gagal!', msg, 'error');
+            if (!aturanPakai) {
+                Swal.fire('Peringatan', 'Aturan pakai tidak boleh kosong.', 'warning');
+                return;
             }
+
+            const dataPost = {
+                _token: "{{ csrf_token() }}",
+                no_permintaan: noPermintaan,
+                kode_brng: kodeBrng,
+                jml: parseFloat(jml),
+                aturan_pakai: aturanPakai
+            };
+
+            for (let h = 0; h <= 23; h++) {
+                const key = `jam${String(h).padStart(2, '0')}`;
+                dataPost[key] = $(`#edit_chk_${key}`).is(':checked') ? 'true' : 'false';
+            }
+
+            $.ajax({
+                url: "{{ route('farmasi.permintaan-ranap.ubah-aturan-pakai') }}",
+                type: "POST",
+                data: dataPost,
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Menyimpan Perubahan...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function(resp) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: resp.message || 'Rincian obat berhasil diperbarui.',
+                        timer: 1200,
+                        showConfirmButton: false
+                    });
+
+                    $('#modalEditAturanPakaiPermintaan').modal('hide');
+
+                    if (typeof bukaDetailRanapFarmasi === 'function') {
+                        bukaDetailRanapFarmasi(noPermintaan);
+                    }
+                    if (typeof showDetailPermintaanObat === 'function') {
+                        showDetailPermintaanObat(noPermintaan);
+                    }
+                    if (typeof loadPermintaanRanapFarmasi === 'function') {
+                        loadPermintaanRanapFarmasi();
+                    }
+                    if (typeof loadPermintaanObatPasien === 'function') {
+                        loadPermintaanObatPasien();
+                    }
+                },
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Gagal memperbarui rincian obat.';
+                    Swal.fire('Gagal!', msg, 'error');
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush
