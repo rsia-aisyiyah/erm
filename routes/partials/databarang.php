@@ -14,9 +14,9 @@ use App\Http\Controllers\ResikoJatuhAnakController;
 use App\Http\Controllers\ResikoJatuhDewasaController;
 use App\Models\ResikoJatuhDewasa;
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'erm.session'])->group(function () {
     Route::prefix('obat')->group(function ($route) {
-        $route->get('/', [DataBarangController::class, 'index']);
+        $route->get('/', [DataBarangController::class, 'index'])->middleware('erm.menu:obat');
         $route->get('/table', [DataBarangController::class, 'table']);
     });
 

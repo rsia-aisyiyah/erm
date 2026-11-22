@@ -16,10 +16,10 @@ use App\Models\Propinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'erm.session'])->group(function () {
     Route::prefix('pasien')->group(function () {
-        Route::get('/', [PasienController::class, 'index']);
-        Route::post('/', [PasienController::class, 'create']);
+        Route::get('/', [PasienController::class, 'index'])->middleware('erm.menu:pasien');
+        Route::post('/', [PasienController::class, 'create'])->middleware('erm.menu:pasien,registrasi');
         Route::get('/edit/{no_rkm_medis}', function ($no_rkm_medis) {
             $id = Crypt::decrypt($no_rkm_medis);
             $pasien = Pasien::where('no_rkm_medis', $id)
@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
             return view('content.pasien.edit', [
                 'pasien' => $pasien,
             ]);
-        });
+        })->middleware('erm.menu:pasien,registrasi');
         Route::get('/table', [PasienController::class, 'table']);
         Route::get('/cari', [PasienController::class, 'search']);
         Route::get('/get', [PasienController::class, 'get']);

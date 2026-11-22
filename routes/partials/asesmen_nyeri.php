@@ -7,7 +7,7 @@ use App\Http\Controllers\AsesmenNyeriBatitaController;
 use App\Http\Controllers\AsesmenNyeriDewasaController;
 use App\Http\Controllers\AsesmenNyeriNeonatusController;
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'erm.session'])->group(function () {
     Route::post('asesmen-nyeri-dewasa', [AsesmenNyeriDewasaController::class, 'create']);
     Route::get('asesmen-nyeri-dewasa', [AsesmenNyeriDewasaController::class, 'get']);
     Route::get('asesmen-nyeri-dewasa/first', [AsesmenNyeriDewasaController::class, 'first']);

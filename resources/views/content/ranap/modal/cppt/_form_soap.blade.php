@@ -1,238 +1,230 @@
 <form action="" method="POST" class="" id="formSoapRanap">
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-6">
-            <table class="borderless text-sm">
-                <tr>
-                    <td width="10%">Dilakukan Oleh :</td>
-                    <td width="60%" colspan="2">
-                        <div class="input-group">
-                            <div class="input-group-text"><i class="bi bi-person"></i></div>
-                            <input type="text" class="form-control form-control-sm" id="nik" name="nik" placeholder=""
-                                readonly>
-                            <input type="search" class="form-control form-control-sm w-50" id="nama" name="nama"
-                                placeholder="" readonly>
-
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Subjek : </td>
-                    <td colspan="3">
-                        <textarea class="form-control" name="subjek" id="subjek" cols="30" rows="5"
-                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Objek : </td>
-                    <td colspan="3">
-                        <textarea class="form-control" name="objek" id="objek" cols="30" rows="5"
-                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td colspan="3">
-                        <table>
-                            <td width="12%">
-                                Suhu (<sup>0</sup>C) : <input type="text" class="form-control form-control-sm" id="suhu"
-                                    name="suhu" placeholder="" maxlength="5" value="-" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-" autocomplete="off">
-                            </td>
-                            <td width="12%">
-                                Tinggi (Cm): <input type="text" class="form-control form-control-sm" id="tinggi"
-                                    name="tinggi" placeholder="" maxlength="5" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-" autocomplete="off">
-                            </td>
-                            <td width="12%">
-                                Berat (Kg) : <input type="text" class="form-control form-control-sm" id="berat"
-                                    name="berat" placeholder="" maxlength="5" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-" autocomplete="off">
-                            </td>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td colspan="3">
-                        <table>
-                            <td width="12%">
-                                Tensi : <input type="text" class="form-control form-control-sm" id="tensi" name="tensi"
-                                    placeholder="" maxlength="8" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                    value="-" autocomplete="off">
-                            </td>
-                            <td width="12%">
-                                Respirasi (/mnt): <input type="text" class="form-control form-control-sm" id="respirasi"
-                                    name="respirasi" placeholder="" maxlength="3" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-" autocomplete="off">
-                            </td>
-                            <td width="12%">
-                                Nadi (/mnt) : <input type="text" class="form-control form-control-sm" id="nadi"
-                                    name="nadi" placeholder="" maxlength="3" onfocus="removeZero(this)"
-                                    onblur="cekKosong(this)" value="-" autocomplete="off">
-                            </td>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td colspan="3">
-                        <table>
-                            <td width="12%">
-                                SpO2 (%): <input type="text" class="form-control form-control-sm" id="spo2" name="spo2"
-                                    placeholder="" maxlength="3" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                    value="-" autocomplete="off">
-                            </td>
-                            <td width="12%">
-                                GCS (E,V,M): <input type="text" class="form-control form-control-sm" id="gcs" name="gcs"
-                                    placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                    value="-" autocomplete="off">
-                            </td>
-                            <td width="12%">
-                                O2: <input type="text" class="form-control form-control-sm" id="o2" name="o2"
-                                    placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                    value="-" autocomplete="off">
-                            </td>
-                            <td width="12%">
-                                Kesadaran :
-                                <select class="form-select" name="kesadaran" id="kesadaran">
-                                    <option value="Compos Mentis">Compos Mentis</option>
-                                    <option value="Apatis">Apatis</option>
-                                    <option value="Somnolence">Somnolence</option>
-                                    <option value="Sopor">Sopor</option>
-                                    <option value="Coma">Coma</option>
-                                </select>
-                            </td>
-                        </table>
-                    </td>
-                </tr>
-                <tr class="formEws">
-                    <td></td>
-                    <td colspan="3">
-                        <table>
-                            <td width="12%">
-                                Keluaran Urin : <select class="form-select" name="keluaran_urin" id="keluaran_urin">
-                                    <option value="" style="display:none"></option>
-                                    <option value="-">-</option>
-                                    <option value="Y">Y</option>
-                                    <option value="T">T</option>
-                                </select>
-                            </td>
-                            <td width="12%">
-                                Proteinuria : <select class="form-select" name="proteinuria" id="proteinuria">
-                                    <option value="" style="display:none"></option>
-                                    <option value="-">-</option>
-                                    <option value="++">++</option>
-                                    <option value="+++">+++</option>
-                                </select>
-                            </td>
-                            <td width="12%">
-                                Air Ketuban : <select class="form-select" name="air_ketuban" id="air_ketuban">
-                                    <option value="" style="display:none"></option>
-                                    <option value="-" selected>-</option>
-                                    <option value="Jernih">Jernih/Pink</option>
-                                    <option value="Hijau">Hijau</option>
-                                </select>
-                            </td>
-                            <td width="12%">
-                                Skala Nyeri : <select class="form-select" name="skala_nyeri" id="skala_nyeri">
-                                    <option value="" style="display:none"></option>
-                                    <option value="-">-</option>
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </select>
-                            </td>
-                            <td width="12%">
-                                Lochia : <select class="form-select" name="lochia" id="lochia">
-                                    <option value="" style="display:none"></option>
-                                    <option value="-">-</option>
-                                    <option value="Normal">Normal</option>
-                                    <option value="Banyak">Banyak</option>
-                                </select>
-                            </td>
-                            <td width="12%">
-                                Tidak Sehat: <select class="form-select" name="terlihat_tidak_sehat"
-                                    id="terlihat_tidak_sehat">
-                                    <option value="" style="display:none"></option>
-                                    <option value="-" selected>-</option>
-                                    <option value="Tidak" selected>Tidak</option>
-                                    <option value="Ya">Ya</option>
-                                </select>
-                            </td>
-
-                        </table>
-                    </td>
-                </tr>
-            </table>
-            <input type="hidden" name="nik" id="nik" value={{ session()->get('pegawai')->nik }}>
+    {{-- Kartu Petugas, Alergi & Waktu Pemeriksaan --}}
+    <div class="erm-section-card">
+        <div class="erm-section-title">
+            <span><i class="bi bi-person-check me-1"></i>Petugas, Alergi &amp; Waktu Pemeriksaan</span>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-6">
-            <table class="borderless">
-                <tr>
-                    <td width="15%" style="font-size:11px;vertical-align:middle">Alergi :</td>
-                    <td width="20%">
-                        <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder=""
-                            style="width:100%" onfocus="removeZero(this)" onblur="cekKosong(this)" value="-"
-                            autocomplete="off">
-                    </td>
-                    <td width="10%" style="font-size:11px;text-align:right;vertical-align:middle" class="waktuSoap">
-                        Tanggal :</td>
-                    <td class="waktuSoap">
-                        <input type="text" class="form-control form-control-sm " id="tgl_perawatan_ubah"
-                            name="tgl_perawatan_ubah" placeholder="" style="width:100%" onfocus="removeZero(this)"
-                            onblur="cekKosong(this)" value="-" autocomplete="off" disabled>
-                    </td>
-                    <td class="waktuSoap">
-                        <div class="input-group">
-                            <div class="input-group-text" style="padding: 4px">
-                                <input class="form-check-input" type="checkbox" value=""
-                                    aria-label="Checkbox for following text input"
-                                    style="width:.8em;height:.8em;margin:0px" id="cekJam">
-                            </div>
-                            <input type="text" class="form-control form-control-sm " id="jam_rawat_ubah"
-                                name="jam_rawat_ubah" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)"
-                                value="" autocomplete="off" disabled>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="5%">Asesmen : </td>
-                    <td colspan="4" width="5%">
-                        <textarea class="form-control" name="asesmen" id="asesmen" cols="30" rows="5"
-                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Plan : </td>
-                    <td colspan="4">
-                        <textarea class="form-control" name="plan" id="plan" cols="30" rows="5"
-                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
-                    </td>
-                </tr>
-                <tr class="d-none">
-                    <td>Instruksi : </td>
-                    <td colspan="4">
-                        <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="5"
-                            onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
-                        <input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="">
-                        <input type="hidden" name="jam_rawat" id="jam_rawat" value="">
-                        <input type="hidden" name="spesialis" id="spesialis" value="">
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-md-6 col-xl-5">
+                <label for="nama" class="form-label mb-1">Dilakukan Oleh</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <input type="text" class="form-control" id="nik" name="nik" value="{{ session()->get('pegawai')->nik }}" placeholder="" readonly style="max-width: 120px;">
+                    <input type="search" class="form-control" id="nama" name="nama" value="{{ session()->get('pegawai')->nama }}" placeholder="" readonly>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+                <label for="alergi" class="form-label mb-1">Alergi</label>
+                <input type="text" class="form-control form-control-sm" id="alergi" name="alergi" placeholder=""
+                    onfocus="removeZero(this)" onblur="cekKosong(this); if (typeof syncModalSoapRanapAlergi === 'function') syncModalSoapRanapAlergi(this.value);" value="-"
+                    autocomplete="off">
+            </div>
+            <div class="col-6 col-md-6 col-xl-2 waktuSoap">
+                <label for="tgl_perawatan_ubah" class="form-label mb-1">Tanggal</label>
+                <input type="text" class="form-control form-control-sm" id="tgl_perawatan_ubah"
+                    name="tgl_perawatan_ubah" placeholder="" onfocus="removeZero(this)"
+                    onblur="cekKosong(this)" value="-" autocomplete="off" disabled>
+            </div>
+            <div class="col-6 col-md-6 col-xl-2 waktuSoap">
+                <label for="jam_rawat_ubah" class="form-label mb-1">Jam</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text px-2" title="Centang untuk menghentikan jam otomatis">
+                        <input class="form-check-input mt-0" type="checkbox" value=""
+                            aria-label="Stop jam otomatis" id="cekJam">
+                    </span>
+                    <input type="text" class="form-control" id="jam_rawat_ubah"
+                        name="jam_rawat_ubah" placeholder="" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                        value="" autocomplete="off" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td colspan="4">
-                        <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRanap()"
-                            style="font-size: 12px"><i class="bi bi-save"></i> Simpan</button>
-                        <button type="button" class="btn btn-warning btn-sm" id="btn-reset"
-                            style="font-size:12px;display:none"><i class="bi bi-arrow-clockwise"></i> Baru</button>
-                        <button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah"
-                            style="font-size:12px;display:none"><i class="bi bi-pencil-square"></i> Ubah</button>
-                    </td>
-                </tr>
-            </table>
+    {{-- Kartu Tanda-Tanda Vital (TTV) & EWS Maternal --}}
+    <div class="erm-section-card">
+        <div class="erm-section-title">
+            <span><i class="bi bi-heart-pulse me-1"></i>Tanda-Tanda Vital (TTV) &amp; Antropometri</span>
+        </div>
+        <div class="row g-2">
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <label for="suhu" class="form-label mb-1">Suhu (<sup>o</sup>C)</label>
+                <input type="text" class="form-control form-control-sm" id="suhu"
+                    name="suhu" placeholder="" maxlength="5" value="-" onfocus="removeZero(this)"
+                    onblur="cekKosong(this)" autocomplete="off">
+            </div>
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <label for="tensi" class="form-label mb-1">Tensi (mmHg)</label>
+                <input type="text" class="form-control form-control-sm" id="tensi" name="tensi"
+                    placeholder="" maxlength="8" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                    value="-" autocomplete="off">
+            </div>
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <label for="nadi" class="form-label mb-1">Nadi (/mnt)</label>
+                <input type="text" class="form-control form-control-sm" id="nadi"
+                    name="nadi" placeholder="" maxlength="3" onfocus="removeZero(this)"
+                    onblur="cekKosong(this)" value="-" autocomplete="off">
+            </div>
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <label for="respirasi" class="form-label mb-1">Respirasi (/mnt)</label>
+                <input type="text" class="form-control form-control-sm" id="respirasi"
+                    name="respirasi" placeholder="" maxlength="3" onfocus="removeZero(this)"
+                    onblur="cekKosong(this)" value="-" autocomplete="off">
+            </div>
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <label for="spo2" class="form-label mb-1">SpO2 (%)</label>
+                <input type="text" class="form-control form-control-sm" id="spo2" name="spo2"
+                    placeholder="" maxlength="3" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                    value="-" autocomplete="off">
+            </div>
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <label for="o2" class="form-label mb-1">O2</label>
+                <input type="text" class="form-control form-control-sm" id="o2" name="o2"
+                    placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                    value="-" autocomplete="off">
+            </div>
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <label for="tinggi" class="form-label mb-1">Tinggi (Cm)</label>
+                <input type="text" class="form-control form-control-sm" id="tinggi"
+                    name="tinggi" placeholder="" maxlength="5" onfocus="removeZero(this)"
+                    onblur="cekKosong(this)" value="-" autocomplete="off">
+            </div>
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <label for="berat" class="form-label mb-1">Berat (Kg)</label>
+                <input type="text" class="form-control form-control-sm" id="berat"
+                    name="berat" placeholder="" maxlength="5" onfocus="removeZero(this)"
+                    onblur="cekKosong(this)" value="-" autocomplete="off">
+            </div>
+            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <label for="gcs" class="form-label mb-1">GCS (E,V,M)</label>
+                <input type="text" class="form-control form-control-sm" id="gcs" name="gcs"
+                    placeholder="" maxlength="10" onfocus="removeZero(this)" onblur="cekKosong(this)"
+                    value="-" autocomplete="off">
+            </div>
+            <div class="col-6 col-sm-8 col-md-6 col-xl-3">
+                <label for="kesadaran" class="form-label mb-1">Kesadaran</label>
+                <select class="form-select form-select-sm" name="kesadaran" id="kesadaran">
+                    <option value="Compos Mentis">Compos Mentis</option>
+                    <option value="Apatis">Apatis</option>
+                    <option value="Somnolence">Somnolence</option>
+                    <option value="Sopor">Sopor</option>
+                    <option value="Coma">Coma</option>
+                </select>
+            </div>
+        </div>
+
+        {{-- Parameter Tambahan EWS Maternal (tampil otomatis untuk spesialis S0001 / Obgyn) --}}
+        <div class="formEws mt-3 pt-2 border-top">
+            <div class="small fw-semibold text-primary mb-2">
+                <i class="bi bi-activity me-1"></i>Parameter EWS Maternal
+            </div>
+            <div class="row g-2">
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <label for="keluaran_urin" class="form-label mb-1">Keluaran Urin</label>
+                    <select class="form-select form-select-sm" name="keluaran_urin" id="keluaran_urin">
+                        <option value="" style="display:none"></option>
+                        <option value="-">-</option>
+                        <option value="Y">Y</option>
+                        <option value="T">T</option>
+                    </select>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <label for="proteinuria" class="form-label mb-1">Proteinuria</label>
+                    <select class="form-select form-select-sm" name="proteinuria" id="proteinuria">
+                        <option value="" style="display:none"></option>
+                        <option value="-">-</option>
+                        <option value="++">++</option>
+                        <option value="+++">+++</option>
+                    </select>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <label for="air_ketuban" class="form-label mb-1">Air Ketuban</label>
+                    <select class="form-select form-select-sm" name="air_ketuban" id="air_ketuban">
+                        <option value="" style="display:none"></option>
+                        <option value="-" selected>-</option>
+                        <option value="Jernih">Jernih/Pink</option>
+                        <option value="Hijau">Hijau</option>
+                    </select>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <label for="skala_nyeri" class="form-label mb-1">Skala Nyeri</label>
+                    <select class="form-select form-select-sm" name="skala_nyeri" id="skala_nyeri">
+                        <option value="" style="display:none"></option>
+                        <option value="-">-</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <label for="lochia" class="form-label mb-1">Lochia</label>
+                    <select class="form-select form-select-sm" name="lochia" id="lochia">
+                        <option value="" style="display:none"></option>
+                        <option value="-">-</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Banyak">Banyak</option>
+                    </select>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <label for="terlihat_tidak_sehat" class="form-label mb-1">Tidak Sehat</label>
+                    <select class="form-select form-select-sm" name="terlihat_tidak_sehat" id="terlihat_tidak_sehat">
+                        <option value="" style="display:none"></option>
+                        <option value="-" selected>-</option>
+                        <option value="Tidak" selected>Tidak</option>
+                        <option value="Ya">Ya</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Kartu Catatan SOAP (Subjek, Objek, Asesmen, Plan) --}}
+    <div class="erm-section-card mb-0">
+        <div class="erm-section-title">
+            <span><i class="bi bi-journal-text me-1"></i>Catatan Perkembangan Pasien (SOAP)</span>
+        </div>
+        <div class="row g-3">
+            <div class="col-12 col-lg-6">
+                <div class="mb-2">
+                    <label for="subjek" class="form-label mb-1 fw-semibold">S - Subjek</label>
+                    <textarea class="form-control form-control-sm" name="subjek" id="subjek" cols="30" rows="4"
+                        onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                </div>
+                <div>
+                    <label for="objek" class="form-label mb-1 fw-semibold">O - Objek</label>
+                    <textarea class="form-control form-control-sm" name="objek" id="objek" cols="30" rows="4"
+                        onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="mb-2">
+                    <label for="asesmen" class="form-label mb-1 fw-semibold">A - Asesmen</label>
+                    <textarea class="form-control form-control-sm" name="asesmen" id="asesmen" cols="30" rows="4"
+                        onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                </div>
+                <div>
+                    <label for="plan" class="form-label mb-1 fw-semibold">P - Plan</label>
+                    <textarea class="form-control form-control-sm" name="plan" id="plan" cols="30" rows="4"
+                        onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-none">
+            <textarea class="form-control" name="instruksi" id="instruksi" cols="30" rows="3"
+                onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
+            <input type="hidden" name="tgl_perawatan" id="tgl_perawatan" value="">
+            <input type="hidden" name="jam_rawat" id="jam_rawat" value="">
+            <input type="hidden" name="spesialis" id="spesialis" value="">
+        </div>
+
+        <div class="mt-3 pt-2 border-top d-flex flex-wrap align-items-center gap-2">
+            <button type="button" class="btn btn-primary btn-sm btn-simpan" onclick="simpanSoapRanap()"
+                style="font-size: 12px"><i class="bi bi-save me-1"></i> Simpan</button>
+            <button type="button" class="btn btn-warning btn-sm" id="btn-reset"
+                style="font-size:12px;display:none"><i class="bi bi-arrow-clockwise me-1"></i> Baru</button>
+            <button type="button" class="btn btn-success btn-sm" onclick="editSoap()" id="btn-ubah"
+                style="font-size:12px;display:none"><i class="bi bi-pencil-square me-1"></i> Ubah</button>
         </div>
     </div>
 </form>

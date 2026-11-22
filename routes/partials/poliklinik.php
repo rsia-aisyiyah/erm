@@ -9,12 +9,12 @@ use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\AsesmenMedisRajalAnakController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 
-Route::middleware('auth')->group(function () {
-    Route::get('/poliklinik', [PoliklinikController::class, 'index'])->name('poliklinik');
+Route::middleware(['auth', 'erm.session'])->group(function () {
+    Route::get('/poliklinik', [PoliklinikController::class, 'index'])->middleware('erm.menu:poliklinik')->name('poliklinik');
     Route::get('/poliklinik/get', [PoliklinikController::class, 'get'])->name('poliklinik.get');
     Route::get('/poliklinik/dokter', [PoliklinikController::class, 'poliDokter']);
     Route::get('/poliklinik/table', [PoliklinikController::class, 'tbPoliPasien']);
-    Route::get('/poliklinik/{kd_poli}', [PoliklinikController::class, 'viewPoliPasien']);
+    Route::get('/poliklinik/{kd_poli}', [PoliklinikController::class, 'viewPoliPasien'])->middleware('erm.menu:poliklinik');
     Route::get('/poliklinik/count/{kd_poli}', [PoliklinikController::class, 'countUpload']);
     Route::get('/pemeriksaan/jumlah', [PoliklinikController::class, 'jumlahPasienPoli']);
     Route::get('/poli/panggil', [EstimasiPoliController::class, 'get']);

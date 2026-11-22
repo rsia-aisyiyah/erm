@@ -9,10 +9,31 @@ class TrustProxies extends Middleware
 {
     /**
      * The trusted proxies for this application.
+     * Konfigurasikan via .env TRUSTED_PROXIES (misal: "*" atau "127.0.0.1,192.168.100.1").
      *
      * @var array<int, string>|string|null
      */
     protected $proxies;
+
+    /**
+     * Resolve trusted proxies secara dinamis dari config agar kompatibel dengan config:cache.
+     *
+     * @return array<int, string>|string|null
+     */
+    protected function proxies()
+    {
+        $configured = config('app.trusted_proxies');
+
+        if (empty($configured)) {
+            return $this->proxies;
+        }
+
+        if ($configured === '*') {
+            return '*';
+        }
+
+        return array_values(array_filter(array_map('trim', explode(',', (string) $configured))));
+    }
 
     /**
      * The headers that should be used to detect proxies.

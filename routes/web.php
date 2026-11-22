@@ -90,21 +90,29 @@ Route::get('/antrian', [AntreanController::class, 'index']);
 Route::get('/get/antrian', [AntreanController::class, 'getAntrian']);
 Route::get('/antrian/suara', [AntreanController::class, 'getSuara']);
 
-Route::get('/login', function () {
-	return view('content.auth.login');
-});
-
-Route::post('/login', [LoginController::class, 'authenticate'])
+Route::get('/login', [LoginController::class, 'index'])
 	->name('login')
 	->middleware('guest');
+
+Route::post('/login', [LoginController::class, 'authenticate'])
+	->middleware(['guest', 'throttle:login']);
 
 Route::get('/erm', function () {
 	return redirect('/');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'erm.session'])->group(function () {
 	Route::get('/logout', [LoginController::class, 'logout']);
 	Route::get('/', function () {
+		$pegawai = session()->get('pegawai');
+		$groupedMenus = \App\Models\RsiaErmMenu::getMenusForUser($pegawai);
+		foreach ($groupedMenus as $menus) {
+			foreach ($menus as $menu) {
+				if ($menu->target === '_self' && $menu->url !== 'KYC_DYNAMIC' && !empty($menu->url)) {
+					return redirect($menu->url);
+				}
+			}
+		}
 		return redirect('/poliklinik');
 	});
 	Route::get('/periksa/show/{no_rkm_medis}/{tanggal?}', [
@@ -124,8 +132,8 @@ Route::middleware('auth')->group(function () {
 	Route::post('/booking/buat', [BookingRegistrasiController::class, 'create']);
 
 	Route::get('/asesmen/medis/ugd/print', [AsesmenMedisIgdController::class, 'print']);
-	Route::get('/ugd', [UgdController::class, 'index']);
-	Route::get('/ugd/get/table', [UgdController::class, 'getTable']);
+	Route::get('/ugd', [UgdController::class, 'index'])->middleware('erm.menu:ugd');
+	Route::get('/ugd/get/table', [UgdController::class, 'getTable'])->middleware('erm.menu:ugd');
 	Route::get('/ugd/soap/table', [PemeriksaanRalanController::class, 'getTable']);
 	// Asesmen Keperawatan UGD
 	Route::get('/ugd/asesmen/keperawatan', [AskepUgdController::class, 'get']);
@@ -134,8 +142,8 @@ Route::middleware('auth')->group(function () {
 	Route::post('/ugd/asesmen/keperawatan/hapus', [AskepUgdController::class, 'hapus']);
 	Route::get('/ugd/asesmen/keperawatan/print', [AskepUgdController::class, 'print']);
 
-	Route::post('/ugd/asesmen/medis/simpan', [AsesmenMedisIgdController::class, 'create']);
-	Route::post('/ugd/asesmen/medis/ubah', [AsesmenMedisIgdController::class, 'edit']);
+	Route::post('/ugd/asesmen/medis/simpan', [AsesmenMedisIgdController::class, 'create'])->middleware('erm.role:dokter');
+	Route::post('/ugd/asesmen/medis/ubah', [AsesmenMedisIgdController::class, 'edit'])->middleware('erm.role:dokter');
 	Route::get('/ugd/asesmen/medis/{noRawat}', [AsesmenMedisIgdController::class, 'get']);
 
 	// triase UGD
@@ -179,8 +187,8 @@ Route::middleware('auth')->group(function () {
 	Route::post('/soap/simpan', [PemeriksaanRanapController::class, 'simpan']);
 	Route::delete('/soap/hapus', [PemeriksaanRanapController::class, 'hapus']);
 	Route::post('/soap/verifikasi', [RsiaVerifPemeriksaanRanapController::class, 'create']);
-	Route::post('/soap/aso/simpan', [\App\Http\Controllers\RsiaAsoPemeriksaanRanapController::class, 'create']);
-	Route::post('/soap/aso/hapus', [\App\Http\Controllers\RsiaAsoPemeriksaanRanapController::class, 'delete']);
+	Route::post('/soap/aso/simpan', [\App\Http\Controllers\RsiaAsoPemeriksaanRanapController::class, 'create'])->middleware('erm.role:superadmin,farmasi');
+	Route::post('/soap/aso/hapus', [\App\Http\Controllers\RsiaAsoPemeriksaanRanapController::class, 'delete'])->middleware('erm.role:superadmin,farmasi');
 
 
 	Route::post('/ranap/sbar/update', [SbarController::class, 'update']);
@@ -197,7 +205,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('/obat/pemberian/table', [DetailPemberianObatController::class, 'getDataTable']);
 
 
-	Route::get('ranap', [RanapController::class, 'index']);
+	Route::get('ranap', [RanapController::class, 'index'])->middleware('erm.menu:ranap');
 	Route::get('ranap/pasien', [RanapController::class, 'ranap']);
 	Route::get('ranap/pasien/get', [KamarInapController::class, 'get']);
 	Route::get('ranap/askep/anak', [AskepRanapAnakController::class, 'get']);
@@ -265,11 +273,11 @@ Route::middleware('auth')->group(function () {
 	Route::post('asmed/ranap/kandungan/simpan', [AsesmenMedisRanapKandunganController::class, 'create']);
 	Route::post('asmed/ranap/kandungan/ubah', [AsesmenMedisRanapKandunganController::class, 'update']);
 
-	Route::get('obat/', [DataBarangController::class, 'index']);
+	Route::get('obat/', [DataBarangController::class, 'index'])->middleware('erm.menu:obat');
 	Route::get('obat/get/{kode_brng}', [DataBarangController::class, 'get']);
 	Route::get('obat/cari', [DataBarangController::class, 'cari'])->name('obat.cari');
 
-	Route::get('/resep', [ResepObatController::class, 'index']);
+	Route::get('/resep', [ResepObatController::class, 'index'])->middleware('erm.menu:resep');
 	Route::post('/resep/create', [ResepObatController::class, 'create']);
 	Route::delete('/resep/delete/{noResep}', [ResepObatController::class, 'delete']);
 	Route::get('/resep/ambil/tabel', [ResepObatController::class, 'ambilTable']);
@@ -370,7 +378,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('/resep/racik/cari', [RsiaMappingRacikanController::class, 'cari']);
 	Route::get('/resep/racik/template/ambil', [RsiaMappingRacikanController::class, 'ambil']);
 	Route::delete('/resep/racik/template/hapus', [RsiaMappingRacikanController::class, 'hapus']);
-	Route::get('/resep/racik', [RsiaMappingRacikanController::class, 'index']);
+	Route::get('/resep/racik', [RsiaMappingRacikanController::class, 'index'])->middleware('erm.menu:resep/racik');
 	Route::post('/resep/racik/template/tambah', [RsiaMappingRacikanController::class, 'tambah']);
 	Route::post('/resep/racik/template/detail/tambah', [RsiaMappingRacikanDetailController::class, 'tambah']);
 	Route::delete('/resep/racik/template/detail/hapus', [RsiaMappingRacikanDetailController::class, 'hapus']);
@@ -413,7 +421,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('riwayat/persalinan/insert', [RiwayatPersalinanController::class, 'insert'])
 		->name('riwayat.persalinan.insert');
 
-	Route::get('radiologi', [PeriksaRadiologiController::class, 'view']);
+	Route::get('radiologi', [PeriksaRadiologiController::class, 'view'])->middleware('erm.menu:radiologi');
 	Route::get('radiologi/riwayat/{no_rkm_medis}', [PeriksaRadiologiController::class, 'riwayat']);
 	Route::get('radiologi/table', [PermintaanRadiologiController::class, 'getTableIndex']);
 	Route::get('radiologi/permintaan', [PermintaanRadiologiController::class, 'getByNoRawat']);
@@ -506,7 +514,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('ranap/asesmen-geriatri', [\App\Http\Controllers\AsesmenGeriatriController::class, 'create']);
 	Route::get('ranap/asesmen-geriatri/print', [\App\Http\Controllers\AsesmenGeriatriController::class, 'print']);
 
-	Route::get('sep', [BridgingSepController::class, 'index'])->name('sep.index');
+	Route::get('sep', [BridgingSepController::class, 'index'])->middleware('erm.menu:sep')->name('sep.index');
 	Route::get('sep/count', [BridgingSepController::class, 'countSummary'])->name('sep.count');
 	Route::get('sep/datatable', [BridgingSepController::class, 'dataTable'])->name('sep.datatable');
 	Route::get('sep/{no_sep}', [BridgingSepController::class, 'ambilSep']);
@@ -520,23 +528,17 @@ Route::middleware('auth')->group(function () {
 	});
 
 	Route::get('audit-logs', [AuditLogController::class, 'get'])->name('audit-logs.get');
+	Route::get('/nosurat/{poli}', [SuratKontrolUlangController::class, 'setNoSurat']);
+	Route::get('/noreg/{tanggal}/{poli}/{dokter}', [BookingRegistrasiController::class, 'setNoReg']);
+	Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
 });
-Route::get('header  ', [RencanaKontrolController::class, 'testConfig']);
 
-Route::get('/aes/{input}/{string}', [LoginController::class, 'aes_encrypt']);
-Route::get('/nosurat/{poli}', [SuratKontrolUlangController::class, 'setNoSurat']);
-Route::get('/noreg/{tanggal}/{poli}/{dokter}', [BookingRegistrasiController::class, 'setNoReg']);
-Route::get('/norawat/{tanggal}', [RegPeriksaController::class, 'setNoRawat']);
-
-Route::get('/log/track', [\App\Http\Controllers\TrackerSqlController::class, 'get']);
-
-Route::get('/test', [\App\Http\Controllers\PermintaanLabPAController::class, 'get']);
-//Route::get('/test/{kd_poli?}/{kd_dokter?}/{tgl_registrasi?}', [PoliklinikController::class, 'poliPasien']);
+// Public verification & secure download endpoints (rate limited)
 Route::get('/verify/persetujuan-umum/{uuid}', [RsiaGeneralConsentController::class, 'verify'])->name('verify.persetujuan-umum');
-Route::get('/dokumen/verify/{uuid}', [VerifikasiDokumenController::class, 'verify'])->name('dokumen.verify');
-Route::post('/dokumen/verifikasi-unduh', [UnduhDokumenController::class, 'verifikasi'])->name('dokumen.verifikasi-unduh');
+Route::get('/dokumen/verify/{uuid}', [VerifikasiDokumenController::class, 'verify'])->middleware('throttle:30,1')->name('dokumen.verify');
+Route::post('/dokumen/verifikasi-unduh', [UnduhDokumenController::class, 'verifikasi'])->middleware('throttle:15,1')->name('dokumen.verifikasi-unduh');
 Route::get('/dokumen/{uuid}/unduh-file', [UnduhDokumenController::class, 'file'])
-	->middleware('signed')
+	->middleware(['signed', 'throttle:30,1'])
 	->name('dokumen.unduh.file');
 
 require __DIR__ . '/partials/asesmen_nyeri.php';
@@ -570,4 +572,4 @@ require __DIR__ . '/partials/pengaturan_menu.php';
 // });
 
 // Route::get('/print', [PeriksaRadiologiController::class, 'print']);
-Route::get('/test-resep/{no_resep}', [ResepObatController::class, 'copyResep']);
+// Removed unauthenticated debug mutation route (/test-resep)

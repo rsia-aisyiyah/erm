@@ -1,164 +1,192 @@
 <form action="" method="POST" id="formSoapPoli">
-    <div class="row border p-2 mb-3 bg-light">
-
-        <div class="col-lg-2 col-sm-12 mb-2">
-            <label for="no_rawat">No. Rawat</label>
-            <x-input id="nomor_rawat" name="no_rawat" readonly />
-
-        </div>
-        <div class="col-lg-3 col-sm-12 mb-2">
-            <label for="Pasien">Pasien</label>
-            <x-input-group>
-                <x-input id="no_rm" name="no_rkm_medis" class="" readonly />
-                <x-input id="nama_pasien" name="nm_pasien" class="w-50" readonly />
-            </x-input-group>
-        </div>
-        <div class="col-lg-2 col-sm-12 mb-2">
-            <label for="Pasien">Tgl. Lahir & Umur</label>
-            <x-input-group>
-                <x-input id="tgl_lahir" name="tgl_lahir" class="" readonly />
-                <x-input id="umurdaftar" name="umurdaftar" class="w-25" readonly />
-            </x-input-group>
-        </div>
-
-        <div class="col-lg-3 col-sm-12 mb-2">
-            <label for="png_jawab">Pembiayaan</label>
-            <x-input-group>
-                <x-input id="png_jawab" name="png_jawab" readonly />
-                <x-input id="no_peserta" name="no_peserta" readonly />
-                <button type="button" class="btn btn-primary" id="btnInfoPeserta">
-                    <i class="bi bi-eye"></i>
-                </button>
-            </x-input-group>
-
-        </div>
-        <div class="col-lg-2 col-sm-12 mb-2">
-            <label for="p_jawab">Keluarga</label>
-            <x-input id="p_jawab" name="p_jawab" readonly />
-        </div>
-        <div class="col-lg-2 col-sm-12 mb-2">
-            <label for="alamat">Alamat</label>
-            <x-input id="alamat" name="alamat" readonly />
-        </div>
-        <div class="col-lg-2 col-sm-12 mb-2">
-            <label for="ket_pasien">Keterangan</label>
-            <x-input id="ket_pasien" name="ket_pasien" />
-        </div>
-        <div class="col-lg-2 col-sm-12 mb-2 d-flex align-items-end">
-            <button type="button" class="btn btn-sm btn-outline-primary fw-bold w-100 shadow-sm d-flex align-items-center justify-content-center" id="btnToggleSideRiwayat" onclick="toggleSideRiwayatSoap()" style="height: 31px;" title="Buka / Tutup Riwayat Kunjungan Pasien (Alt + R / F2)">
-                <i class="bi bi-clock-history me-1"></i>
-                <span>Riwayat Pasien</span>
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1 py-0 px-1" style="font-size: 10px;">Alt+R</span>
-            </button>
-        </div>
-        <div class="col-lg-2 col-sm-12 mb-2 d-flex align-items-end">
-            <button type="button" class="btn btn-sm btn-outline-success fw-bold w-100 shadow-sm d-flex align-items-center justify-content-center" id="btnSatuSehatRme" onclick="openSatuSehatRme()" style="height: 31px; border-color: #00877a; color: #007a6c;" title="Akses Rekam Medis Nasional SATUSEHAT (SSRME)">
-                <i class="bi bi-shield-check me-1" style="color: #00877a;"></i>
-                <span>RME SATUSEHAT</span>
-            </button>
+    {{-- Detail Identitas Pasien (Collapsible - semua input & ID asli tetap utuh di dalam #formSoapPoli) --}}
+    <div class="collapse" id="collapseSoapIdentitas">
+        <div class="erm-section-card bg-light-subtle">
+            <div class="erm-section-title">
+                <i class="bi bi-person-vcard"></i>
+                <span>Detail Identitas &amp; Administrasi Pasien</span>
+            </div>
+            <div class="row g-2">
+                <div class="col-6 col-md-4 col-xl-2">
+                    <label for="nomor_rawat" class="form-label mb-1">No. Rawat</label>
+                    <x-input id="nomor_rawat" name="no_rawat" readonly />
+                </div>
+                <div class="col-12 col-md-8 col-xl-4">
+                    <label for="nama_pasien" class="form-label mb-1">Pasien (No. RM &amp; Nama)</label>
+                    <x-input-group>
+                        <x-input id="no_rm" name="no_rkm_medis" class="" readonly />
+                        <x-input id="nama_pasien" name="nm_pasien" class="w-50" readonly />
+                    </x-input-group>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                    <label for="tgl_lahir" class="form-label mb-1">Tgl. Lahir &amp; Umur</label>
+                    <x-input-group>
+                        <x-input id="tgl_lahir" name="tgl_lahir" class="" readonly />
+                        <x-input id="umurdaftar" name="umurdaftar" class="w-25" readonly />
+                    </x-input-group>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                    <label for="png_jawab" class="form-label mb-1">Pembiayaan</label>
+                    <x-input-group>
+                        <x-input id="png_jawab" name="png_jawab" readonly />
+                        <x-input id="no_peserta" name="no_peserta" readonly />
+                        <button type="button" class="btn btn-primary" id="btnInfoPeserta">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </x-input-group>
+                </div>
+                <div class="col-12 col-md-4 col-xl-3">
+                    <label for="p_jawab" class="form-label mb-1">Keluarga / PJ</label>
+                    <x-input id="p_jawab" name="p_jawab" readonly />
+                </div>
+                <div class="col-12 col-md-8 col-xl-5">
+                    <label for="alamat" class="form-label mb-1">Alamat</label>
+                    <x-input id="alamat" name="alamat" readonly />
+                </div>
+                <div class="col-6 col-md-6 col-xl-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-bold w-100 shadow-sm d-flex align-items-center justify-content-center" id="btnToggleSideRiwayat" onclick="toggleSideRiwayatSoap()" style="height: 31px;" title="Buka / Tutup Riwayat Kunjungan Pasien (Alt + R / F2)">
+                        <i class="bi bi-clock-history me-1"></i>
+                        <span>Riwayat Pasien</span>
+                    </button>
+                </div>
+                <div class="col-6 col-md-6 col-xl-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-sm btn-outline-success fw-bold w-100 shadow-sm d-flex align-items-center justify-content-center" id="btnSatuSehatRme" onclick="openSatuSehatRme()" style="height: 31px; border-color: #00877a; color: #007a6c;" title="Akses Rekam Medis Nasional SATUSEHAT (SSRME)">
+                        <i class="bi bi-shield-check me-1" style="color: #00877a;"></i>
+                        <span>RME SATUSEHAT</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-2 col-sm-12">
+
+    {{-- Baris PPA (Dokter, Perawat/Bidan & Keterangan Pasien) --}}
+    <div class="erm-section-card">
+        <div class="row g-2 align-items-end">
             <input type="hidden" id="jam_rawat" name="jam_rawat">
             <input type="hidden" id="tgl_perawatan" name="tgl_perawatan">
             <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
             <input type="hidden" id="lingkar_perut" name="lingkar_perut" value="-">
             <input type="hidden" id="evaluasi" name="evaluasi" value="-">
             <input type="hidden" name="no_diagnosa" class="no_diagnosa" value="1">
+            <x-input type="hidden" id="role" name="role" value="{{ session()->get('role') }}" />
 
-            <label for="nip" class="form-label"> Dokter:</label>
-            <div class="d-flex gap-2">
-                <x-input type="hidden" id="role" name="role" value="{{ session()->get('role') }}" />
-                <select id="kd_dokter" name="kd_dokter" data-dropdown-parent="#formSoapPoli"
-                    style="width: 100%"></select>
+            <div class="col-12 col-md-4">
+                <label for="kd_dokter" class="form-label mb-1 fw-semibold"><i class="bi bi-person-badge text-primary me-1"></i>Dokter (DPJP)</label>
+                <div class="d-flex gap-2">
+                    <select id="kd_dokter" name="kd_dokter" data-dropdown-parent="#formSoapPoli"
+                        style="width: 100%"></select>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-2 col-sm-12">
-            <label for="nip_pegawai" class="form-label"> Perawat/Bidan:</label><br>
-            <div class="d-flex gap-2">
-                <select id="nip_pegawai" name="nip" data-dropdown-parent="#formSoapPoli" style="width: 100%"
-                    class="selectNip"></select>
+            <div class="col-12 col-md-4">
+                <label for="nip_pegawai" class="form-label mb-1 fw-semibold"><i class="bi bi-person-check text-success me-1"></i>Perawat / Bidan</label>
+                <div class="d-flex gap-2">
+                    <select id="nip_pegawai" name="nip" data-dropdown-parent="#formSoapPoli" style="width: 100%"
+                        class="selectNip"></select>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <label for="ket_pasien" class="form-label mb-1 fw-semibold"><i class="bi bi-sticky text-warning me-1"></i>Keterangan Pasien</label>
+                <x-input id="ket_pasien" name="ket_pasien" placeholder="Catatan penting pasien (opsional)..." />
             </div>
         </div>
     </div>
 
-
-    <div class="row gy-1">
-        <div class="col-lg-6 col-md-12 col-sm-12">
-            <div class="row gy-1">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <label for="subjek" class="form-label">Subjek:</label>
-                    <x-textarea name="keluhan" id="subjek" rows="4" onfocus="removeZero(this)"
-                        onblur="cekKosong(this)" />
+    <div class="row g-3">
+        <div class="col-12 col-xl-6">
+            {{-- Card Anamnesis & Pemeriksaan (S & O) --}}
+            <div class="erm-section-card">
+                <div class="erm-section-title">
+                    <i class="bi bi-journal-medical"></i>
+                    <span>Subjek (S) &amp; Objek (O)</span>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <label for="pemeriksaan" class="form-label">Objek:</label>
-                    <x-textarea name="pemeriksaan" id="objek" rows="4" onfocus="removeZero(this)"
-                        onblur="cekKosong(this)" />
-                </div>
-                <div class="col-12">
-                    <div class="row gy-1">
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="suhu" class="form-label">Suhu (<sup>0</sup>C) :</label>
-                            <x-input id="suhu" name="suhu_tubuh" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="tinggi" class="form-label">Tinggi (cm) :</label>
-                            <x-input id="tinggi" name="tinggi" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="berat" class="form-label">Berat (Kg) :</label>
-                            <x-input id="berat" name="berat" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="tensi" class="form-label">Tensi (mmHG) :</label>
-                            <x-input id="tensi" name="tensi" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="respirasi" class="form-label">Resp. (/mnt) :</label>
-                            <x-input id="respirasi" name="respirasi" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="nadi" class="form-label">Nadi (/mnt) :</label>
-                            <x-input id="nadi" name="nadi" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="gcs" class="form-label">GCS (E,V,M) :</label>
-                            <x-input id="gcs" name="gcs" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="spo2" class="form-label">SpO<sub>2</sub> (%) :</label>
-                            <x-input id="spo2" name="spo2" />
-                        </div>
-                        <div class="col-lg-3 col-sm-12">
-                            <label for="kesadaran" class="form-label">Kesadaran :</label>
-                            <select class="form-select" name="kesadaran" id="kesadaran">
-                                <option value="Compos Mentis" selected>Compos Mentis</option>
-                                <option value="Apatis">Apatis</option>
-                                <option value="Somnolence">Somnolence</option>
-                                <option value="Sopor">Sopor</option>
-                                <option value="Coma">Coma</option>
-                            </select>
-
-                        </div>
-
+                <div class="row g-2">
+                    <div class="col-12">
+                        <label for="subjek" class="form-label mb-1 fw-semibold">Subjek (Keluhan Utama)</label>
+                        <x-textarea name="keluhan" id="subjek" rows="3" onfocus="removeZero(this)"
+                            onblur="cekKosong(this)" />
+                    </div>
+                    <div class="col-12">
+                        <label for="objek" class="form-label mb-1 fw-semibold">Objek (Pemeriksaan Fisik)</label>
+                        <x-textarea name="pemeriksaan" id="objek" rows="3" onfocus="removeZero(this)"
+                            onblur="cekKosong(this)" />
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <label for="penilaian" class="form-label">Asesmen :</label>
-                <x-textarea name="penilaian" id="asesmen" rows="4" onfocus="removeZero(this)"
-                    onblur="cekKosong(this)" />
+
+            {{-- Card Tanda-Tanda Vital (TTV) - Grid Responsif 2 / 3 / 4 / 6 Kolom --}}
+            <div class="erm-section-card">
+                <div class="erm-section-title">
+                    <i class="bi bi-activity"></i>
+                    <span>Tanda-Tanda Vital (TTV)</span>
+                </div>
+                <div class="row g-2">
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <label for="suhu" class="form-label mb-1">Suhu (<sup>&deg;</sup>C)</label>
+                        <x-input id="suhu" name="suhu_tubuh" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <label for="tensi" class="form-label mb-1">Tensi (mmHg)</label>
+                        <x-input id="tensi" name="tensi" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <label for="nadi" class="form-label mb-1">Nadi (/mnt)</label>
+                        <x-input id="nadi" name="nadi" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <label for="respirasi" class="form-label mb-1">Resp. (/mnt)</label>
+                        <x-input id="respirasi" name="respirasi" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <label for="spo2" class="form-label mb-1">SpO<sub>2</sub> (%)</label>
+                        <x-input id="spo2" name="spo2" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <label for="gcs" class="form-label mb-1">GCS (E,V,M)</label>
+                        <x-input id="gcs" name="gcs" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <label for="tinggi" class="form-label mb-1">Tinggi (cm)</label>
+                        <x-input id="tinggi" name="tinggi" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <label for="berat" class="form-label mb-1">Berat (Kg)</label>
+                        <x-input id="berat" name="berat" />
+                    </div>
+                    <div class="col-12 col-sm-8 col-md-6 col-xl-4">
+                        <label for="kesadaran" class="form-label mb-1">Kesadaran</label>
+                        <select class="form-select" name="kesadaran" id="kesadaran">
+                            <option value="Compos Mentis" selected>Compos Mentis</option>
+                            <option value="Apatis">Apatis</option>
+                            <option value="Somnolence">Somnolence</option>
+                            <option value="Sopor">Sopor</option>
+                            <option value="Coma">Coma</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <label for="instruksi" class="form-label">Instruksi :</label>
-                <x-textarea name="instruksi" id="instruksi" rows="3" onfocus="removeZero(this)"
-                    onblur="cekKosong(this)" />
+
+            {{-- Card Asesmen & Instruksi --}}
+            <div class="erm-section-card">
+                <div class="erm-section-title">
+                    <i class="bi bi-clipboard2-check"></i>
+                    <span>Asesmen (A) &amp; Instruksi</span>
+                </div>
+                <div class="row g-2">
+                    <div class="col-12">
+                        <label for="asesmen" class="form-label mb-1 fw-semibold">Asesmen</label>
+                        <x-textarea name="penilaian" id="asesmen" rows="3" onfocus="removeZero(this)"
+                            onblur="cekKosong(this)" />
+                    </div>
+                    <div class="col-12">
+                        <label for="instruksi" class="form-label mb-1 fw-semibold">Instruksi</label>
+                        <x-textarea name="instruksi" id="instruksi" rows="2" onfocus="removeZero(this)"
+                            onblur="cekKosong(this)" />
+                    </div>
+                </div>
             </div>
 
             <!-- Rencana Tindak Lanjut / Disposisi Pasien (Kepatuhan SKU BPJS & EWS) -->
-            <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
+            <div class="col-12">
                 <div class="card border border-primary-subtle shadow-xs rounded-3 overflow-hidden bg-white mb-2">
                     <div class="card-header bg-primary bg-opacity-10 py-1.5 px-3 d-flex align-items-center justify-content-between border-bottom border-primary-subtle">
                         <div class="d-flex align-items-center gap-2">
@@ -293,13 +321,24 @@
 
         </div>
 
-        <div class="col-lg-6 col-md-12 col-sm-12">
-            <label for="alergi" class="form-label">Alergi :</label>
-            <x-input id="alergi" name="alergi" />
-            <label for="rtl">Plan</label>
-            <x-textarea rows="4" name="rtl" id="rtl"></x-textarea>
-            <button class="btn btn-warning btn-sm mt-2" type="button" style="font-size: 12px"
-                onclick="catatanPasien()"><i class="bi bi-pen"></i> Diagnosa & Catatan</button>
+        <div class="col-12 col-xl-6">
+            <div class="erm-section-card">
+                <div class="erm-section-title justify-content-between">
+                    <span><i class="bi bi-shield-exclamation"></i> Alergi, Plan (P) &amp; Diagnosa</span>
+                    <button class="btn btn-warning btn-sm py-0 px-2" type="button" style="font-size: 11.5px"
+                        onclick="catatanPasien()"><i class="bi bi-pen me-1"></i>Diagnosa &amp; Catatan</button>
+                </div>
+                <div class="row g-2">
+                    <div class="col-12">
+                        <label for="alergi" class="form-label mb-1 fw-semibold">Alergi</label>
+                        <x-input id="alergi" name="alergi" />
+                    </div>
+                    <div class="col-12">
+                        <label for="rtl" class="form-label mb-1 fw-semibold">Plan (Terapi / Rencana)</label>
+                        <x-textarea rows="4" name="rtl" id="rtl"></x-textarea>
+                    </div>
+                </div>
+            </div>
 
             @include('content.poliklinik.modal.pemeriksaan.resepRalan')
 
@@ -363,7 +402,7 @@
         user-select: none !important;
     }
 </style>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" data-bs-keyboard="false" style="width: 440px; z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd; user-select: text !important; -webkit-user-select: text !important;">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRiwayatSoap" data-bs-scroll="true" data-bs-backdrop="false" data-bs-keyboard="false" style="width: min(440px, 95vw); z-index: 1065; box-shadow: -6px 0 20px rgba(0,0,0,0.18); border-left: 2px solid #0d6efd; user-select: text !important; -webkit-user-select: text !important;">
     <div class="offcanvas-header bg-primary text-white py-2 px-3 align-items-center">
         <h6 class="offcanvas-title fw-bold mb-0 text-white" id="offcanvasRiwayatSoapLabel">
             <i class="bi bi-clock-history me-1"></i> Riwayat Kunjungan Pasien
@@ -516,6 +555,9 @@
                 getResepObat(no_rawat)
                 setTabMenuAsesmen(no_rawat, response.dokter.kd_sps);
                 setRencanaKontrolRalan(response);
+                if (typeof syncModalSoapHeader === 'function') {
+                    syncModalSoapHeader(response);
+                }
 
                 $('button[data-bs-target="#tab-soap-pane"]').tab('show')
 
@@ -1043,6 +1085,7 @@
         function catatEstimasiAwal(no_rawat) {
             $.ajax({
                 url: '/erm/poliklinik/estimasi',
+                ermSilent: true,
                 data: {
                     '_token': '{{ csrf_token() }}',
                     'no_rawat': no_rawat,
@@ -1055,7 +1098,7 @@
         }
 
         function setPemeriksaanPoli(no_rawat, kd_poli) {
-            $.get(`/erm/pemeriksaan`, {
+            return $.get(`/erm/pemeriksaan`, {
                 no_rawat: no_rawat,
                 kd_poli: kd_poli
             }).done((response) => {
@@ -1131,7 +1174,11 @@
                 formSoapPoli.find('select[name=kesadaran]').val(kesadaran.length ? kesadaran : '-')
 
                 const alergi = pemeriksaanByDokter.alergi ? pemeriksaanByDokter.alergi : pemeriksaanByPerawat.alergi
-                formSoapPoli.find('input[name=alergi]').val(alergi.length ? alergi : '-')
+                const alergiDisplay = alergi.length ? alergi : '-';
+                formSoapPoli.find('input[name=alergi]').val(alergiDisplay)
+                if (typeof syncModalSoapAlergi === 'function') {
+                    syncModalSoapAlergi(alergiDisplay);
+                }
 
 
                 const tgl_perawatan = pemeriksaanByDokter.tgl_perawatan ? pemeriksaanByDokter.tgl_perawatan : pemeriksaanByPerawat.tgl_perawatan
@@ -1186,10 +1233,16 @@
         })
 
 
+        formSoapPoli.find('input[name=alergi]').on('input change', function() {
+            if (typeof syncModalSoapAlergi === 'function') {
+                syncModalSoapAlergi($(this).val());
+            }
+        });
+
         function simpanSoapRalan() {
             const data = getDataForm('#formSoapPoli', ['input', 'textarea', 'select'], ['nm_pasien', 'png_jawab', 'user', 'nama_user'])
             data['_token'] = "{{ csrf_token() }}";
-            $.post('/erm/pemeriksaan/simpan', data).done((response) => {
+            const req = $.post('/erm/pemeriksaan/simpan', data).done((response) => {
                 console.log('DATA ===', data);
 
                 if (data.ket_pasien) {
@@ -1217,7 +1270,12 @@
                     html: request.responseJSON?.message ?? 'Data SOAP gagal disimpan',
                 })
 
-            })
+            });
+
+            if (typeof ErmLoader !== 'undefined') {
+                ErmLoader.button('#modalSoapRalan .btn-soap', req, 'Menyimpan SOAP...');
+            }
+            return req;
         }
 
         let bsOffcanvasRiwayatSoap = null;

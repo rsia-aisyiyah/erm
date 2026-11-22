@@ -146,9 +146,9 @@ class AsesmenMedisIgdController extends Model
             $dataAsmed['tanggal'] = date('Y-m-d H:i:s');
         }
 
-        // Validasi Otorisasi: kd_dokter harus terdaftar sebagai Dokter di tabel dokter
-        $kdDokterCheck = $dataAsmed['kd_dokter'] ?? session()->get('pegawai')->nik;
-        $dokterValid = \DB::table('dokter')->where('kd_dokter', $kdDokterCheck)->first();
+        // Validasi Otorisasi: cek NIK sesi pengguna terautentikasi di tabel dokter (bukan dari payload request)
+        $sessionNik = session()->get('pegawai')->nik ?? null;
+        $dokterValid = $sessionNik ? \DB::table('dokter')->where('kd_dokter', $sessionNik)->first() : null;
         if (!$dokterValid) {
             return response()->json([
                 'message' => 'Akun Anda bukan Dokter (tidak terdaftar sebagai Dokter). Anda tidak memiliki akses untuk menyimpan Asesmen Medis UGD.'
@@ -254,9 +254,9 @@ class AsesmenMedisIgdController extends Model
             $dataAsmed['tanggal'] = date('Y-m-d H:i:s');
         }
 
-        // Validasi Otorisasi: kd_dokter harus terdaftar sebagai Dokter di tabel dokter
-        $kdDokterCheck = $dataAsmed['kd_dokter'] ?? session()->get('pegawai')->nik;
-        $dokterValid = \DB::table('dokter')->where('kd_dokter', $kdDokterCheck)->first();
+        // Validasi Otorisasi: cek NIK sesi pengguna terautentikasi di tabel dokter (bukan dari payload request)
+        $sessionNik = session()->get('pegawai')->nik ?? null;
+        $dokterValid = $sessionNik ? \DB::table('dokter')->where('kd_dokter', $sessionNik)->first() : null;
         if (!$dokterValid) {
             return response()->json([
                 'message' => 'Akun Anda bukan Dokter (tidak terdaftar sebagai Dokter). Anda tidak memiliki akses untuk menyimpan Asesmen Medis UGD.'

@@ -190,6 +190,7 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script src="{{ asset('js/qrcode.min.js') }}"></script>
+    <script src="{{ asset('js/erm-ajax-loader.js') }}"></script>
 
     {{-- Context Menu --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>

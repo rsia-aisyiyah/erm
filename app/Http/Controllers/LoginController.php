@@ -23,7 +23,7 @@ class LoginController extends Controller
 
     public function index()
     {
-        return view('auth.login');
+        return view('content.auth.login');
     }
 
     public function authenticate(Request $request)
@@ -32,46 +32,49 @@ class LoginController extends Controller
         $domain = $request->getHost();
 
         $request->validate([
-            'username' => 'required',
-            'password' => 'required',
+            'username' => 'required|string',
+            'password' => 'required|string',
         ]);
 
         try {
-            $user = User::select('*', DB::raw("AES_DECRYPT(id_user, 'nur') as username, AES_DECRYPT(password, 'windi') as passwd"))
-                ->where('id_user', DB::raw("AES_ENCRYPT('" . $request->username . "', 'nur')"))
-                ->where('password', DB::raw("AES_ENCRYPT('" . $request->password . "', 'windi')"))
+            $user = User::select('*', DB::raw("AES_DECRYPT(id_user, 'nur') as username"))
+                ->whereRaw("id_user = AES_ENCRYPT(?, 'nur')", [$request->username])
+                ->whereRaw("password = AES_ENCRYPT(?, 'windi')", [$request->password])
                 ->first();
 
             if ($user) {
 
                 /**
-                 * Pembatasan login dari domain sim.rsiaaisyiyah.com
+                 * Pembatasan login dari domain publik (sim.rsiaaisyiyah.com)
                  */
-                if ($domain == 'sim.rsiaaisyiyah.com') {
-                    /**
-                     * Daftar user yang diizinkan login :
-                     * direksi, verifikator
-                     */
-                    if (!in_array($user->username, $this->userPublic)) {
-                        /**
-                         * Selain user diatas, maka akan diarahkan ke halaman login dengan pesan error
-                         * */
-                        return back()->with('error', 'Anda tidak diizinkan login.')->withInput();
+                $publicDomain = config('app.public_domain', 'sim.rsiaaisyiyah.com');
+                if ($publicDomain && $domain === $publicDomain) {
+                    if (!in_array($user->username, $this->userPublic, true)) {
+                        return back()->with('error', 'Anda tidak diizinkan login.')->withInput($request->only('username'));
                     }
+                }
+
+                $pegawai = Pegawai::where('nik', $user->username)
+                    ->with(['petugas', 'dokter.jadwal', 'dep'])
+                    ->first();
+
+                if (!$pegawai) {
+                    return back()->with('error', 'Data pegawai untuk NIK tersebut tidak ditemukan di SIMRS.')
+                        ->withInput($request->only('username'));
                 }
 
                 Auth::login($user);
 
-                $this->trackLogin->handle($request->get('username'));
-                return $this->setSession($request);
+                $this->trackLogin->handle($user->username);
+                return $this->setSession($request, $pegawai);
 
             } else {
                 return back()->with('error', 'Login Gagal, Periksa Kembali NIK dan Password')
-                    ->withInput();
+                    ->withInput($request->only('username'));
             }
         } catch (QueryException $e) {
             return back()->with('error', 'Login Gagal, Periksa Kembali NIK dan Password')
-                ->withInput();
+                ->withInput($request->only('username'));
 
         }
 
@@ -80,6 +83,7 @@ class LoginController extends Controller
     {
         Auth::logout();
         Session::flush();
+        $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login');
     }
@@ -117,15 +121,17 @@ class LoginController extends Controller
         return redirect('/');
     }
 
-    private function setSession(Request $request)
+    private function setSession(Request $request, ?Pegawai $pegawai = null)
     {
-        $pegawai = Pegawai::where('nik', $request->get('username'))
-            ->with(['petugas', 'dokter.jadwal', 'dep'])
-            ->first();
+        if (!$pegawai) {
+            $pegawai = Pegawai::where('nik', $request->get('username'))
+                ->with(['petugas', 'dokter.jadwal', 'dep'])
+                ->first();
+        }
         $request->session()->regenerate();
         Session::put('pegawai', $pegawai);
         Session::put('status', 'ok');
-        $role = $pegawai->dokter ? 'dokter' : $pegawai->dep->nama;
+        $role = $pegawai->dokter ? 'dokter' : ($pegawai->dep->nama ?? 'Staff');
         Session::put('role', $role);
         return $this->redirectBasedOnRole($pegawai, $request);
     }

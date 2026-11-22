@@ -1171,21 +1171,21 @@
         }
 
         /* Menghormati atribut rows pada textarea */
-        textarea[rows],
+        /* textarea[rows],
         textarea[rows].form-control,
         textarea[rows].form-control-sm {
             height: auto !important;
             min-height: auto !important;
-        }
+        } */
 
         /* Menghormati atribut cols pada textarea */
-        textarea[cols],
+        /* textarea[cols],
         textarea[cols].form-control,
         textarea[cols].form-control-sm {
             width: auto !important;
             max-width: 100%;
             display: inline-block;
-        }
+        } */
 
         .form-label,
         label {
@@ -1376,4 +1376,5 @@
             padding: 10px 12px;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/erm-ajax-loader.css') }}">
 </head>

@@ -3,7 +3,7 @@
 use App\Http\Controllers\SatuSehatRmeController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'erm.session'])->group(function () {
     Route::prefix('satusehat')->group(function () {
         Route::prefix('rme')->group(function () {
             Route::get('/open', [SatuSehatRmeController::class, 'openRme'])->name('satusehat.rme.open');

@@ -68,6 +68,7 @@ class ErmMenuController extends Controller
             }
 
             DB::commit();
+            RsiaErmMenu::clearCache();
             return response()->json([
                 'success' => true,
                 'message' => $message,
@@ -94,6 +95,7 @@ class ErmMenuController extends Controller
         $menu = RsiaErmMenu::findOrFail($request->id);
         $menu->is_active = !$menu->is_active;
         $menu->save();
+        RsiaErmMenu::clearCache();
 
         return response()->json([
             'success' => true,
@@ -110,6 +112,7 @@ class ErmMenuController extends Controller
         try {
             $menu = RsiaErmMenu::findOrFail($id);
             $menu->delete();
+            RsiaErmMenu::clearCache();
 
             return response()->json([
                 'success' => true,
@@ -153,6 +156,8 @@ class ErmMenuController extends Controller
                 ->delete();
         }
 
+        RsiaErmMenu::clearCache();
+
         return response()->json([
             'success' => true,
             'message' => 'Hak akses menu berhasil diperbarui.',
@@ -175,6 +180,8 @@ class ErmMenuController extends Controller
             ['is_allowed' => (bool) $request->is_allowed]
         );
 
+        RsiaErmMenu::clearCache();
+
         return response()->json([
             'success' => true,
             'message' => 'Akses khusus pegawai berhasil disimpan.',
@@ -194,6 +201,8 @@ class ErmMenuController extends Controller
         RsiaErmMenuUser::where('menu_id', $request->menu_id)
             ->where('nik', $request->nik)
             ->delete();
+
+        RsiaErmMenu::clearCache();
 
         return response()->json([
             'success' => true,

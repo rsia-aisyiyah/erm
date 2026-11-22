@@ -246,5 +246,7 @@ return [
     'apotekUrl' => env('APOTEK_URL'),
     'kyc' => env('APP_KYC'),
     'verify_docs' => env('VERIFY_DOCS'),
+    'trusted_proxies' => env('TRUSTED_PROXIES'),
+    'public_domain' => env('APP_PUBLIC_DOMAIN', 'sim.rsiaaisyiyah.com'),
 
 ];

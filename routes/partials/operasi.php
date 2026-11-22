@@ -3,8 +3,8 @@
 use App\Http\Controllers\OperasiController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->prefix('operasi')->name('operasi.')->group(function () {
-    Route::get('/', [OperasiController::class, 'index'])->name('index');
+Route::middleware(['auth', 'erm.session'])->prefix('operasi')->name('operasi.')->group(function () {
+    Route::get('/', [OperasiController::class, 'index'])->middleware('erm.menu:operasi')->name('index');
     Route::get('/jadwal', [OperasiController::class, 'getJadwal'])->name('jadwal');
     Route::post('/booking/simpan', [OperasiController::class, 'simpanBooking'])->name('booking.simpan');
     Route::post('/booking/status', [OperasiController::class, 'updateStatusBooking'])->name('booking.status');

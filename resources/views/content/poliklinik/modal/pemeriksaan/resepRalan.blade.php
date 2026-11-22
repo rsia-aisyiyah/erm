@@ -12,7 +12,7 @@
     <input type="hidden" name="cari_kandungan" id="cari_kandungan" value="0" />
 
 </div>
-<div class="border p-3 mt-3 bg-light">
+<div class="erm-section-card mt-2 mb-0">
     @if (!$isUserDokter)
         <div class="alert alert-info py-2 px-3 mb-2 rounded-3 border-info-subtle bg-info-subtle text-dark shadow-2xs" style="font-size: 11.5px;">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
@@ -36,86 +36,92 @@
             }
         </style>
     @endif
-    <div class="d-flex justify-content-between gap-2 mb-2">
-        <label for="no_resep p-2">No. Resep :
-            <span class="noResepText"></span>
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+        <label for="no_resep" class="fw-semibold mb-0">No. Resep :
+            <span class="noResepText text-primary"></span>
             @if ($isUserDokter)
-                <a href="javascript:void(0)" class="actionResep" onclick="deleteResep()"><i class="bi bi-trash text-danger"></i></a>
+                <a href="javascript:void(0)" class="actionResep ms-1" onclick="deleteResep()"><i class="bi bi-trash text-danger"></i></a>
             @endif
         </label>
-        <div class="d-flex align-items-center gap-2">
-            <span class="badge bg-white text-dark border shadow-2xs labelDepoResep" style="font-size:10.5px;">
+        <div class="d-flex align-items-center flex-wrap gap-2">
+            <span class="badge bg-light text-dark border shadow-2xs labelDepoResep" style="font-size:10.5px;">
                 <i class="bi bi-shop me-1 text-primary"></i>Depo: <strong class="namaDepoText text-primary">Apotek Rajal</strong>
             </span>
-            <small style="font-size:11px">Tgl. Resep : <span class="labelTglResep"></span></small>
+            <small class="text-muted" style="font-size:11px">Tgl. Resep : <span class="labelTglResep"></span></small>
         </div>
     </div>
-    <ul class="nav nav-tabs" id="myTab">
+    <ul class="nav nav-tabs flex-nowrap overflow-auto" id="myTab">
         <li class="nav-item">
-            <a href="#umum" class="nav-link active" data-bs-toggle="tab">NON RACIKAN</a>
+            <a href="#umum" class="nav-link active text-nowrap" data-bs-toggle="tab">NON RACIKAN</a>
         </li>
         <li class="nav-item">
-            <a href="#racikan" class="nav-link" data-bs-toggle="tab">RACIKAN</a>
+            <a href="#racikan" class="nav-link text-nowrap" data-bs-toggle="tab">RACIKAN</a>
         </li>
         <li class="nav-item">
-            <a href="#riwayat" class="nav-link" data-bs-toggle="tab">RIWAYAT RESEP</a>
+            <a href="#riwayat" class="nav-link text-nowrap" data-bs-toggle="tab">RIWAYAT RESEP</a>
         </li>
     </ul>
     <div class="tab-content">
 
-        <div class="tab-pane fade show active mt-3 table-responsive" id="umum">
-            <table class="table table-bordered" id="tb-resep" width="100%">
-                <thead>
-                    <tr>
-                        <th width="30%">Nama Obat</th>
-                        <th width="10%">Jumlah</th>
-                        <th width="20%">Aturan Pakai</th>
-                        <th>Harga </th>
-                        <th>Harga Total </th>
-                        <th width="5%"></th>
-                    </tr>
-                </thead>
-                <tbody id="body_umum">
+        <div class="tab-pane fade show active mt-2" id="umum">
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm mb-2" id="tb-resep" width="100%" style="min-width: 520px;">
+                    <thead>
+                        <tr>
+                            <th width="30%">Nama Obat</th>
+                            <th width="10%">Jumlah</th>
+                            <th width="20%">Aturan Pakai</th>
+                            <th>Harga </th>
+                            <th>Harga Total </th>
+                            <th width="5%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="body_umum">
 
-                </tbody>
-            </table>
-            <button class="btn btn-primary btn-sm tambah_umum" type="button" onclick="tambahUmum()">Tambah
-                Obat</button>
-            <button class="btn btn-success btn-sm btn_simpan_resep" type="button" style="visibility: hidden">Simpan
-                Resep</button>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-primary btn-sm tambah_umum" type="button" onclick="tambahUmum()"><i class="bi bi-plus-circle me-1"></i>Tambah Obat</button>
+                <button class="btn btn-success btn-sm btn_simpan_resep" type="button" style="visibility: hidden"><i class="bi bi-save me-1"></i>Simpan Resep</button>
+            </div>
         </div>
-        <div class="tab-pane fade mt-3" id="racikan">
-            <table class="table table-responsive table-bordered" id="tb-resep-racikan" width="100%">
-                <thead>
-                    <tr>
-                        <th width="30%">Nama Racikan</th>
-                        <th width="8%">Metode</th>
-                        <th width="8%">Jumlah</th>
-                        <th width="10%">Aturan Pakai</th>
-                        <th width="10%">Subtotal</th>
-                        <th width="6%"></th>
-                    </tr>
-                </thead>
-                <tbody id="body_racikan">
+        <div class="tab-pane fade mt-2" id="racikan">
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm mb-2" id="tb-resep-racikan" width="100%" style="min-width: 540px;">
+                    <thead>
+                        <tr>
+                            <th width="30%">Nama Racikan</th>
+                            <th width="8%">Metode</th>
+                            <th width="8%">Jumlah</th>
+                            <th width="10%">Aturan Pakai</th>
+                            <th width="10%">Subtotal</th>
+                            <th width="6%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="body_racikan">
 
-                </tbody>
-            </table>
-            <button class="btn btn-primary btn-sm tambah_racik" type="button" onclick="tambahRacikan()">Tambah Racikan</button>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-primary btn-sm tambah_racik" type="button" onclick="tambahRacikan()"><i class="bi bi-plus-circle me-1"></i>Tambah Racikan</button>
         </div>
-        <div class="tab-pane fade" id="riwayat" style="max-height: 50vh;overflow: auto">
-            <table class="table table-responsive table-bordered tb-resep-riwayat" id="" width="100%">
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        <th width="40%">Non-Racikan</th>
-                        <th width="40%">Racikan</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="body_riwayat" class="align-top">
+        <div class="tab-pane fade mt-2" id="riwayat" style="max-height: 50vh; overflow-y: auto;">
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm tb-resep-riwayat mb-0" width="100%" style="min-width: 540px;">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th width="40%">Non-Racikan</th>
+                            <th width="40%">Racikan</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="body_riwayat" class="align-top">
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

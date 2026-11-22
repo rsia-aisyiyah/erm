@@ -117,6 +117,8 @@
             </form>
         </div>
     </div>
+    @include('content.ranap.partials.floating_kelengkapan_berkas')
+
     <table class="table table-hover text-sm table-sm" id="tb_ranap" width="100%">
         {{-- <thead>
             <tr role="row">
@@ -179,6 +181,7 @@
     @include('content.ranap.modal.modal_permintaan_stok_obat_pasien')
     @include('content.ranap.modal.modal_pemberian_obat_pasien')
     @include('content.ranap.modal.modal_retur_stok_udd')
+    @include('content.ranap.partials.floating_monitoring_pulang')
 
     <div class="modal fade" id="modalEwsRanap" tabindex="-1" aria-labelledby="modalEwsRanapLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -422,6 +425,10 @@
             }
             $('#tb_ranap').DataTable().destroy();
             tb_ranap();
+
+            if (typeof loadMonitoringPulangRanap === 'function') {
+                loadMonitoringPulangRanap();
+            }
         })
 
         function initFilterDokterSps() {
@@ -485,6 +492,10 @@
             localStorage.setItem('dokter', kd_dokter)
             $('#tb_ranap').DataTable().destroy();
             tb_ranap();
+
+            if (typeof loadMonitoringPulangRanap === 'function') {
+                loadMonitoringPulangRanap();
+            }
         })
 
         $('#pulang').on('click', function() {
@@ -531,6 +542,14 @@
 
             $('#tb_ranap').DataTable().destroy();
             tb_ranap();
+
+            if (typeof loadMonitoringPulangRanap === 'function') {
+                if (stts_pulang === 'Pulang') {
+                    setRanapMonitorRange('filter');
+                } else {
+                    loadMonitoringPulangRanap();
+                }
+            }
         })
 
         function tb_ranap() {

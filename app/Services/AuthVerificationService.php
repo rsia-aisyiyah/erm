@@ -10,26 +10,28 @@ class AuthVerificationService
 {
     public function verifyPassword(string $password)
     {
-        $username = session()->get('pegawai')->nik;
+        $pegawai = session()->get('pegawai');
+        if (!$pegawai || empty($pegawai->nik)) {
+            return null;
+        }
+
+        $username = $pegawai->nik;
 
         return User::select(
             DB::raw("AES_DECRYPT(id_user, 'nur') as username")
         )
-            ->where(
-                'id_user',
-                DB::raw("AES_ENCRYPT('" . $username . "', 'nur')")
-            )
-            ->where(
-                'password',
-                DB::raw("AES_ENCRYPT('" . $password . "', 'windi')")
-            )
+            ->whereRaw("id_user = AES_ENCRYPT(?, 'nur')", [$username])
+            ->whereRaw("password = AES_ENCRYPT(?, 'windi')", [$password])
             ->first();
     }
     public function verifyUser()
     {
-        $username = session()->get('pegawai')->nik;
+        $pegawai = session()->get('pegawai');
+        if (!$pegawai || empty($pegawai->nik)) {
+            return null;
+        }
 
-        return Petugas::where('nip', $username)->first();
+        return Petugas::where('nip', $pegawai->nik)->first();
     }
     public function verifyRole($model, $petugas, string $role): bool
     {
