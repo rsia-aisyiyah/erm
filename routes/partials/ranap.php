@@ -5,7 +5,7 @@ use App\Http\Controllers\PermintaanDietController;
 use App\Http\Controllers\SkriningGiziController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'erm.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'ranap'], function ($q) {
         $q->get('monitoring-pulang', [\App\Http\Controllers\RanapController::class, 'monitoringPulang'])->name('ranap.monitoring-pulang');
         $q->get('kelengkapan-berkas', [\App\Http\Controllers\RanapController::class, 'kelengkapanBerkas'])->name('ranap.kelengkapan-berkas');

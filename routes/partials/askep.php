@@ -8,7 +8,7 @@ use App\Http\Controllers\MasterRencanaKeperawatanAnakController;
 use App\Http\Controllers\RencanaAskepRalanAnakController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'erm.session'])->prefix('asesmen-keperawatan')->group(function ($route) {
+Route::middleware(['auth'])->prefix('asesmen-keperawatan')->group(function ($route) {
 
     $route->prefix('master-masalah')->group(function ($route) {
         $route->prefix('anak')->group(function ($route) {

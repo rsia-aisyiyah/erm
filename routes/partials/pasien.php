@@ -16,7 +16,7 @@ use App\Models\Propinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'erm.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::prefix('pasien')->group(function () {
         Route::get('/', [PasienController::class, 'index'])->middleware('erm.menu:pasien');
         Route::post('/', [PasienController::class, 'create'])->middleware('erm.menu:pasien,registrasi');

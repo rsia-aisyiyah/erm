@@ -10,7 +10,7 @@ use App\Http\Controllers\TemplateLaboratoriumController;
 use App\Http\Controllers\PermintaanPemeriksaanLabController;
 use App\Http\Controllers\SaranKesanLabController;
 
-Route::middleware(['auth', 'erm.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::prefix('lab')->group(function ($route) {
         $route->get('/', [LabController::class, 'index'])->middleware('erm.menu:lab');
         $route->get('/riwayat/{no_rkm_medis}', [LabController::class, 'getRiwayatLaboratorium']);

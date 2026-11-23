@@ -101,7 +101,7 @@ Route::get('/erm', function () {
 	return redirect('/');
 });
 
-Route::middleware(['auth', 'erm.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 	Route::get('/logout', [LoginController::class, 'logout']);
 	Route::get('/', function () {
 		$pegawai = session()->get('pegawai');

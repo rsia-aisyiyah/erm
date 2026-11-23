@@ -3,7 +3,7 @@
 use App\Http\Controllers\RsiaHasilKritisController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'erm.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'hasil-kritis'], function ($route) {
         $route->get('/petugas', [RsiaHasilKritisController::class, 'getPetugas'])->name('hasil-kritis.petugas');
         $route->get('/', [RsiaHasilKritisController::class, 'getHasil'])->name('hasil-kritis.index');

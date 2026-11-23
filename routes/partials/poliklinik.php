@@ -9,7 +9,7 @@ use App\Http\Controllers\AskepRalanKebidananController;
 use App\Http\Controllers\AsesmenMedisRajalAnakController;
 use App\Http\Controllers\AsesmenMedisRajalKandunganController;
 
-Route::middleware(['auth', 'erm.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/poliklinik', [PoliklinikController::class, 'index'])->middleware('erm.menu:poliklinik')->name('poliklinik');
     Route::get('/poliklinik/get', [PoliklinikController::class, 'get'])->name('poliklinik.get');
     Route::get('/poliklinik/dokter', [PoliklinikController::class, 'poliDokter']);

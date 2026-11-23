@@ -8,7 +8,7 @@ use App\Http\Controllers\Bridging\RujukanController;
 use App\Http\Controllers\Bridging\ReferensiController;
 use App\Http\Controllers\Apotek\ApotekReferensiController;
 use App\Http\Controllers\Bridging\RencanaKontrolController;
-Route::middleware(['auth', 'erm.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::prefix('bridging')->group(function () {
         Route::prefix('referensi')->group(function () {
             Route::get('/propinsi', [ReferensiController::class, 'getPropinsi']);

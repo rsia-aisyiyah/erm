@@ -13,7 +13,7 @@ use App\Http\Controllers\ResikoJatuhAnakController;
 use App\Http\Controllers\ResikoJatuhDewasaController;
 use App\Models\ResikoJatuhDewasa;
 
-Route::middleware(['auth', 'erm.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::prefix('asesmen/resiko-jatuh-dewasa')->group(function ($route) {
         $route->get('/', [ResikoJatuhDewasaController::class, 'index']);
         $route->get('/get', [ResikoJatuhDewasaController::class, 'get']);

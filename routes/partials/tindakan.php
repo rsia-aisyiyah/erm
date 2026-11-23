@@ -10,7 +10,7 @@ use App\Http\Controllers\TemplateLaboratoriumController;
 use App\Http\Controllers\PermintaanPemeriksaanLabController;
 use App\Http\Controllers\SaranKesanLabController;
 
-Route::middleware(['auth', 'erm.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 	Route::prefix('jenis-tindakan')->group(function ($route) {
 		$route->get('/datatable/{param}', [\App\Http\Controllers\JenisPerawatanController::class, 'dataTable']);
 		$route->get('ranap/datatable/{param}', [\App\Http\Controllers\JenisPerawatanInapController::class, 'dataTable']);
