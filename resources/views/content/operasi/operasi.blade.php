@@ -7,16 +7,19 @@
             <div class="card-body p-3">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2">
-                        <div class="rounded-3 bg-danger bg-opacity-10 text-danger p-2 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                        <div class="rounded-3 bg-danger bg-opacity-10 text-danger p-2 d-flex align-items-center justify-content-center"
+                            style="width: 44px; height: 44px;">
                             <i class="bi bi-heart-pulse-fill fs-4"></i>
                         </div>
                         <div>
                             <h5 class="fw-bold text-dark mb-0">KAMAR OPERASI (INSTALASI BEDAH SENTRAL)</h5>
-                            <small class="text-muted" style="font-size: 11.5px;">Jadwal Operasi Pasien &amp; Pengisian Rekam Medis Laporan Operasi</small>
+                            <small class="text-muted" style="font-size: 11.5px;">Jadwal Operasi Pasien &amp; Pengisian Rekam
+                                Medis Laporan Operasi</small>
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                        <button type="button" class="btn btn-danger btn-sm px-3 fw-bold shadow-sm" onclick="bukaModalBookingBaru()">
+                        <button type="button" class="btn btn-danger btn-sm px-3 fw-bold shadow-sm"
+                            onclick="bukaModalBookingBaru()">
                             <i class="bi bi-calendar-plus-fill me-1"></i> + Tambah Jadwal Operasi
                         </button>
                     </div>
@@ -57,11 +60,14 @@
             <div class="card-body p-2.5">
                 <div class="row g-2 align-items-end">
                     <div class="col-md-3 col-12">
-                        <label class="form-label text-muted small fw-bold mb-1" style="font-size: 10.5px;">PERIODE TANGGAL</label>
+                        <label class="form-label text-muted small fw-bold mb-1" style="font-size: 10.5px;">PERIODE
+                            TANGGAL</label>
                         <div class="input-group">
-                            <input type="date" class="form-control form-control-sm" id="fil_tgl_awal" value="{{ date('Y-m-d') }}">
+                            <input type="date" class="form-control form-control-sm" id="fil_tgl_awal"
+                                value="{{ date('Y-m-d') }}">
                             <span class="input-group-text bg-light text-muted" style="font-size: 11px;">s.d</span>
-                            <input type="date" class="form-control form-control-sm" id="fil_tgl_akhir" value="{{ date('Y-m-d') }}">
+                            <input type="date" class="form-control form-control-sm" id="fil_tgl_akhir"
+                                value="{{ date('Y-m-d') }}">
                         </div>
                     </div>
                     <div class="col-md-2 col-6">
@@ -74,7 +80,8 @@
                         </select>
                     </div>
                     <div class="col-md-3 col-6">
-                        <label class="form-label text-muted small fw-bold mb-1" style="font-size: 10.5px;">DOKTER OPERATOR</label>
+                        <label class="form-label text-muted small fw-bold mb-1" style="font-size: 10.5px;">DOKTER
+                            OPERATOR</label>
                         <select class="form-select form-select-sm" id="fil_dokter">
                             <option value="">Semua Dokter Operator</option>
                             @foreach ($dokterList as $dok)
@@ -83,11 +90,14 @@
                         </select>
                     </div>
                     <div class="col-md-3 col-10">
-                        <label class="form-label text-muted small fw-bold mb-1" style="font-size: 10.5px;">CARI PASIEN / TINDAKAN</label>
-                        <input type="text" class="form-control form-control-sm" id="fil_keyword" placeholder="Nama Pasien / No. RM / No. Rawat...">
+                        <label class="form-label text-muted small fw-bold mb-1" style="font-size: 10.5px;">CARI PASIEN /
+                            TINDAKAN</label>
+                        <input type="text" class="form-control form-control-sm" id="fil_keyword"
+                            placeholder="Nama Pasien / No. RM / No. Rawat...">
                     </div>
                     <div class="col-md-1 col-2">
-                        <button type="button" class="btn btn-primary btn-sm w-100 fw-bold shadow-sm" id="btnCariJadwal" style="height: 31px;">
+                        <button type="button" class="btn btn-primary btn-sm w-100 fw-bold shadow-sm" id="btnCariJadwal"
+                            style="height: 31px;">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -173,13 +183,19 @@
                         $drop.empty();
 
                         if (data.length === 0) {
-                            $drop.append('<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Pasien tidak ditemukan.</div>');
+                            $drop.append(
+                                '<div class="list-group-item list-group-item-action text-muted p-2" style="font-size:11px;">Pasien tidak ditemukan.</div>'
+                                );
                         } else {
                             data.forEach(function(item) {
                                 const nmPasien = item.pasien?.nm_pasien || '-';
                                 const noRm = item.no_rkm_medis || '-';
                                 const noRawat = item.no_rawat || '-';
-                                const kamar = item.kamar_inap && item.kamar_inap.length > 0 ? (item.kamar_inap[0]?.kamar?.bangsal?.nm_bangsal || item.kamar_inap[0]?.kd_kamar || '-') : (item.poliklinik?.nm_poli || 'Ralan');
+                                const kamar = item.kamar_inap && item.kamar_inap
+                                    .length > 0 ? (item.kamar_inap[0]?.kamar
+                                        ?.bangsal?.nm_bangsal || item.kamar_inap[0]
+                                        ?.kd_kamar || '-') : (item.poliklinik
+                                        ?.nm_poli || 'Ralan');
 
                                 const a = $(`
                                 <a href="javascript:void(0)" class="list-group-item list-group-item-action p-2" style="font-size:11.5px;">
@@ -251,12 +267,14 @@
                         });
                     },
                     success: function(resp) {
-                        Swal.fire('Berhasil!', resp.message || 'Jadwal operasi berhasil disimpan.', 'success');
+                        Swal.fire('Berhasil!', resp.message ||
+                            'Jadwal operasi berhasil disimpan.', 'success');
                         $('#modalBookingOperasi').modal('hide');
                         loadDataJadwalOperasi();
                     },
                     error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Gagal menyimpan jadwal operasi.';
+                        const msg = xhr.responseJSON?.message ||
+                            'Gagal menyimpan jadwal operasi.';
                         Swal.fire('Gagal!', msg, 'error');
                     }
                 });
@@ -286,12 +304,14 @@
                         });
                     },
                     success: function(resp) {
-                        Swal.fire('Berhasil!', resp.message || 'Laporan operasi berhasil disimpan.', 'success');
+                        Swal.fire('Berhasil!', resp.message ||
+                            'Laporan operasi berhasil disimpan.', 'success');
                         $('#modalLaporanOperasi').modal('hide');
                         loadDataJadwalOperasi();
                     },
                     error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || 'Gagal menyimpan laporan operasi.';
+                        const msg = xhr.responseJSON?.message ||
+                            'Gagal menyimpan laporan operasi.';
                         Swal.fire('Gagal!', msg, 'error');
                     }
                 });
@@ -352,7 +372,8 @@
                         const noRm = pasien.no_rkm_medis || '-';
                         const jk = pasien.jk === 'L' ? 'L' : (pasien.jk === 'P' ? 'P' : '-');
                         const kamar = reg.kamar_inap && reg.kamar_inap.length > 0 ?
-                            (reg.kamar_inap[0]?.kamar?.bangsal?.nm_bangsal || reg.kamar_inap[0]?.kd_kamar || '-') :
+                            (reg.kamar_inap[0]?.kamar?.bangsal?.nm_bangsal || reg.kamar_inap[0]?.kd_kamar ||
+                                '-') :
                             (reg.poliklinik?.nm_poli || 'Ralan');
 
                         const tindakan = item.paket_operasi?.nm_perawatan || item.kode_paket || '-';
@@ -361,11 +382,14 @@
                         // Status Badge & Dropdown Action
                         let statusBadge = '';
                         if (item.status === 'Menunggu') {
-                            statusBadge = `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning px-2 py-1 rounded-pill"><i class="bi bi-hourglass-split me-1"></i>Menunggu</span>`;
+                            statusBadge =
+                                `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning px-2 py-1 rounded-pill"><i class="bi bi-hourglass-split me-1"></i>Menunggu</span>`;
                         } else if (item.status === 'Proses Operasi') {
-                            statusBadge = `<span class="badge bg-primary-subtle text-primary border border-primary px-2 py-1 rounded-pill"><i class="bi bi-gear-wide-connected me-1"></i>Proses OK</span>`;
+                            statusBadge =
+                                `<span class="badge bg-primary-subtle text-primary border border-primary px-2 py-1 rounded-pill"><i class="bi bi-gear-wide-connected me-1"></i>Proses OK</span>`;
                         } else {
-                            statusBadge = `<span class="badge bg-success-subtle text-success border border-success px-2 py-1 rounded-pill"><i class="bi bi-check-circle-fill me-1"></i>Selesai</span>`;
+                            statusBadge =
+                                `<span class="badge bg-success-subtle text-success border border-success px-2 py-1 rounded-pill"><i class="bi bi-check-circle-fill me-1"></i>Selesai</span>`;
                         }
 
                         // Status Laporan Operasi
@@ -418,10 +442,10 @@
                                         <i class="bi ${hasLaporan ? 'bi-pencil-square' : 'bi-plus-circle'}"></i> Laporan
                                     </button>
                                     ${hasLaporan ? `
-                                            <a href="{{ url('/operasi/laporan/cetak') }}/${encodeURIComponent(safeNoRawat.replace(/\//g, '-'))}" target="_blank" class="btn btn-outline-secondary btn-sm py-1 px-2 shadow-none" style="font-size: 11px;" title="Cetak Laporan Operasi PDF">
-                                                <i class="bi bi-printer"></i>
-                                            </a>
-                                        ` : ''}
+                                                <a href="{{ url('/operasi/laporan/cetak') }}/${encodeURIComponent(safeNoRawat.replace(/\//g, '-'))}" target="_blank" class="btn btn-outline-secondary btn-sm py-1 px-2 shadow-none" style="font-size: 11px;" title="Cetak Laporan Operasi PDF">
+                                                    <i class="bi bi-printer"></i>
+                                                </a>
+                                            ` : ''}
                                     <button type="button" class="btn btn-outline-danger btn-sm py-1 px-1.5 shadow-none" onclick="hapusBookingOperasi('${safeNoRawat}', '${safeTanggal}')" title="Hapus Jadwal Operasi">
                                         <i class="bi bi-trash"></i>
                                     </button>
@@ -500,11 +524,13 @@
                             tanggal: tanggal
                         },
                         success: function(res) {
-                            Swal.fire('Terhapus!', res.message || 'Jadwal operasi berhasil dihapus.', 'success');
+                            Swal.fire('Terhapus!', res.message || 'Jadwal operasi berhasil dihapus.',
+                                'success');
                             loadDataJadwalOperasi();
                         },
                         error: function(xhr) {
-                            Swal.fire('Gagal!', xhr.responseJSON?.message || 'Gagal menghapus jadwal operasi.', 'error');
+                            Swal.fire('Gagal!', xhr.responseJSON?.message ||
+                                'Gagal menghapus jadwal operasi.', 'error');
                         }
                     });
                 }
@@ -540,7 +566,8 @@
                 $('#lblLaporanNamaPasien').text(pas.nm_pasien || '-');
                 $('#lblLaporanNoRm').text(pas.no_rkm_medis || '-');
                 $('#lblLaporanNoRawat').text(noRawat);
-                $('#lblLaporanJkLahir').text(`${pas.jk === 'L' ? 'Laki-Laki' : 'Perempuan'} / ${pas.tgl_lahir || '-'}`);
+                $('#lblLaporanJkLahir').text(
+                    `${pas.jk === 'L' ? 'Laki-Laki' : 'Perempuan'} / ${pas.tgl_lahir || '-'}`);
 
                 const kamar = reg.kamar_inap && reg.kamar_inap.length > 0 ?
                     (reg.kamar_inap[0]?.kamar?.bangsal?.nm_bangsal || reg.kamar_inap[0]?.kd_kamar || '-') :
@@ -548,8 +575,10 @@
                 $('#lblLaporanKamar').text(kamar);
 
                 // Populate Form
-                $('#laporan_tgl_operasi').val(data.tgl_operasi ? moment(data.tgl_operasi).format('YYYY-MM-DDTHH:mm') : moment().format('YYYY-MM-DDTHH:mm'));
-                $('#laporan_tgl_selesai').val(data.tgl_selesai ? moment(data.tgl_selesai).format('YYYY-MM-DDTHH:mm') : moment().format('YYYY-MM-DDTHH:mm'));
+                $('#laporan_tgl_operasi').val(data.tgl_operasi ? moment(data.tgl_operasi).format(
+                    'YYYY-MM-DDTHH:mm') : moment().format('YYYY-MM-DDTHH:mm'));
+                $('#laporan_tgl_selesai').val(data.tgl_selesai ? moment(data.tgl_selesai).format(
+                    'YYYY-MM-DDTHH:mm') : moment().format('YYYY-MM-DDTHH:mm'));
                 $('#laporan_kategori').val(data.kategori || 'Elektive');
                 $('#laporan_jenis_anestesi').val(data.jenis_anestesi || 'GA');
                 $('#laporan_kode_paket').val(data.kode_paket || '');
@@ -606,12 +635,14 @@
                             no_rawat: aktifNoRawatLaporan
                         },
                         success: function(res) {
-                            Swal.fire('Berhasil!', res.message || 'Laporan operasi berhasil dihapus.', 'success');
+                            Swal.fire('Berhasil!', res.message || 'Laporan operasi berhasil dihapus.',
+                                'success');
                             $('#modalLaporanOperasi').modal('hide');
                             loadDataJadwalOperasi();
                         },
                         error: function(xhr) {
-                            Swal.fire('Gagal!', xhr.responseJSON?.message || 'Gagal menghapus laporan operasi.', 'error');
+                            Swal.fire('Gagal!', xhr.responseJSON?.message ||
+                                'Gagal menghapus laporan operasi.', 'error');
                         }
                     });
                 }
