@@ -272,6 +272,36 @@
                 {{-- ======================================================== --}}
                 {{-- 1. MODE DINAMIS (BERBASIS DATABASE rsia_erm_menu)       --}}
                 {{-- ======================================================== --}}
+                @php
+                    $currPath = ltrim(parse_url(request()->getRequestUri(), PHP_URL_PATH) ?? '', '/');
+                    $currPath = preg_replace('/^erm\//', '', $currPath);
+                    $currPath = rtrim($currPath, '/');
+
+                    $activeMenuId = null;
+                    $maxMatchLength = -1;
+
+                    foreach ($groupedMenus->flatten() as $checkMenu) {
+                        $mPath = ltrim(parse_url($checkMenu->url, PHP_URL_PATH) ?? '', '/');
+                        $mPath = preg_replace('/^erm\//', '', $mPath);
+                        $mPath = rtrim($mPath, '/');
+
+                        if (empty($mPath)) continue;
+
+                        if ($currPath === $mPath) {
+                            $score = strlen($mPath) + 1000;
+                            if ($score > $maxMatchLength) {
+                                $maxMatchLength = $score;
+                                $activeMenuId = $checkMenu->id;
+                            }
+                        } elseif (str_starts_with($currPath, $mPath . '/')) {
+                            $score = strlen($mPath);
+                            if ($score > $maxMatchLength) {
+                                $maxMatchLength = $score;
+                                $activeMenuId = $checkMenu->id;
+                            }
+                        }
+                    }
+                @endphp
                 @foreach ($groupedMenus as $kategori => $menus)
                     <div class="sidebar-cat-title {{ !$loop->first ? 'mt-2' : '' }}">
                         <span>{{ $kategori }}</span>
@@ -282,10 +312,7 @@
                             if ($targetUrl === 'KYC_DYNAMIC') {
                                 $targetUrl = config('app.kyc') . '?nama=' . urlencode($nama) . '&nik=' . urlencode($nik);
                             }
-                            $urlPath = parse_url($m->url, PHP_URL_PATH) ?? '';
-                            $cleanPath = ltrim($urlPath, '/');
-                            $cleanPath = preg_replace('/^erm\//', '', $cleanPath);
-                            $isActive = !empty($cleanPath) && (Request::is($cleanPath . '*') || Request::is('erm/' . $cleanPath . '*'));
+                            $isActive = ($activeMenuId === $m->id);
                         @endphp
                         <li class="nav-item">
                             <a class="erm-nav-link {{ $isActive ? 'active' : '' }}" 
@@ -445,7 +472,7 @@
                         $isDokter) &&
                         ($pegawai->jbtn ?? '') != 'Dokter Spesialis Radiologi'))
                     <li class="nav-item">
-                        <a class="erm-nav-link {{ Request::is('obat*') ? 'active' : '' }}" href="/erm/obat" title="Master Data Obat & Bahan Medis Habis Pakai">
+                        <a class="erm-nav-link {{ (Request::is('obat') || (Request::is('obat/*') && !Request::is('obat/paket*'))) ? 'active' : '' }}" href="/erm/obat" title="Master Data Obat & Bahan Medis Habis Pakai">
                             <span class="erm-icon-box icon-obat"><i class="bi bi-capsule-pill"></i></span>
                             <span>Obat &amp; BHP</span>
                         </a>
@@ -455,6 +482,13 @@
                         <a class="erm-nav-link {{ Request::is('resep/racik*') || Request::is('racikan*') ? 'active' : '' }}" href="/erm/resep/racik" title="Template Racikan Obat Dokter">
                             <span class="erm-icon-box icon-racik"><i class="bi bi-mortarboard"></i></span>
                             <span>Template Racik</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="erm-nav-link {{ Request::is('obat/paket*') ? 'active' : '' }}" href="/erm/obat/paket" title="Master Paket / Bundling Obat & BHP">
+                            <span class="erm-icon-box icon-resep"><i class="bi bi-box-seam"></i></span>
+                            <span>Paket Obat &amp; BHP</span>
                         </a>
                     </li>
                 @endif
