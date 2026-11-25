@@ -269,6 +269,15 @@ Route::middleware('auth')->group(function () {
 	Route::get('obat/get/{kode_brng}', [DataBarangController::class, 'get']);
 	Route::get('obat/cari', [DataBarangController::class, 'cari'])->name('obat.cari');
 
+	// Master Data & API Paket Obat & BHP (Bundling Box)
+	Route::get('/obat/paket', [\App\Http\Controllers\PaketObatController::class, 'index'])->name('obat.paket');
+	Route::get('/obat/paket/data', [\App\Http\Controllers\PaketObatController::class, 'getPaket'])->name('obat.paket.data');
+	Route::get('/obat/paket/detail/{id}', [\App\Http\Controllers\PaketObatController::class, 'getDetail'])->name('obat.paket.detail');
+	Route::post('/obat/paket/simpan', [\App\Http\Controllers\PaketObatController::class, 'simpan'])->name('obat.paket.simpan');
+	Route::post('/obat/paket/simpan-dari-order', [\App\Http\Controllers\PaketObatController::class, 'simpanDariOrder'])->name('obat.paket.simpan-dari-order');
+	Route::delete('/obat/paket/hapus/{id}', [\App\Http\Controllers\PaketObatController::class, 'hapus'])->name('obat.paket.hapus');
+	Route::post('/obat/paket/toggle-status/{id}', [\App\Http\Controllers\PaketObatController::class, 'toggleStatus'])->name('obat.paket.toggle-status');
+
 	Route::get('/resep', [ResepObatController::class, 'index']);
 	Route::post('/resep/create', [ResepObatController::class, 'create']);
 	Route::delete('/resep/delete/{noResep}', [ResepObatController::class, 'delete']);

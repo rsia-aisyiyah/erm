@@ -105,9 +105,14 @@
                                 <span class="fw-bold text-secondary" style="font-size: 12px;">
                                     <i class="bi bi-pencil-square text-success me-1"></i> Input Item Obat &amp; Jadwal Pemberian Jam
                                 </span>
-                                <span class="badge bg-success-subtle text-success border border-success" id="infoNoPermintaanBaru">
-                                    Membuat No. Permintaan Baru...
-                                </span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <button type="button" class="btn btn-outline-primary btn-sm py-0.5 px-2 shadow-sm" onclick="bukaModalPilihBundling()" style="font-size: 11px;" title="Pilih template paket box obat &amp; BHP untuk tindakan operasi atau unit ruangan">
+                                        <i class="bi bi-box-seam me-1"></i> <b>Pilih Bundling / Paket Box</b>
+                                    </button>
+                                    <span class="badge bg-success-subtle text-success border border-success" id="infoNoPermintaanBaru">
+                                        Membuat No. Permintaan Baru...
+                                    </span>
+                                </div>
                             </div>
                             <div class="card-body p-3">
                                 <form id="formPermintaanObatRanap">
@@ -196,13 +201,23 @@
                                     </div>
 
                                     <!-- Tombol Tambah / Update Obat ke List -->
-                                    <div class="d-flex justify-content-end mb-3 gap-2">
-                                        <button type="button" class="btn btn-secondary btn-sm px-3 d-none shadow-sm" id="btnBatalEditItem" onclick="batalEditItemSementara()">
-                                            <i class="bi bi-x-lg me-1"></i> Batal Edit
-                                        </button>
-                                        <button type="button" class="btn btn-success btn-sm px-3 shadow-sm" id="btnTambahItemPermintaan">
-                                            <i class="bi bi-plus-lg me-1"></i> Tambahkan ke Daftar Order
-                                        </button>
+                                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                                        <div class="d-flex align-items-center gap-1.5">
+                                            <button type="button" class="btn btn-outline-primary btn-sm px-2.5 py-1 shadow-sm" onclick="bukaModalPilihBundling()" style="font-size: 11.5px;">
+                                                <i class="bi bi-box-seam me-1 text-primary"></i> <b>Pilih Bundling / Paket Box</b>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm px-2 py-1 shadow-sm" onclick="bukaModalSimpanSebagaiPaket()" title="Simpan daftar order sementara saat ini sebagai template paket baru" style="font-size: 11px;">
+                                                <i class="bi bi-bookmark-plus me-1"></i> Simpan Jadi Paket
+                                            </button>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            <button type="button" class="btn btn-secondary btn-sm px-3 d-none shadow-sm" id="btnBatalEditItem" onclick="batalEditItemSementara()">
+                                                <i class="bi bi-x-lg me-1"></i> Batal Edit
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-sm px-3 shadow-sm" id="btnTambahItemPermintaan">
+                                                <i class="bi bi-plus-lg me-1"></i> Tambahkan ke Daftar Order
+                                            </button>
+                                        </div>
                                     </div>
                                 </form>
 
@@ -339,6 +354,7 @@
 
 @include('content.farmasi.modal.modal_substitusi_obat')
 @include('content.farmasi.modal.modal_edit_aturan_pakai')
+@include('content.farmasi.modal.modal_pilih_bundling_obat')
 
 @push('script')
 <script>
