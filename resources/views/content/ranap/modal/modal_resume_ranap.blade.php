@@ -733,23 +733,23 @@
 
             if (libur) {
                 $info.removeClass('d-none').html(`
-                    <div class="alert alert-danger py-1 px-2 mb-0 d-flex align-items-start gap-1.5" style="font-size: 11px; line-height: 1.35;">
-                        <i class="bi bi-exclamation-triangle-fill flex-shrink-0 mt-0.5"></i>
-                        <div><strong>${namaHari}, ${val}</strong> adalah <strong>Libur Nasional: ${libur.keterangan}</strong> (Kalender Nasional BPJS).</div>
+                    <div class="text-danger fw-semibold d-flex align-items-center gap-1" style="font-size: 11px;">
+                        <i class="bi bi-exclamation-triangle-fill flex-shrink-0"></i>
+                        <span>${namaHari} &bull; Libur Nasional: ${libur.keterangan}</span>
                     </div>
                 `);
             } else if (dateObj.getDay() === 0) {
                 $info.removeClass('d-none').html(`
-                    <div class="alert alert-warning py-1 px-2 mb-0 d-flex align-items-start gap-1.5 text-dark" style="font-size: 11px; line-height: 1.35;">
-                        <i class="bi bi-exclamation-circle-fill text-danger flex-shrink-0 mt-0.5"></i>
-                        <div><strong>${namaHari}, ${val}</strong> jatuh pada <strong>Hari Minggu</strong> (Poli Rawat Jalan BPJS tutup).</div>
+                    <div class="text-danger fw-semibold d-flex align-items-center gap-1" style="font-size: 11px;">
+                        <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+                        <span>Hari Minggu (Libur / Poli Tutup)</span>
                     </div>
                 `);
             } else {
                 $info.removeClass('d-none').html(`
-                    <div class="text-success d-flex align-items-center gap-1" style="font-size: 11px;">
-                        <i class="bi bi-calendar-check"></i>
-                        <span><strong>${namaHari}, ${val}</strong> (Hari Kerja / Bukan Tanggal Merah Nasional)</span>
+                    <div class="text-muted d-flex align-items-center gap-1" style="font-size: 11px;">
+                        <i class="bi bi-calendar-check text-success"></i>
+                        <span>${namaHari}, Hari Kerja</span>
                     </div>
                 `);
             }
