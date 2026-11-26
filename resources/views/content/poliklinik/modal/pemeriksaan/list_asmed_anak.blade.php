@@ -22,7 +22,7 @@
                         <div class="card-body">
                             <h6 class="card-title">${a.dokter.nm_dokter}</h6>
                             <p class="card-text"><b>(${a.reg_periksa.no_rkm_medis} ) - ${a.reg_periksa.pasien.nm_pasien} </b> <br> ${a.no_rawat} <br/> Tgl. Periksa ${formatTanggal(a.reg_periksa.tgl_registrasi)}</p>
-                            <a href="/erm/poliklinik/asmed/anak/print/${textRawat(a.no_rawat, '-')}" target="_blank" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i> Lihat</a>
+                            <a href="{{ url('/') }}/poliklinik/asmed/anak/print/${textRawat(a.no_rawat, '-')}" target="_blank" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i> Lihat</a>
                             <a href="javascript:void(0)" onclick="setAsmedRajalAnak('${a.no_rawat}')" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Edit</a>
                             </div>
                             </div>

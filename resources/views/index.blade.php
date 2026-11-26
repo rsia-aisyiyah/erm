@@ -9,7 +9,7 @@
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="border-radius:0px;">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-5" href="#"
             style="background-color: rgba(0,0,0,0); box-shadow: 0 0 0 transparent;">
-            <img src="/erm/public/img/logo.png" alt="Logo" style="max-width: 30px" />
+            <img src="{{ asset('img/logo.png') }}" alt="Logo" style="max-width: 30px" />
             {{ config('app.name') }}
         </a>
         <div class="d-flex align-items-center ms-auto pe-3 gap-2">
@@ -63,6 +63,36 @@
     @include('content.poliklinik.modal.pemeriksaan.modal_satusehat_rme')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+        // Dynamic Base URL agar ERM berjalan di subfolder/path apapun (misal /erm, /erm-dev, atau /)
+        window.ERM_BASE_URL = "{{ rtrim(url('/'), '/') }}";
+        window.ermUrl = function(path) {
+            if (!path) return window.ERM_BASE_URL || '/';
+            var str = String(path);
+            if (/^https?:\/\//i.test(str)) return str;
+            var clean = str.replace(/^\/erm(\/|$)/i, '/');
+            if (!clean.startsWith('/')) clean = '/' + clean;
+            return window.ERM_BASE_URL + clean;
+        };
+
+        if (window.jQuery) {
+            $.ajaxPrefilter(function(options) {
+                if (options.url && /^\/erm(\/|$)/i.test(options.url)) {
+                    options.url = window.ermUrl(options.url);
+                }
+            });
+        }
+
+        if (typeof window.fetch === 'function') {
+            var _origFetch = window.fetch.bind(window);
+            window.fetch = function(input, init) {
+                if (typeof input === 'string' && /^\/erm(\/|$)/i.test(input)) {
+                    input = window.ermUrl(input);
+                }
+                return _origFetch(input, init);
+            };
+        }
+    </script>
     {{--
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
@@ -563,7 +593,7 @@
                     confirmButtonText: 'OK',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = '/erm';
+                        window.location.href = window.ERM_BASE_URL || "{{ url('/') }}";
                     }
                 })
             }
@@ -1562,7 +1592,7 @@
                         <div class="card-body">
                             <h6 class="card-title">${a.dokter.nm_dokter}</h6>
                             <p class="card-text"><b>(${a.reg_periksa.no_rkm_medis} ) - ${a.reg_periksa.pasien.nm_pasien} </b> <br> ${a.no_rawat} <br/> Tgl. Periksa ${formatTanggal(a.reg_periksa.tgl_registrasi)}</p>
-                            <a href="/erm/poliklinik/asmed/kandungan/print/${textRawat(a.no_rawat, '-')}" target="_blank" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i> Lihat</a>
+                            <a href="{{ url('/poliklinik/asmed/kandungan/print') }}/${textRawat(a.no_rawat, '-')}" target="_blank" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i> Lihat</a>
                             <a href="javascript:void(0)" onclick="setAsmedRajalKandungan('${a.no_rawat}')" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Edit</a>
                             </div>
                             </div>

@@ -49,7 +49,31 @@ class RsiaErmMenu extends Model
     }
 
     /**
-     * Normalisasi URL/path menu agar "/erm/ranap", "/ranap/", dan "ranap" selalu cocok konsisten.
+     * Ubah URL menu dari DB (yang mungkin masih berawalan /erm/...) agar mengikuti base path aktif.
+     */
+    public static function toAppUrl(?string $url): string
+    {
+        if (empty($url)) {
+            return url('/');
+        }
+
+        if ($url === 'KYC_DYNAMIC' || preg_match('#^https?://#i', $url)) {
+            return $url;
+        }
+
+        // URL aplikasi terpisah di server yang sama (misal /lab) tetap utuh
+        if (!preg_match('#^/erm(/|$)#i', $url)) {
+            return $url;
+        }
+
+        $relative = preg_replace('#^/erm#i', '', $url);
+        $relative = '/' . ltrim((string) $relative, '/');
+
+        return url($relative);
+    }
+
+    /**
+     * Normalisasi URL/path menu agar "/erm/ranap", "/erm-dev/ranap", "/ranap/", dan "ranap" selalu cocok konsisten.
      */
     public static function normalizePath(?string $url): string
     {
@@ -59,7 +83,14 @@ class RsiaErmMenu extends Model
 
         $path = parse_url($url, PHP_URL_PATH) ?? $url;
         $clean = trim($path, '/');
-        $clean = preg_replace('#^erm/#i', '', $clean);
+
+        $appBase = trim((string) (parse_url(url('/'), PHP_URL_PATH) ?? ''), '/');
+        if (!empty($appBase) && preg_match('#^' . preg_quote($appBase, '#') . '(/|$)#i', $clean)) {
+            $clean = substr($clean, strlen($appBase));
+            $clean = trim($clean, '/');
+        }
+
+        $clean = preg_replace('#^erm(/|$)#i', '', $clean);
 
         return strtolower(trim((string) $clean, '/'));
     }
