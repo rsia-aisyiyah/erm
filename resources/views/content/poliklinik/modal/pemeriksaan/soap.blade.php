@@ -671,7 +671,7 @@
                 `);
                 $('#sku_action_buttons').html(`
                     <div class="d-flex align-items-center gap-1">
-                        <a href="/erm/rencanaKontrol/print/${suratKontrol.no_surat}" target="_blank" class="btn btn-xs btn-success rounded-pill px-2.5 py-1 fw-bold shadow-2xs d-inline-flex align-items-center gap-1 text-white text-decoration-none" style="font-size: 11px;">
+                        <a href="{{ url('/') }}/rencanaKontrol/print/${suratKontrol.no_surat}" target="_blank" class="btn btn-xs btn-success rounded-pill px-2.5 py-1 fw-bold shadow-2xs d-inline-flex align-items-center gap-1 text-white text-decoration-none" style="font-size: 11px;">
                             <i class="bi bi-printer"></i>
                             <span>Cetak SKU</span>
                         </a>

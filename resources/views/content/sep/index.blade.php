@@ -217,7 +217,7 @@
                         const status = rtl.status_tindak_lanjut;
                         if (status === 'KONTROL') {
                             if (skrj && skrj.no_surat) {
-                                html += `<a href="/erm/rencanaKontrol/print/${skrj.no_surat}" target="_blank" class="badge bg-success text-decoration-none" title="Cetak SKRJ"><i class="bi bi-printer me-1"></i>SKRJ: ${splitTanggal(skrj.tgl_rencana) || skrj.tgl_rencana}</a>`;
+                                html += `<a href="{{ url('/') }}/rencanaKontrol/print/${skrj.no_surat}" target="_blank" class="badge bg-success text-decoration-none" title="Cetak SKRJ"><i class="bi bi-printer me-1"></i>SKRJ: ${splitTanggal(skrj.tgl_rencana) || skrj.tgl_rencana}</a>`;
                             } else {
                                 const tglPlan = rtl.tgl_rencana_kontrol ? (splitTanggal(rtl.tgl_rencana_kontrol) || rtl.tgl_rencana_kontrol) : '-';
                                 html += `<div><span class="badge bg-warning text-dark"><i class="bi bi-calendar-event me-1"></i>Kontrol: ${tglPlan}</span><span class="badge bg-light text-secondary border ms-1" style="font-size: 10px;" title="Klik kanan untuk terbitkan SKRJ">Belum Terbit</span></div>`;
@@ -229,7 +229,7 @@
                         } else if (status === 'RUJUK_LANJUT') {
                             html += `<div><span class="badge" style="background-color: #6f42c1; color: white;"><i class="bi bi-hospital me-1"></i>Rujuk RS Lain</span>`;
                             if (rujukan && rujukan.no_rujukan) {
-                                html += `<a href="/erm/rujukan/print/${rujukan.no_rujukan}" target="_blank" class="badge bg-secondary text-decoration-none ms-1" title="Cetak Rujukan"><i class="bi bi-printer me-1"></i>${rujukan.no_rujukan}</a>`;
+                                html += `<a href="{{ url('/') }}/rujukan/print/${rujukan.no_rujukan}" target="_blank" class="badge bg-secondary text-decoration-none ms-1" title="Cetak Rujukan"><i class="bi bi-printer me-1"></i>${rujukan.no_rujukan}</a>`;
                             }
                             html += `</div>`;
                         } else if (status === 'RAWAT_INAP') {
@@ -242,9 +242,9 @@
                             html += `<div class="text-muted small mt-1" style="font-size: 11px; line-height: 1.25; max-width: 250px; word-break: break-word;" title="${rtl.catatan}"><i class="bi bi-chat-left-text text-primary me-1"></i>${rtl.catatan}</div>`;
                         }
                     } else if (skrj && skrj.no_surat) {
-                        html += `<a href="/erm/rencanaKontrol/print/${skrj.no_surat}" target="_blank" class="badge bg-success text-decoration-none" title="Cetak SKRJ"><i class="bi bi-printer me-1"></i>SKRJ: ${splitTanggal(skrj.tgl_rencana) || skrj.tgl_rencana}</a>`;
+                        html += `<a href="{{ url('/') }}/rencanaKontrol/print/${skrj.no_surat}" target="_blank" class="badge bg-success text-decoration-none" title="Cetak SKRJ"><i class="bi bi-printer me-1"></i>SKRJ: ${splitTanggal(skrj.tgl_rencana) || skrj.tgl_rencana}</a>`;
                     } else if (rujukan && rujukan.no_rujukan) {
-                        html += `<a href="/erm/rujukan/print/${rujukan.no_rujukan}" target="_blank" class="badge bg-secondary text-decoration-none" title="Cetak Rujukan"><i class="bi bi-printer me-1"></i>Rujukan: ${rujukan.no_rujukan}</a>`;
+                        html += `<a href="{{ url('/') }}/rujukan/print/${rujukan.no_rujukan}" target="_blank" class="badge bg-secondary text-decoration-none" title="Cetak Rujukan"><i class="bi bi-printer me-1"></i>Rujukan: ${rujukan.no_rujukan}</a>`;
                     } else {
                         html = `<span class="text-muted">-</span>`;
                     }

@@ -293,7 +293,7 @@
                 @endif
 
                 <!-- Login Form -->
-                <form action="/erm/login" method="POST" id="loginForm" class="space-y-4">
+                <form action="{{ url('/login') }}" method="POST" id="loginForm" class="space-y-4">
                     @csrf
 
                     <!-- Field: Nomor Induk Karyawan (Username) -->

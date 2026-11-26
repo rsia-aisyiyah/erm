@@ -427,7 +427,7 @@
                                 confirmButtonText: 'OK',
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = '/erm';
+                                    window.location.href = (window.ERM_BASE_URL || "{{ url('/') }}");
                                 }
                             })
                         }

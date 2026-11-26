@@ -277,6 +277,9 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('obat/get/{kode_brng}', [DataBarangController::class, 'get']);
 	Route::get('obat/cari', [DataBarangController::class, 'cari'])->name('obat.cari');
 
+	// Kalender Libur Nasional Indonesia
+	Route::get('/kalender/hari-libur', [\App\Http\Controllers\KalenderLiburController::class, 'getHariLibur'])->name('kalender.hari-libur');
+
 	// Master Data & API Paket Obat & BHP (Bundling Box)
 	Route::get('/obat/paket', [\App\Http\Controllers\PaketObatController::class, 'index'])->name('obat.paket');
 	Route::get('/obat/paket/data', [\App\Http\Controllers\PaketObatController::class, 'getPaket'])->name('obat.paket.data');
