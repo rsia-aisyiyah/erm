@@ -594,9 +594,10 @@
                                     <x-input-group>
                                         <span class="input-group-text"><i class="bi bi-calendar"></i> </span>
                                         <input class="form-control form-control-sm" name="tgl_kontrol" id="tgl_kontrol"
-                                            onfocus="removeZero(this)" onblur="cekKosong(this)" />
+                                            onfocus="removeZero(this)" onblur="cekKosong(this)" autocomplete="off" />
 
                                     </x-input-group>
+                                    <div id="info_libur_tgl_kontrol" class="mt-1 d-none" style="font-size: 11px;"></div>
                                     <input name="jam_kontrol" id="jam_kontrol" type="hidden" />
                                 </div>
                                 {{-- <div class="mb-2 col-sm-12 col-md-3 col-lg-2">
@@ -653,16 +654,146 @@
     </div>
 </div>
 @push('script')
+    <style>
+        .datepicker table tr td.tgl-merah-libur,
+        .datepicker table tr td.tgl-minggu {
+            color: #dc2626 !important;
+            font-weight: 700 !important;
+            background-color: #fef2f2;
+            border-radius: 4px;
+        }
+        .datepicker table tr td.tgl-merah-libur:hover,
+        .datepicker table tr td.tgl-minggu:hover {
+            background-color: #fee2e2 !important;
+            color: #991b1b !important;
+        }
+        .datepicker table tr td.tgl-merah-libur.active,
+        .datepicker table tr td.tgl-minggu.active {
+            background-color: #dc2626 !important;
+            background-image: none !important;
+            color: #ffffff !important;
+        }
+        .datepicker table tr th.dow:last-child {
+            color: #dc2626;
+        }
+    </style>
     <script>
+        window.rsiaHariLiburNasional = window.rsiaHariLiburNasional || {};
+
+        if ($.fn.datepicker && $.fn.datepicker.dates) {
+            $.fn.datepicker.dates['id'] = {
+                days: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
+                daysShort: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
+                daysMin: ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"],
+                months: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+                monthsShort: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
+                today: "Hari Ini",
+                clear: "Kosongkan",
+                format: "dd-mm-yyyy",
+                titleFormat: "MM yyyy",
+                weekStart: 1
+            };
+        }
+
+        function formatYmdFromDateObj(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function cekStatusTanggalKontrolResume() {
+            const val = ($('#tgl_kontrol').val() || '').trim();
+            const $info = $('#info_libur_tgl_kontrol');
+
+            if (!val || val === '-') {
+                $info.addClass('d-none').empty();
+                return;
+            }
+
+            const parts = val.split('-');
+            if (parts.length !== 3) {
+                $info.addClass('d-none').empty();
+                return;
+            }
+
+            const d = parseInt(parts[0], 10);
+            const m = parseInt(parts[1], 10) - 1;
+            const y = parseInt(parts[2], 10);
+            const dateObj = new Date(y, m, d);
+
+            if (isNaN(dateObj.getTime())) {
+                $info.addClass('d-none').empty();
+                return;
+            }
+
+            const namaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][dateObj.getDay()];
+            const ymd = formatYmdFromDateObj(dateObj);
+            const libur = window.rsiaHariLiburNasional[ymd];
+
+            if (libur) {
+                $info.removeClass('d-none').html(`
+                    <div class="alert alert-danger py-1 px-2 mb-0 d-flex align-items-start gap-1.5" style="font-size: 11px; line-height: 1.35;">
+                        <i class="bi bi-exclamation-triangle-fill flex-shrink-0 mt-0.5"></i>
+                        <div><strong>${namaHari}, ${val}</strong> adalah <strong>Libur Nasional: ${libur.keterangan}</strong> (Kalender Nasional BPJS).</div>
+                    </div>
+                `);
+            } else if (dateObj.getDay() === 0) {
+                $info.removeClass('d-none').html(`
+                    <div class="alert alert-warning py-1 px-2 mb-0 d-flex align-items-start gap-1.5 text-dark" style="font-size: 11px; line-height: 1.35;">
+                        <i class="bi bi-exclamation-circle-fill text-danger flex-shrink-0 mt-0.5"></i>
+                        <div><strong>${namaHari}, ${val}</strong> jatuh pada <strong>Hari Minggu</strong> (Poli Rawat Jalan BPJS tutup).</div>
+                    </div>
+                `);
+            } else {
+                $info.removeClass('d-none').html(`
+                    <div class="text-success d-flex align-items-center gap-1" style="font-size: 11px;">
+                        <i class="bi bi-calendar-check"></i>
+                        <span><strong>${namaHari}, ${val}</strong> (Hari Kerja / Bukan Tanggal Merah Nasional)</span>
+                    </div>
+                `);
+            }
+        }
+
         $(document).ready(() => {
             $('#formResumeRanap textarea[name=jalannya_penyakit]').css("display", "none");
 
             $('#tgl_kontrol').datepicker({
+                language: 'id',
                 format: 'dd-mm-yyyy',
                 orientation: 'bottom',
                 autoclose: true,
                 todayHighlight: true,
-            })
+                beforeShowDay: function(date) {
+                    const ymd = formatYmdFromDateObj(date);
+                    const libur = window.rsiaHariLiburNasional[ymd];
+
+                    if (libur) {
+                        return {
+                            classes: 'tgl-merah-libur',
+                            tooltip: `Libur Nasional: ${libur.keterangan}`
+                        };
+                    }
+                    if (date.getDay() === 0) {
+                        return {
+                            classes: 'tgl-minggu',
+                            tooltip: 'Hari Minggu'
+                        };
+                    }
+                    return true;
+                }
+            }).on('changeDate change', function() {
+                cekStatusTanggalKontrolResume();
+            });
+
+            // Muat data hari libur nasional dari server (cache API kalender nasional)
+            $.get("{{ route('kalender.hari-libur') }}").done(function(res) {
+                if (res && res.data) {
+                    window.rsiaHariLiburNasional = res.data;
+                    $('#tgl_kontrol').datepicker('update');
+                    cekStatusTanggalKontrolResume();
+                }
+            });
         })
 
         function resumeMedis(noRawat) {
@@ -729,6 +860,8 @@
                             $('#formResumeRanap').find('input[name=jam_kontrol]').val(jam_kontrol)
                         });
                     }
+                    $('#tgl_kontrol').datepicker('update');
+                    cekStatusTanggalKontrolResume();
 
                     // set action pencarian
                     $('#formResumeRanap #srcKeluhan').attr('onclick', `listRiwayatPemeriksaan('${response.no_rawat}', 'keluhan')`);
