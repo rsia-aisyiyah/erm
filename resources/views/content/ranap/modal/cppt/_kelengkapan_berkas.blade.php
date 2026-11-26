@@ -102,6 +102,7 @@
         .erm-berkas-table thead {
             display: none;
         }
+
         .erm-berkas-table,
         .erm-berkas-table tbody,
         .erm-berkas-table tbody tr,
@@ -109,12 +110,14 @@
             display: block;
             width: 100%;
         }
+
         .erm-berkas-table tbody tr {
             margin-bottom: 10px;
             border: 1px solid #cbd5e1;
             border-radius: 9px;
             overflow: hidden;
         }
+
         .erm-berkas-table tbody td {
             border: 0 !important;
             border-bottom: 1px dashed #e2e8f0 !important;
@@ -122,6 +125,7 @@
             text-align: left !important;
             padding: 7px 10px;
         }
+
         .erm-berkas-table tbody td:last-child {
             border-bottom: 0 !important;
         }
@@ -135,36 +139,43 @@
                 <div class="fw-bold text-dark d-flex align-items-center gap-2" style="font-size: 13.5px;">
                     <i class="bi bi-folder-check text-primary"></i>
                     <span>Kelengkapan Berkas Rawat Inap</span>
-                    <span class="badge text-bg-primary bg-opacity-10 text-primary border border-primary-subtle" id="ranapBerkasTipeBadge" style="font-size: 10.5px;">-</span>
+                    <span class="badge text-bg-primary bg-opacity-10 text-primary border border-primary-subtle"
+                        id="ranapBerkasTipeBadge" style="font-size: 10.5px;">-</span>
                 </div>
                 <div class="text-muted small" id="ranapBerkasSummaryText">Memeriksa kelengkapan berkas pasien...</div>
             </div>
             <div class="d-flex align-items-center gap-2">
                 <span class="fw-bold fs-5 text-primary" id="ranapBerkasPercentText">0%</span>
-                <button type="button" class="btn btn-sm btn-outline-primary py-1 px-2" onclick="loadKelengkapanBerkasRanap()" title="Refresh status kelengkapan berkas">
+                <button type="button" class="btn btn-sm btn-outline-primary py-1 px-2"
+                    onclick="loadKelengkapanBerkasRanap()" title="Refresh status kelengkapan berkas">
                     <i class="bi bi-arrow-clockwise me-1"></i>Refresh
                 </button>
             </div>
         </div>
         <div class="progress" style="height: 8px; border-radius: 999px; background: #e2e8f0;">
-            <div class="progress-bar bg-primary" id="ranapBerkasProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar bg-primary" id="ranapBerkasProgressBar" role="progressbar" style="width: 0%;"
+                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     </div>
 
     <div class="erm-berkas-filter-bar">
         <div class="d-flex flex-wrap gap-1">
-            <button type="button" class="erm-berkas-filter-btn active" data-filter="all" onclick="setRanapBerkasFilter('all', this)">
+            <button type="button" class="erm-berkas-filter-btn active" data-filter="all"
+                onclick="setRanapBerkasFilter('all', this)">
                 Semua (<span id="ranapBerkasCntAll">0</span>)
             </button>
-            <button type="button" class="erm-berkas-filter-btn" data-filter="missing" onclick="setRanapBerkasFilter('missing', this)">
+            <button type="button" class="erm-berkas-filter-btn" data-filter="missing"
+                onclick="setRanapBerkasFilter('missing', this)">
                 Belum Lengkap (<span id="ranapBerkasCntMissing">0</span>)
             </button>
-            <button type="button" class="erm-berkas-filter-btn" data-filter="done" onclick="setRanapBerkasFilter('done', this)">
+            <button type="button" class="erm-berkas-filter-btn" data-filter="done"
+                onclick="setRanapBerkasFilter('done', this)">
                 Sudah Lengkap (<span id="ranapBerkasCntDone">0</span>)
             </button>
         </div>
         <span class="text-muted" style="font-size: 11px;">
-            <i class="bi bi-info-circle me-1"></i>Berkas <strong>Penunjang (Lab &amp; Radiologi)</strong> bersifat kondisional.
+            <i class="bi bi-info-circle me-1"></i><strong>Surat Kontrol BPJS</strong> wajib bagi pasien BPJS (dicocokkan
+            via No. SEP); <strong>Penunjang (Lab &amp; Radiologi)</strong> bersifat kondisional.
         </span>
     </div>
 
@@ -218,6 +229,15 @@
             renderModalBerkasFloatList();
         }
 
+        function escapeBerkasHtml(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         function renderModalBerkasFloatList() {
             const container = $('#ermModalBerkasFloatBody');
             const flt = window._ranapBerkasState.floatFilter;
@@ -229,46 +249,70 @@
 
             if (!items.length) {
                 container.html(`
-                    <div class="text-center py-4 bg-white rounded-3 border">
-                        <i class="bi bi-check-circle-fill text-success fs-3 d-block mb-1"></i>
-                        <div class="fw-semibold text-dark small">Semua Berkas Terpantau Lengkap</div>
-                    </div>
-                `);
+                            <div class="text-center py-4 bg-white rounded-3 border">
+                                <i class="bi bi-check-circle-fill text-success fs-3 d-block mb-1"></i>
+                                <div class="fw-semibold text-dark small">Semua Berkas Terpantau Lengkap</div>
+                            </div>
+                        `);
                 return;
             }
 
             const html = items.map(function (it) {
+                const isSk = it.key === 'surat_kontrol';
                 let itemCls = '';
                 let badgeHtml = '<span class="badge text-bg-danger" style="font-size:9.5px;">Belum</span>';
                 if (it.completed) {
                     itemCls = it.partial ? 'is-partial' : 'is-ok';
-                    badgeHtml = it.partial
-                        ? '<span class="badge text-bg-warning text-dark" style="font-size:9.5px;">Sebagian</span>'
-                        : '<span class="badge text-bg-success" style="font-size:9.5px;">Lengkap</span>';
+                    if (it.tgl_mismatch) {
+                        badgeHtml = '<span class="badge text-bg-warning text-dark" style="font-size:9.5px;"><i class="bi bi-calendar-x me-1"></i>Tgl Beda</span>';
+                    } else if (it.partial) {
+                        badgeHtml = '<span class="badge text-bg-warning text-dark" style="font-size:9.5px;">Sebagian</span>';
+                    } else {
+                        badgeHtml = '<span class="badge text-bg-success" style="font-size:9.5px;">Lengkap</span>';
+                    }
                 } else if (!it.required) {
                     itemCls = 'is-opt';
-                    badgeHtml = '<span class="badge text-bg-secondary" style="font-size:9.5px;">Penunjang</span>';
+                    badgeHtml = isSk
+                        ? '<span class="badge text-bg-secondary" style="font-size:9.5px;">Non-BPJS</span>'
+                        : '<span class="badge text-bg-secondary" style="font-size:9.5px;">Penunjang</span>';
                 }
 
-                const btnCls = it.completed ? 'btn-outline-primary' : (it.required ? 'btn-danger' : 'btn-outline-secondary');
-                const btnLbl = (it.action === 'tab_lab' || it.action === 'tab_radiologi')
+                const btnCls = it.completed
+                    ? (it.tgl_mismatch ? 'btn-warning text-dark' : 'btn-outline-primary')
+                    : (it.required ? 'btn-danger' : 'btn-outline-secondary');
+                let btnLbl = (it.action === 'tab_lab' || it.action === 'tab_radiologi')
                     ? 'Lihat'
                     : (it.completed ? 'Buka' : 'Isi');
+                if (isSk) {
+                    btnLbl = it.completed ? 'Detail' : (it.required ? 'Cek' : 'Info');
+                }
+
+                let extraMetaHtml = '';
+                if (isSk && (it.no_sep || it.no_surat_kontrol)) {
+                    const sepChip = it.no_sep
+                        ? `<span class="badge bg-light text-dark border font-monospace" style="font-size:9.5px;">SEP: ${escapeBerkasHtml(it.no_sep)}</span>`
+                        : '';
+                    const skChip = it.no_surat_kontrol
+                        ? `<span class="badge bg-primary-subtle text-primary border border-primary-subtle font-monospace" style="font-size:9.5px;">SKRI: ${escapeBerkasHtml(it.no_surat_kontrol)}</span>`
+                        : '';
+                    extraMetaHtml = `<div class="d-flex flex-wrap gap-1 mt-1">${sepChip}${skChip}</div>`;
+                }
 
                 return `
-                    <div class="erm-mbpanel-item ${itemCls}">
-                        <div class="min-w-0">
-                            <div class="fw-semibold text-dark d-flex align-items-center gap-1 flex-wrap">
-                                <span>${it.label}</span>
-                                ${badgeHtml}
+                            <div class="erm-mbpanel-item ${itemCls}">
+                                <div class="min-w-0">
+                                    <div class="fw-semibold text-dark d-flex align-items-center gap-1 flex-wrap">
+                                        <span>${escapeBerkasHtml(it.label)}</span>
+                                        ${badgeHtml}
+                                    </div>
+                                    <div class="text-muted ${isSk ? '' : 'text-truncate'}" style="font-size: 10.5px;">${escapeBerkasHtml(it.detail || '-')}</div>
+                                    ${extraMetaHtml}
+                                </div>
+                                <button type="button" class="btn btn-sm ${btnCls} py-0 px-2 flex-shrink-0" style="font-size: 10.5px;" onclick="toggleModalBerkasFloatPanel(false); bukaBerkasRanap('${escapeBerkasHtml(it.action)}');">
+                                    ${btnLbl}
+                                </button>
                             </div>
-                            <div class="text-muted text-truncate" style="font-size: 10.5px;">${it.detail || '-'}</div>
-                        </div>
-                        <button type="button" class="btn btn-sm ${btnCls} py-0 px-2 flex-shrink-0" style="font-size: 10.5px;" onclick="toggleModalBerkasFloatPanel(false); bukaBerkasRanap('${it.action}');">
-                            ${btnLbl}
-                        </button>
-                    </div>
-                `;
+                        `;
             }).join('');
 
             container.html(html);
@@ -381,12 +425,12 @@
                 }
                 $('#ermModalBerkasFloatBody').html('<div class="alert alert-danger py-2 px-3 small mb-0"><i class="bi bi-exclamation-circle me-1"></i>Gagal memeriksa kelengkapan berkas.</div>');
                 $('#ranapBerkasTbody').html(`
-                    <tr>
-                        <td colspan="5" class="text-center text-danger py-3">
-                            <i class="bi bi-exclamation-circle me-1"></i>Gagal memeriksa kelengkapan berkas.
-                        </td>
-                    </tr>
-                `);
+                            <tr>
+                                <td colspan="5" class="text-center text-danger py-3">
+                                    <i class="bi bi-exclamation-circle me-1"></i>Gagal memeriksa kelengkapan berkas.
+                                </td>
+                            </tr>
+                        `);
             }).always(function () {
                 $('#ermModalBerkasRefreshIco').removeClass('ranap-mon-spin');
             });
@@ -403,62 +447,156 @@
 
             if (!items.length) {
                 tbody.html(`
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-4">
-                            <i class="bi bi-check-circle-fill text-success fs-4 d-block mb-1"></i>
-                            Tidak ada berkas pada filter ini.
-                        </td>
-                    </tr>
-                `);
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    <i class="bi bi-check-circle-fill text-success fs-4 d-block mb-1"></i>
+                                    Tidak ada berkas pada filter ini.
+                                </td>
+                            </tr>
+                        `);
                 return;
             }
 
             const html = items.map(function (it) {
+                const isSk = it.key === 'surat_kontrol';
                 let rowCls = 'is-missing';
                 let statusBadge = '<span class="badge text-bg-danger"><i class="bi bi-x-circle me-1"></i>Belum Diisi</span>';
 
                 if (it.completed) {
                     rowCls = 'is-done';
-                    if (it.partial) {
+                    if (it.tgl_mismatch) {
+                        statusBadge = '<span class="badge text-bg-warning text-dark"><i class="bi bi-calendar-x me-1"></i>Tgl Kontrol Beda</span>';
+                    } else if (it.partial) {
                         statusBadge = '<span class="badge text-bg-warning text-dark"><i class="bi bi-exclamation-circle me-1"></i>Sebagian Terisi</span>';
                     } else {
                         statusBadge = '<span class="badge text-bg-success"><i class="bi bi-check-circle-fill me-1"></i>Sudah Terisi</span>';
                     }
                 } else if (!it.required) {
                     rowCls = 'is-optional';
-                    statusBadge = '<span class="badge text-bg-secondary"><i class="bi bi-dash-circle me-1"></i>Kondisional</span>';
+                    statusBadge = isSk
+                        ? '<span class="badge text-bg-secondary"><i class="bi bi-dash-circle me-1"></i>Non-BPJS</span>'
+                        : '<span class="badge text-bg-secondary"><i class="bi bi-dash-circle me-1"></i>Kondisional</span>';
                 }
 
                 const reqTag = it.required
                     ? '<span class="badge bg-danger-subtle text-danger border border-danger-subtle ms-1" style="font-size: 9.5px;">Wajib</span>'
-                    : '<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle ms-1" style="font-size: 9.5px;">Penunjang</span>';
+                    : (isSk
+                        ? '<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle ms-1" style="font-size: 9.5px;">Non-BPJS</span>'
+                        : '<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle ms-1" style="font-size: 9.5px;">Penunjang</span>');
 
-                const btnLabel = (it.action === 'tab_lab' || it.action === 'tab_radiologi')
+                let btnLabel = (it.action === 'tab_lab' || it.action === 'tab_radiologi')
                     ? '<i class="bi bi-eye me-1"></i>Lihat Hasil'
                     : (it.completed ? '<i class="bi bi-pencil-square me-1"></i>Lihat / Ubah' : '<i class="bi bi-plus-circle me-1"></i>Isi Berkas');
+                if (isSk) {
+                    btnLabel = it.completed
+                        ? '<i class="bi bi-printer me-1"></i>Detail / Cetak'
+                        : (it.required ? '<i class="bi bi-search me-1"></i>Cek SEP / SKRI' : '<i class="bi bi-info-circle me-1"></i>Info');
+                }
 
-                const btnCls = it.completed ? 'btn-outline-primary' : (it.required ? 'btn-danger' : 'btn-outline-secondary');
+                const btnCls = it.completed
+                    ? (it.tgl_mismatch ? 'btn-warning text-dark' : 'btn-outline-primary')
+                    : (it.required ? 'btn-danger' : 'btn-outline-secondary');
 
                 return `
-                    <tr class="${rowCls}">
-                        <td>
-                            <div class="fw-semibold text-dark">${it.label}${reqTag}</div>
-                        </td>
-                        <td>
-                            <span class="badge text-bg-light border text-secondary">${it.category}</span>
-                        </td>
-                        <td>${statusBadge}</td>
-                        <td class="text-muted" style="font-size: 11.5px;">${it.detail || '-'}</td>
-                        <td>
-                            <button type="button" class="btn btn-sm ${btnCls} py-0 px-2" style="font-size: 11px;" onclick="bukaBerkasRanap('${it.action}')">
-                                ${btnLabel}
-                            </button>
-                        </td>
-                    </tr>
-                `;
+                            <tr class="${rowCls}">
+                                <td>
+                                    <div class="fw-semibold text-dark">${escapeBerkasHtml(it.label)}${reqTag}</div>
+                                </td>
+                                <td>
+                                    <span class="badge text-bg-light border text-secondary">${escapeBerkasHtml(it.category)}</span>
+                                </td>
+                                <td>${statusBadge}</td>
+                                <td class="text-muted" style="font-size: 11.5px;">${escapeBerkasHtml(it.detail || '-')}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm ${btnCls} py-0 px-2" style="font-size: 11px;" onclick="bukaBerkasRanap('${escapeBerkasHtml(it.action)}')">
+                                        ${btnLabel}
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
             }).join('');
 
             tbody.html(html);
+        }
+
+        function tampilkanDetailSuratKontrolBerkas(item, noRawat) {
+            const it = item || {};
+            const hasSk = Boolean(it.completed && it.no_surat_kontrol);
+            const hasSep = Boolean(it.no_sep);
+            const isBpjs = Boolean(it.is_bpjs ?? it.required);
+            const isMismatch = Boolean(it.tgl_mismatch);
+
+            const statusHtml = hasSk
+                ? (isMismatch
+                    ? '<span class="badge text-bg-warning text-dark">SKRI Ditemukan • Tanggal Kontrol Beda dengan Resume</span>'
+                    : '<span class="badge text-bg-success">SEP &amp; Surat Kontrol BPJS Cocok</span>')
+                : (!isBpjs
+                    ? '<span class="badge text-bg-secondary">Pasien Non-BPJS (Tidak Wajib SKRI)</span>'
+                    : (hasSep
+                        ? '<span class="badge text-bg-danger">SEP Ada • Surat Kontrol Belum Terbit</span>'
+                        : '<span class="badge text-bg-danger">Nomor SEP Belum Ditemukan</span>'));
+
+            const bodyHtml = `
+                        <div class="text-start small">
+                            <div class="mb-2">${statusHtml}</div>
+                            <table class="table table-sm table-bordered mb-2" style="font-size: 12px;">
+                                <tbody>
+                                    <tr>
+                                        <th class="bg-light" style="width: 38%;">No. Rawat</th>
+                                        <td class="font-monospace">${escapeBerkasHtml(noRawat || '-')}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">No. SEP</th>
+                                        <td class="font-monospace fw-semibold">${escapeBerkasHtml(it.no_sep || 'Belum terbit')}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">No. Surat Kontrol</th>
+                                        <td class="font-monospace fw-semibold text-primary">${escapeBerkasHtml(it.no_surat_kontrol || 'Belum terbit')}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Tgl Rencana Kontrol</th>
+                                        <td>${escapeBerkasHtml(it.tgl_rencana || '-')}${isMismatch ? ` <span class="text-danger fw-semibold">(Resume: ${escapeBerkasHtml(it.tgl_kontrol_resume || 'Kosong')})</span>` : ''}</td>
+                                    </tr>
+                                    ${it.nm_poli_bpjs ? `<tr><th class="bg-light">Poli BPJS</th><td>${escapeBerkasHtml(it.nm_poli_bpjs)}</td></tr>` : ''}
+                                    ${it.nm_dokter_bpjs ? `<tr><th class="bg-light">Dokter BPJS</th><td>${escapeBerkasHtml(it.nm_dokter_bpjs)}</td></tr>` : ''}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+
+            if (typeof Swal === 'undefined') {
+                if (hasSk) {
+                    window.open(`/erm/rencanaKontrol/print/${encodeURIComponent(it.no_surat_kontrol)}`, '_blank');
+                }
+                return;
+            }
+
+            Swal.fire({
+                title: 'Surat Kontrol BPJS (SKRI)',
+                html: bodyHtml,
+                icon: hasSk ? (isMismatch ? 'warning' : 'success') : (isBpjs ? 'warning' : 'info'),
+                showConfirmButton: hasSk || isBpjs,
+                confirmButtonText: hasSk
+                    ? '<i class="bi bi-printer me-1"></i>Cetak Surat Kontrol'
+                    : '<i class="bi bi-box-arrow-up-right me-1"></i>Buka Menu SEP',
+                showDenyButton: isMismatch || (isBpjs && !hasSk),
+                denyButtonText: '<i class="bi bi-file-text me-1"></i>Buka Resume Medis',
+                denyButtonColor: '#2563eb',
+                showCancelButton: true,
+                cancelButtonText: 'Tutup',
+            }).then(function (res) {
+                if (res.isConfirmed) {
+                    if (hasSk) {
+                        window.open(`/erm/rencanaKontrol/print/${encodeURIComponent(it.no_surat_kontrol)}`, '_blank');
+                    } else {
+                        window.open('/erm/sep', '_blank');
+                    }
+                } else if (res.isDenied) {
+                    if (typeof resumeMedis === 'function') {
+                        resumeMedis(noRawat);
+                    }
+                }
+            });
         }
 
         function bukaBerkasRanap(actionKey) {
@@ -511,6 +649,11 @@
                 case 'resume_medis':
                     if (typeof resumeMedis === 'function') resumeMedis(noRawat);
                     break;
+                case 'surat_kontrol': {
+                    const skItem = (window._ranapBerkasState.items || []).find((x) => x.key === 'surat_kontrol');
+                    tampilkanDetailSuratKontrolBerkas(skItem, noRawat);
+                    break;
+                }
                 case 'tab_lab':
                     $('#tab-laboratorium').trigger('click');
                     break;

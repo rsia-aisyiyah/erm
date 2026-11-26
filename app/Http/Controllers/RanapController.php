@@ -74,10 +74,13 @@ class RanapController extends Controller
             $ranap->where('stts_pulang', $request->stts_pulang);
         } else if ($request->stts_pulang == 'Masuk') {
             $ranap->whereBetween('tgl_masuk', [$request->tgl_pertama, $request->tgl_kedua])
-            ->where('stts_pulang', '!=', 'Pindah Kamar');
+                ->where('stts_pulang', '!=', 'Pindah Kamar');
         } else if ($request->stts_pulang == 'Pulang') {
             $ranap->whereBetween('tgl_keluar', [$request->tgl_pertama, $request->tgl_kedua])
-            ->where('stts_pulang', '!=', 'Pindah Kamar');
+                ->whereNotIn('stts_pulang', ['-', 'Pindah Kamar']);
+        } else if ($request->stts_pulang == 'Rujuk') {
+            $ranap->whereBetween('tgl_keluar', [$request->tgl_pertama, $request->tgl_kedua])
+                ->where('stts_pulang', 'like', '%Rujuk%');
         }
 
         if ($request->kd_dokter) {
@@ -315,9 +318,12 @@ class RanapController extends Controller
         usort($items, function ($a, $b) {
             $score = function ($item) {
                 $s = 0;
-                if (in_array('tanggal_tidak_cocok', $item['issues'], true)) $s += 4;
-                if (in_array('belum_surat_kontrol', $item['issues'], true)) $s += 2;
-                if (in_array('belum_resume', $item['issues'], true)) $s += 1;
+                if (in_array('tanggal_tidak_cocok', $item['issues'], true))
+                    $s += 4;
+                if (in_array('belum_surat_kontrol', $item['issues'], true))
+                    $s += 2;
+                if (in_array('belum_resume', $item['issues'], true))
+                    $s += 1;
                 return $s;
             };
             $diff = $score($b) <=> $score($a);
@@ -366,6 +372,7 @@ class RanapController extends Controller
             ->join('pasien as p', 'p.no_rkm_medis', '=', 'rp.no_rkm_medis')
             ->leftJoin('dokter as d', 'd.kd_dokter', '=', 'rp.kd_dokter')
             ->leftJoin('spesialis as s', 's.kd_sps', '=', 'd.kd_sps')
+            ->leftJoin('penjab as pj', 'pj.kd_pj', '=', 'rp.kd_pj')
             ->where('rp.no_rawat', $noRawat)
             ->select([
                 'rp.no_rawat',
@@ -374,12 +381,14 @@ class RanapController extends Controller
                 'rp.umurdaftar',
                 'rp.sttsumur',
                 'rp.kd_dokter',
+                'rp.kd_pj',
                 'p.nm_pasien',
                 'p.tgl_lahir',
                 'p.jk',
                 'd.nm_dokter',
                 'd.kd_sps',
                 's.nm_sps',
+                'pj.png_jawab',
             ])
             ->first();
 
@@ -498,6 +507,48 @@ class RanapController extends Controller
 
         // 8. Discharge Planning
         $discharge = $safeFirst('rsia_discharge_planning');
+
+        // 9. Surat Kontrol BPJS (ambil no_sep berdasarkan no_rawat lalu cocokkan ke bridging_surat_kontrol_bpjs)
+        $sep = null;
+        try {
+            $sep = DB::table('bridging_sep')
+                ->where('no_rawat', $noRawat)
+                ->select(['no_rawat', 'no_sep', 'jnspelayanan', 'tglsep'])
+                ->orderByRaw("CASE WHEN jnspelayanan = '1' THEN 0 ELSE 1 END ASC")
+                ->orderByDesc('tglsep')
+                ->first();
+        } catch (\Throwable $e) {
+            $sep = null;
+        }
+
+        $noSep = $sep->no_sep ?? null;
+        $suratKontrol = null;
+        if (!empty($noSep)) {
+            try {
+                $suratKontrol = DB::table('bridging_surat_kontrol_bpjs')
+                    ->where('no_sep', $noSep)
+                    ->select(['no_sep', 'no_surat', 'tgl_surat', 'tgl_rencana', 'nm_poli_bpjs', 'nm_dokter_bpjs'])
+                    ->orderByDesc('tgl_surat')
+                    ->orderByDesc('tgl_rencana')
+                    ->first();
+            } catch (\Throwable $e) {
+                $suratKontrol = null;
+            }
+        }
+
+        $normalizeDate = function ($val): ?string {
+            if (empty($val)) {
+                return null;
+            }
+            $str = trim((string) $val);
+            if ($str === '-' || str_starts_with($str, '0000-00-00')) {
+                return null;
+            }
+            $datePart = substr($str, 0, 10);
+            return preg_match('/^\d{4}-\d{2}-\d{2}$/', $datePart) ? $datePart : null;
+        };
+
+        $isBpjs = stripos((string) ($reg->png_jawab ?? ''), 'BPJS') !== false || !empty($noSep);
 
         $items = [];
 
@@ -656,9 +707,7 @@ class RanapController extends Controller
         ];
 
         // H. Resume Medis
-        $tglKontrolRes = ($resume && !empty($resume->kontrol) && !str_starts_with((string) $resume->kontrol, '0000-00-00'))
-            ? substr((string) $resume->kontrol, 0, 10)
-            : null;
+        $tglKontrolRes = $resume ? $normalizeDate($resume->kontrol ?? null) : null;
         $items[] = [
             'key' => 'resume_medis',
             'label' => 'Resume Medis Ranap',
@@ -669,6 +718,49 @@ class RanapController extends Controller
                 ? ('Terbit' . ($tglKontrolRes ? ' • Kontrol: ' . $tglKontrolRes : ''))
                 : 'Belum terbit resume medis',
             'action' => 'resume_medis',
+        ];
+
+        // H2. Surat Kontrol BPJS (cocokkan no_rawat -> bridging_sep.no_sep -> bridging_surat_kontrol_bpjs.no_sep)
+        $hasSuratKontrol = (bool) ($suratKontrol && !empty($suratKontrol->no_surat));
+        $tglKontrolBpjs = $hasSuratKontrol ? $normalizeDate($suratKontrol->tgl_rencana ?? null) : null;
+        $skTglMismatch = (bool) ($hasSuratKontrol && $resume && !empty($tglKontrolBpjs) && ($tglKontrolRes !== $tglKontrolBpjs));
+
+        if ($hasSuratKontrol) {
+            $skDetail = "SEP {$noSep} • SKRI: {$suratKontrol->no_surat}";
+            if ($tglKontrolBpjs) {
+                $skDetail .= " • Rencana: {$tglKontrolBpjs}";
+            }
+            if (!empty($suratKontrol->nm_poli_bpjs)) {
+                $skDetail .= " • {$suratKontrol->nm_poli_bpjs}";
+            }
+            if ($skTglMismatch) {
+                $skDetail .= ' • Tgl beda dg Resume (' . ($tglKontrolRes ?: 'Kosong') . ')';
+            }
+        } elseif (!empty($noSep)) {
+            $skDetail = "SEP {$noSep} ditemukan, Surat Kontrol BPJS belum terbit";
+        } elseif ($isBpjs) {
+            $skDetail = 'Nomor SEP belum ditemukan untuk No. Rawat ini';
+        } else {
+            $skDetail = 'Pasien Non-BPJS (' . ($reg->png_jawab ?: 'Umum') . ') • Tidak wajib SKRI BPJS';
+        }
+
+        $items[] = [
+            'key' => 'surat_kontrol',
+            'label' => 'Surat Kontrol BPJS (SKRI)',
+            'category' => 'Kepulangan',
+            'required' => $isBpjs,
+            'completed' => $hasSuratKontrol,
+            'partial' => $skTglMismatch,
+            'tgl_mismatch' => $skTglMismatch,
+            'is_bpjs' => $isBpjs,
+            'no_sep' => $noSep,
+            'no_surat_kontrol' => $suratKontrol->no_surat ?? null,
+            'tgl_rencana' => $tglKontrolBpjs,
+            'tgl_kontrol_resume' => $tglKontrolRes,
+            'nm_poli_bpjs' => $suratKontrol->nm_poli_bpjs ?? null,
+            'nm_dokter_bpjs' => $suratKontrol->nm_dokter_bpjs ?? null,
+            'detail' => $skDetail,
+            'action' => 'surat_kontrol',
         ];
 
         // I. Penunjang Laboratorium (Kondisional)
@@ -699,9 +791,9 @@ class RanapController extends Controller
             'action' => 'tab_radiologi',
         ];
 
-        $requiredItems = array_values(array_filter($items, fn ($it) => $it['required']));
+        $requiredItems = array_values(array_filter($items, fn($it) => $it['required']));
         $requiredTotal = count($requiredItems);
-        $requiredCompleted = count(array_filter($requiredItems, fn ($it) => $it['completed']));
+        $requiredCompleted = count(array_filter($requiredItems, fn($it) => $it['completed']));
         $percent = $requiredTotal > 0 ? (int) round(($requiredCompleted / $requiredTotal) * 100) : 100;
 
         $tipePasien = $isNeonatus
@@ -716,6 +808,9 @@ class RanapController extends Controller
                 'nm_pasien' => $reg->nm_pasien,
                 'kd_sps' => $kdSps,
                 'tipe_pasien' => $tipePasien,
+                'png_jawab' => $reg->png_jawab ?? '-',
+                'is_bpjs' => $isBpjs,
+                'no_sep' => $noSep,
             ],
             'summary' => [
                 'required_total' => $requiredTotal,
@@ -742,6 +837,7 @@ class RanapController extends Controller
             ->join('reg_periksa as rp', 'rp.no_rawat', '=', 'ki.no_rawat')
             ->join('pasien as p', 'p.no_rkm_medis', '=', 'rp.no_rkm_medis')
             ->leftJoin('dokter as d', 'd.kd_dokter', '=', 'rp.kd_dokter')
+            ->leftJoin('penjab as pj', 'pj.kd_pj', '=', 'rp.kd_pj')
             ->leftJoin('kamar as k', 'k.kd_kamar', '=', 'ki.kd_kamar')
             ->leftJoin('bangsal as b', 'b.kd_bangsal', '=', 'k.kd_bangsal')
             ->select([
@@ -753,10 +849,12 @@ class RanapController extends Controller
                 'rp.tgl_registrasi',
                 'rp.sttsumur',
                 'rp.kd_dokter',
+                'rp.kd_pj',
                 'p.nm_pasien',
                 'p.tgl_lahir',
                 'd.nm_dokter',
                 'd.kd_sps',
+                'pj.png_jawab',
                 'b.nm_bangsal',
             ])
             ->orderByDesc('ki.no_rawat');
@@ -768,7 +866,10 @@ class RanapController extends Controller
                 ->where('ki.stts_pulang', '!=', 'Pindah Kamar');
         } elseif ($sttsPulang === 'Pulang' && $tglAwal && $tglAkhir) {
             $query->whereBetween('ki.tgl_keluar', [$tglAwal, $tglAkhir])
-                ->where('ki.stts_pulang', '!=', 'Pindah Kamar');
+                ->whereNotIn('ki.stts_pulang', ['-', 'Pindah Kamar']);
+        } elseif ($sttsPulang === 'Rujuk' && $tglAwal && $tglAkhir) {
+            $query->whereBetween('ki.tgl_keluar', [$tglAwal, $tglAkhir])
+                ->where('ki.stts_pulang', 'like', '%Rujuk%');
         } else {
             $query->where('ki.stts_pulang', '-');
         }
@@ -822,7 +923,7 @@ class RanapController extends Controller
                     ->select('no_rawat', DB::raw('COUNT(*) as total'))
                     ->groupBy('no_rawat')
                     ->pluck('total', 'no_rawat')
-                    ->map(fn ($v) => (int) $v)
+                    ->map(fn($v) => (int) $v)
                     ->all();
             } catch (\Throwable $e) {
                 return [];
@@ -836,11 +937,63 @@ class RanapController extends Controller
         $setAsmedIgd = $fetchSet('penilaian_medis_igd');
         $setAsmedObgyn = $fetchSet('penilaian_medis_ranap_kandungan');
         $setAsmedAnak = $fetchSet('penilaian_medis_ranap');
-        $setResume = $fetchSet('resume_pasien_ranap');
+        $mapResumeKontrol = [];
+        try {
+            $mapResumeKontrol = DB::table('resume_pasien_ranap')
+                ->whereIn('no_rawat', $noRawats)
+                ->pluck('kontrol', 'no_rawat')
+                ->all();
+        } catch (\Throwable $e) {
+            $mapResumeKontrol = [];
+        }
         $setPoc = $fetchSet('plan_of_care');
         $setDischarge = $fetchSet('rsia_discharge_planning');
         $setSkoringTb = $fetchSet('rsia_skoring_tb');
         $setSkriningTb = $fetchSet('rsia_skrining_tb');
+
+        // Batch SEP (prioritas jnspelayanan = '1' / Ranap) & Surat Kontrol BPJS per no_sep
+        $sepByNoRawat = collect();
+        try {
+            $sepByNoRawat = DB::table('bridging_sep')
+                ->whereIn('no_rawat', $noRawats)
+                ->select(['no_rawat', 'no_sep', 'jnspelayanan', 'tglsep'])
+                ->orderByRaw("CASE WHEN jnspelayanan = '1' THEN 0 ELSE 1 END ASC")
+                ->orderByDesc('tglsep')
+                ->get()
+                ->groupBy('no_rawat')
+                ->map(fn($group) => $group->first());
+        } catch (\Throwable $e) {
+            $sepByNoRawat = collect();
+        }
+
+        $noSeps = $sepByNoRawat->pluck('no_sep')->filter()->unique()->values()->all();
+        $suratKontrolBySep = collect();
+        if (!empty($noSeps)) {
+            try {
+                $suratKontrolBySep = DB::table('bridging_surat_kontrol_bpjs')
+                    ->whereIn('no_sep', $noSeps)
+                    ->select(['no_sep', 'no_surat', 'tgl_surat', 'tgl_rencana', 'nm_poli_bpjs', 'nm_dokter_bpjs'])
+                    ->orderByDesc('tgl_surat')
+                    ->orderByDesc('tgl_rencana')
+                    ->get()
+                    ->groupBy('no_sep')
+                    ->map(fn($group) => $group->first());
+            } catch (\Throwable $e) {
+                $suratKontrolBySep = collect();
+            }
+        }
+
+        $normalizeBatchDate = function ($val): ?string {
+            if (empty($val)) {
+                return null;
+            }
+            $str = trim((string) $val);
+            if ($str === '-' || str_starts_with($str, '0000-00-00')) {
+                return null;
+            }
+            $datePart = substr($str, 0, 10);
+            return preg_match('/^\d{4}-\d{2}-\d{2}$/', $datePart) ? $datePart : null;
+        };
 
         $setNyeriNeo = $fetchSet('rsia_asesmen_nyeri_neonatal');
         $setNyeriBatita = $fetchSet('rsia_asesmen_nyeri_anak_1bl3th');
@@ -863,6 +1016,7 @@ class RanapController extends Controller
             'tb' => ['label' => 'TB (Skor/Skrin)', 'done' => 0, 'total' => 0, 'required' => true],
             'discharge' => ['label' => 'Discharge Plan', 'done' => 0, 'total' => 0, 'required' => true],
             'resume' => ['label' => 'Resume Medis', 'done' => 0, 'total' => 0, 'required' => true],
+            'surat_kontrol' => ['label' => 'Surat Kontrol', 'done' => 0, 'total' => 0, 'required' => true],
             'lab' => ['label' => 'Penunjang Lab', 'done' => 0, 'total' => 0, 'required' => false],
             'rad' => ['label' => 'Penunjang Rad', 'done' => 0, 'total' => 0, 'required' => false],
         ];
@@ -945,7 +1099,17 @@ class RanapController extends Controller
             $dischargeOk = isset($setDischarge[$nr]);
 
             // 8. Resume Medis
-            $resumeOk = isset($setResume[$nr]);
+            $resumeOk = array_key_exists($nr, $mapResumeKontrol);
+            $tglKontrolRes = $resumeOk ? $normalizeBatchDate($mapResumeKontrol[$nr] ?? null) : null;
+
+            // 8b. Surat Kontrol BPJS (cocokkan no_rawat -> bridging_sep.no_sep -> bridging_surat_kontrol_bpjs.no_sep)
+            $sepRow = $sepByNoRawat->get($nr);
+            $noSep = $sepRow->no_sep ?? null;
+            $skRow = $noSep ? $suratKontrolBySep->get($noSep) : null;
+            $isBpjs = stripos((string) ($r->png_jawab ?? ''), 'BPJS') !== false || !empty($noSep);
+            $skOk = (bool) ($skRow && !empty($skRow->no_surat));
+            $tglKontrolBpjs = $skOk ? $normalizeBatchDate($skRow->tgl_rencana ?? null) : null;
+            $skMismatch = (bool) ($skOk && $resumeOk && !empty($tglKontrolBpjs) && ($tglKontrolRes !== $tglKontrolBpjs));
 
             // 9. Lab & Rad (kondisional)
             $labOk = (($cntPermLab[$nr] ?? 0) > 0) || (($cntHasilLab[$nr] ?? 0) > 0);
@@ -960,6 +1124,22 @@ class RanapController extends Controller
                 ['key' => 'tb', 'short' => 'TB', 'required' => true, 'completed' => $tbOk, 'action' => 'skoring_tb'],
                 ['key' => 'discharge', 'short' => 'Discharge', 'required' => true, 'completed' => $dischargeOk, 'action' => 'discharge_planning'],
                 ['key' => 'resume', 'short' => 'Resume', 'required' => true, 'completed' => $resumeOk, 'action' => 'resume_medis'],
+                [
+                    'key' => 'surat_kontrol',
+                    'short' => 'SKRI',
+                    'required' => $isBpjs,
+                    'completed' => $skOk,
+                    'partial' => $skMismatch,
+                    'tgl_mismatch' => $skMismatch,
+                    'is_bpjs' => $isBpjs,
+                    'no_sep' => $noSep,
+                    'no_surat_kontrol' => $skRow->no_surat ?? null,
+                    'tgl_rencana' => $tglKontrolBpjs,
+                    'tgl_kontrol_resume' => $tglKontrolRes,
+                    'nm_poli_bpjs' => $skRow->nm_poli_bpjs ?? null,
+                    'nm_dokter_bpjs' => $skRow->nm_dokter_bpjs ?? null,
+                    'action' => 'surat_kontrol',
+                ],
                 ['key' => 'lab', 'short' => 'Lab', 'required' => false, 'completed' => $labOk, 'action' => 'penunjang'],
                 ['key' => 'rad', 'short' => 'Rad', 'required' => false, 'completed' => $radOk, 'action' => 'penunjang'],
             ];
@@ -968,9 +1148,18 @@ class RanapController extends Controller
             $reqDone = 0;
             foreach ($berkas as $b) {
                 $k = $b['key'];
-                $perBerkas[$k]['total']++;
-                if ($b['completed']) {
-                    $perBerkas[$k]['done']++;
+                if ($k === 'surat_kontrol') {
+                    if ($b['required']) {
+                        $perBerkas[$k]['total']++;
+                        if ($b['completed']) {
+                            $perBerkas[$k]['done']++;
+                        }
+                    }
+                } else {
+                    $perBerkas[$k]['total']++;
+                    if ($b['completed']) {
+                        $perBerkas[$k]['done']++;
+                    }
                 }
                 if ($b['required']) {
                     $reqTotal++;
@@ -1002,7 +1191,7 @@ class RanapController extends Controller
         }
 
         // Urutkan pasien dengan persentase kelengkapan terendah di atas agar cepat ditindaklanjuti
-        usort($items, fn ($a, $b) => $a['percent'] <=> $b['percent']);
+        usort($items, fn($a, $b) => $a['percent'] <=> $b['percent']);
 
         $totalPasien = count($items);
         $avgPercent = $totalPasien > 0 ? (int) round($sumPercent / $totalPasien) : 0;
@@ -1029,6 +1218,78 @@ class RanapController extends Controller
                 'per_berkas' => $perBerkasList,
             ],
             'items' => $items,
+        ]);
+    }
+
+    /**
+     * Ringkasan KPI Rawat Inap sesuai rentang tanggal & filter tabel aktif:
+     * - Sedang Dirawat (aktif saat ini)
+     * - Pasien Baru Masuk (pada periode filter / hari ini)
+     * - Pasien Pulang (pada periode filter / hari ini)
+     * - Pasien Rujuk (pada periode filter / hari ini)
+     */
+    public function statistik(Request $request)
+    {
+        $today = Carbon::today()->format('Y-m-d');
+        $tglAwal = $request->filled('tgl_pertama') ? $request->tgl_pertama : $today;
+        $tglAkhir = $request->filled('tgl_kedua') ? $request->tgl_kedua : $today;
+
+        $applyCommonFilters = function ($q) use ($request) {
+            $q->join('reg_periksa as rp', 'rp.no_rawat', '=', 'ki.no_rawat')
+                ->leftJoin('dokter as d', 'd.kd_dokter', '=', 'rp.kd_dokter')
+                ->leftJoin('kamar as k', 'k.kd_kamar', '=', 'ki.kd_kamar')
+                ->leftJoin('bangsal as b', 'b.kd_bangsal', '=', 'k.kd_bangsal');
+
+            if ($request->filled('kd_dokter')) {
+                $q->where('rp.kd_dokter', $request->kd_dokter);
+            }
+            if ($request->filled('spesialis')) {
+                $q->where('d.kd_sps', $request->spesialis);
+            }
+            if ($request->filled('kamar')) {
+                $q->where('b.nm_bangsal', 'like', '%' . $request->kamar . '%');
+            }
+            return $q;
+        };
+
+        $sedangDirawat = (int) $applyCommonFilters(DB::table('kamar_inap as ki'))
+            ->where('ki.stts_pulang', '-')
+            ->distinct('ki.no_rawat')
+            ->count('ki.no_rawat');
+
+        $baruMasuk = (int) $applyCommonFilters(DB::table('kamar_inap as ki'))
+            ->whereBetween('ki.tgl_masuk', [$tglAwal, $tglAkhir])
+            ->where('ki.stts_pulang', '!=', 'Pindah Kamar')
+            ->distinct('ki.no_rawat')
+            ->count('ki.no_rawat');
+
+        $pasienPulang = (int) $applyCommonFilters(DB::table('kamar_inap as ki'))
+            ->whereBetween('ki.tgl_keluar', [$tglAwal, $tglAkhir])
+            ->whereNotIn('ki.stts_pulang', ['-', 'Pindah Kamar'])
+            ->where('ki.tgl_keluar', '!=', '0000-00-00')
+            ->distinct('ki.no_rawat')
+            ->count('ki.no_rawat');
+
+        $pasienRujuk = (int) $applyCommonFilters(DB::table('kamar_inap as ki'))
+            ->whereBetween('ki.tgl_keluar', [$tglAwal, $tglAkhir])
+            ->where('ki.tgl_keluar', '!=', '0000-00-00')
+            ->where('ki.stts_pulang', 'like', '%Rujuk%')
+            ->distinct('ki.no_rawat')
+            ->count('ki.no_rawat');
+
+        return response()->json([
+            'success' => true,
+            'periode' => [
+                'awal' => $tglAwal,
+                'akhir' => $tglAkhir,
+                'is_today' => ($tglAwal === $today && $tglAkhir === $today),
+            ],
+            'stats' => [
+                'sedang_dirawat' => $sedangDirawat,
+                'baru_masuk' => $baruMasuk,
+                'pulang' => $pasienPulang,
+                'rujuk' => $pasienRujuk,
+            ],
         ]);
     }
 }

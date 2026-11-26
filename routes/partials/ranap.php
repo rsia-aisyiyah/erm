@@ -10,6 +10,7 @@ Route::middleware(['auth'])->group(function () {
         $q->get('monitoring-pulang', [\App\Http\Controllers\RanapController::class, 'monitoringPulang'])->name('ranap.monitoring-pulang');
         $q->get('kelengkapan-berkas', [\App\Http\Controllers\RanapController::class, 'kelengkapanBerkas'])->name('ranap.kelengkapan-berkas');
         $q->get('kelengkapan-berkas-batch', [\App\Http\Controllers\RanapController::class, 'kelengkapanBerkasBatch'])->name('ranap.kelengkapan-berkas-batch');
+        $q->get('statistik', [\App\Http\Controllers\RanapController::class, 'statistik'])->name('ranap.statistik');
         $q->get('pemeriksaan-ranap/table', [PemeriksaanRanapController::class, 'dataTable'])->name('ranap.pemeriksaan-ranap.table');
         $q->get('pemeriksaan-ranap', [PemeriksaanRanapController::class, 'index'])->name('ranap.pemeriksaan-ranap.index');
 

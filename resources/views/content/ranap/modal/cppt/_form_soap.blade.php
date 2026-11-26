@@ -51,23 +51,19 @@
         <div class="col-12 col-xl-6">
             {{-- Card 1: Subjek (S) & Objek (O) --}}
             <div class="erm-section-card">
-                <div class="erm-section-title">
-                    <i class="bi bi-journal-medical"></i>
-                    <span>Subjek (S) &amp; Objek (O)</span>
-                </div>
                 <div class="row g-2">
                     <div class="col-12">
                         <label for="subjek" class="form-label mb-1 fw-semibold">
                             <span class="badge bg-primary me-1">S</span>Subjek (Keluhan Pasien)
                         </label>
-                        <textarea class="form-control form-control-sm" name="subjek" id="subjek" cols="30" rows="4"
+                        <textarea class="form-control form-control-sm" name="subjek" id="subjek" cols="30" rows="6"
                             onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                     </div>
                     <div class="col-12">
                         <label for="objek" class="form-label mb-1 fw-semibold">
                             <span class="badge bg-success me-1">O</span>Objek (Pemeriksaan Fisik)
                         </label>
-                        <textarea class="form-control form-control-sm" name="objek" id="objek" cols="30" rows="4"
+                        <textarea class="form-control form-control-sm" name="objek" id="objek" cols="30" rows="6"
                             onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                     </div>
                 </div>
@@ -217,16 +213,12 @@
         <div class="col-12 col-xl-6">
             {{-- Card 3: Asesmen (A) --}}
             <div class="erm-section-card">
-                <div class="erm-section-title">
-                    <i class="bi bi-clipboard2-check"></i>
-                    <span>Asesmen (A)</span>
-                </div>
                 <div class="row g-2">
                     <div class="col-12">
                         <label for="asesmen" class="form-label mb-1 fw-semibold">
                             <span class="badge bg-warning text-dark me-1">A</span>Asesmen (Penilaian / Diagnosis Kerja)
                         </label>
-                        <textarea class="form-control form-control-sm" name="asesmen" id="asesmen" cols="30" rows="4"
+                        <textarea class="form-control form-control-sm" name="asesmen" id="asesmen" cols="30" rows="6"
                             onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                     </div>
                 </div>
@@ -234,16 +226,12 @@
 
             {{-- Card 4: Plan (P) & Instruksi (I) --}}
             <div class="erm-section-card">
-                <div class="erm-section-title">
-                    <i class="bi bi-capsule"></i>
-                    <span>Plan (P) &amp; Instruksi (I)</span>
-                </div>
                 <div class="row g-2">
                     <div class="col-12">
                         <label for="plan" class="form-label mb-1 fw-semibold">
                             <span class="badge bg-danger me-1">P</span>Plan (Rencana Terapi / Tindak Lanjut / RTL)
                         </label>
-                        <textarea class="form-control form-control-sm" name="plan" id="plan" cols="30" rows="4"
+                        <textarea class="form-control form-control-sm" name="plan" id="plan" cols="30" rows="6"
                             onfocus="removeZero(this)" onblur="cekKosong(this)">-</textarea>
                     </div>
                     <div class="col-12">

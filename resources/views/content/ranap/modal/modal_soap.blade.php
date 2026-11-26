@@ -405,6 +405,7 @@
     }
 
     #modalSoapRanap #tab-soap-ranap .nav-link {
+        position: relative;
         width: 100%;
         text-align: left;
         white-space: nowrap;
@@ -433,6 +434,19 @@
     }
 
     #modalSoapRanap #tab-soap-ranap .nav-link .erm-tab-label {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #modalSoapRanap #tab-soap-ranap .nav-link .erm-tab-badge {
+        margin-left: auto;
+        flex-shrink: 0;
+        font-size: 9.5px;
+        line-height: 1.1;
+        padding: 3px 6px;
+        max-width: 78px;
         overflow: hidden;
         text-overflow: ellipsis;
     }
@@ -451,8 +465,8 @@
 
     /* Collapsed Mini Icon Rail Mode (Desktop) */
     #modalSoapRanap.erm-rail-collapsed .erm-tab-bar-wrap {
-        width: 58px;
-        flex: 0 0 58px;
+        width: 64px;
+        flex: 0 0 64px;
     }
 
     #modalSoapRanap.erm-rail-collapsed .erm-rail-header {
@@ -463,7 +477,7 @@
     #modalSoapRanap.erm-rail-collapsed .erm-rail-title,
     #modalSoapRanap.erm-rail-collapsed .erm-rail-group-label,
     #modalSoapRanap.erm-rail-collapsed #tab-soap-ranap .nav-link .erm-tab-label {
-        display: none;
+        display: none !important;
     }
 
     #modalSoapRanap.erm-rail-collapsed #tab-soap-ranap {
@@ -472,12 +486,30 @@
 
     #modalSoapRanap.erm-rail-collapsed #tab-soap-ranap .nav-link {
         justify-content: center;
-        padding: 9px 0;
+        padding: 10px 0;
         gap: 0;
     }
 
     #modalSoapRanap.erm-rail-collapsed #tab-soap-ranap .nav-link i {
-        font-size: 16px;
+        font-size: 17px;
+    }
+
+    /* Saat sidebar diperkecil (icon-only), indikator badge menempel rapi di pojok ikon menu */
+    #modalSoapRanap.erm-rail-collapsed #tab-soap-ranap .nav-link .erm-tab-badge {
+        position: absolute;
+        top: 2px;
+        right: 3px;
+        margin-left: 0;
+        font-size: 8px;
+        padding: 2px 4px;
+        line-height: 1;
+        max-width: 34px;
+        border: 1.5px solid #ffffff;
+        box-shadow: 0 1px 4px rgba(15, 23, 42, 0.25);
+    }
+
+    #modalSoapRanap.erm-rail-collapsed #tab-soap-ranap .nav-link.active .erm-tab-badge {
+        border-color: #2563eb;
     }
 
     /* Right Main Content Workspace (Independent Scroll) */
@@ -585,6 +617,16 @@
             display: inline !important;
         }
 
+        #modalSoapRanap.erm-rail-collapsed #tab-soap-ranap .nav-link .erm-tab-badge {
+            position: static;
+            margin-left: 4px;
+            font-size: 9.5px;
+            padding: 2px 6px;
+            max-width: none;
+            border: 0;
+            box-shadow: none;
+        }
+
         #modalSoapRanap .erm-ranap-workspace {
             overflow-y: visible;
             padding: 10px;
@@ -679,7 +721,7 @@
                             <button class="nav-link" id="tabKelengkapanBerkas" data-bs-toggle="tab"
                                 data-bs-target="#tabKelengkapanBerkas-pane" type="button" role="tab"
                                 aria-controls="tabKelengkapanBerkas-pane" aria-selected="false" title="Kelengkapan Berkas">
-                                <i class="bi bi-folder-check"></i><span class="erm-tab-label d-inline-flex align-items-center justify-content-between flex-grow-1 gap-1"><span>Kelengkapan Berkas</span><span class="badge rounded-pill d-none" id="ranapBerkasTabBadge" style="font-size:9.5px;">0/0</span></span>
+                                <i class="bi bi-folder-check"></i><span class="erm-tab-label">Kelengkapan Berkas</span><span class="badge rounded-pill erm-tab-badge d-none" id="ranapBerkasTabBadge">0/0</span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -726,7 +768,7 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="tab-ews" data-bs-toggle="tab" data-bs-target="#tab-ews-pane"
-                                type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false" title="EWS"><i class="bi bi-activity"></i><span class="erm-tab-label d-inline-flex align-items-center justify-content-between flex-grow-1 gap-1"><span>EWS</span><span class="badge rounded-pill d-none" id="ranapEwsTabBadge" style="font-size:9.5px;"></span></span>
+                                type="button" role="tab" aria-controls="tab-ews-pane" aria-selected="false" title="EWS"><i class="bi bi-activity"></i><span class="erm-tab-label">EWS</span><span class="badge rounded-pill erm-tab-badge d-none" id="ranapEwsTabBadge"></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">

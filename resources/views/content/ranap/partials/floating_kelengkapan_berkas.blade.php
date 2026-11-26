@@ -92,16 +92,20 @@
         transition: width 0.4s ease;
     }
 
-    /* Floating Drawer & FAB di Kanan Bawah (di atas Monitoring Pulang, tidak bertumpuk) */
+    /* Floating Drawer & FAB di Kanan Bawah (di atas Monitoring Pulang, z-index di bawah panel Monitoring Pulang) */
     #ranapFloatingBerkasWrap {
         position: fixed;
         right: 18px;
         bottom: 66px;
-        z-index: 1046;
+        z-index: 1045;
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         gap: 10px;
+    }
+
+    #ranapFloatingBerkasWrap.is-panel-open {
+        z-index: 1048;
     }
 
     #btnRanapBerkasFab {
@@ -134,7 +138,7 @@
         display: inline-block;
     }
 
-    .ranap-fab-mini-bar > span {
+    .ranap-fab-mini-bar>span {
         display: block;
         height: 100%;
         background: #4ade80;
@@ -156,8 +160,15 @@
     }
 
     @keyframes ranapBerkasSlideUp {
-        from { opacity: 0; transform: translateY(12px) scale(0.98); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
+        from {
+            opacity: 0;
+            transform: translateY(12px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
 
     .ranap-berkas-panel-hdr {
@@ -217,6 +228,12 @@
         border-color: #86efac;
     }
 
+    .ranap-berkas-doc-btn.is-warn {
+        background: #fef3c7;
+        color: #92400e;
+        border-color: #fcd34d;
+    }
+
     .ranap-berkas-doc-btn.is-miss {
         background: #fee2e2;
         color: #991b1b;
@@ -234,10 +251,12 @@
             top: 48px;
             padding: 8px 10px;
         }
+
         #ranapFloatingBerkasWrap {
             right: 10px;
             bottom: 60px;
         }
+
         #ranapFloatingBerkasPanel {
             width: calc(100vw - 20px);
         }
@@ -259,7 +278,7 @@
                     <span class="badge bg-danger-subtle text-danger border border-danger-subtle" id="ranapFloatBelumCnt" style="font-size: 10px;">Belum: 0</span>
                 </div>
                 <div class="text-muted" style="font-size: 10.5px;">
-                    Rata-rata kelengkapan berkas wajib (Askep, Asmed, POC, Nyeri, TB, Discharge, Resume)
+                    Rata-rata kelengkapan berkas wajib (Askep, Asmed, POC, Nyeri, TB, Discharge, Resume, Surat Kontrol BPJS)
                 </div>
             </div>
         </div>
@@ -305,10 +324,12 @@
                 <div class="text-white-50" style="font-size: 10.5px;" id="ranapBerkasPanelSub">Memuat data...</div>
             </div>
             <div class="d-flex align-items-center gap-1">
-                <button type="button" class="btn btn-sm btn-outline-light py-0 px-2" onclick="loadKelengkapanBerkasBatchRanap()" title="Muat Ulang">
+                <button type="button" class="btn btn-sm btn-outline-light py-0 px-2"
+                    onclick="loadKelengkapanBerkasBatchRanap()" title="Muat Ulang">
                     <i class="bi bi-arrow-clockwise"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-light py-0 px-2" onclick="toggleRanapBerkasPanel(false)" title="Tutup Panel">
+                <button type="button" class="btn btn-sm btn-outline-light py-0 px-2"
+                    onclick="toggleRanapBerkasPanel(false)" title="Tutup Panel">
                     <i class="bi bi-dash-lg"></i>
                 </button>
             </div>
@@ -317,11 +338,18 @@
         <div class="p-2 bg-light border-bottom d-flex flex-column gap-2">
             <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-primary py-0 px-2 ranap-bpanel-flt" data-flt="missing" onclick="setRanapBerkasPanelFilter('missing', this)" style="font-size: 10.5px;">Belum Lengkap</button>
-                    <button type="button" class="btn btn-outline-secondary py-0 px-2 ranap-bpanel-flt" data-flt="all" onclick="setRanapBerkasPanelFilter('all', this)" style="font-size: 10.5px;">Semua</button>
-                    <button type="button" class="btn btn-outline-secondary py-0 px-2 ranap-bpanel-flt" data-flt="done" onclick="setRanapBerkasPanelFilter('done', this)" style="font-size: 10.5px;">100% Lengkap</button>
+                    <button type="button" class="btn btn-primary py-0 px-2 ranap-bpanel-flt" data-flt="missing"
+                        onclick="setRanapBerkasPanelFilter('missing', this)" style="font-size: 10.5px;">Belum
+                        Lengkap</button>
+                    <button type="button" class="btn btn-outline-secondary py-0 px-2 ranap-bpanel-flt" data-flt="all"
+                        onclick="setRanapBerkasPanelFilter('all', this)" style="font-size: 10.5px;">Semua</button>
+                    <button type="button" class="btn btn-outline-secondary py-0 px-2 ranap-bpanel-flt" data-flt="done"
+                        onclick="setRanapBerkasPanelFilter('done', this)" style="font-size: 10.5px;">100%
+                        Lengkap</button>
                 </div>
-                <input type="search" id="ranapBerkasPanelSearch" class="form-control form-control-sm" style="max-width: 170px; height: 24px; font-size: 11px;" placeholder="Cari pasien / bangsal..." oninput="renderRanapBerkasPanelList()">
+                <input type="search" id="ranapBerkasPanelSearch" class="form-control form-control-sm"
+                    style="max-width: 170px; height: 24px; font-size: 11px;" placeholder="Cari pasien / bangsal..."
+                    oninput="renderRanapBerkasPanelList()">
             </div>
         </div>
 
@@ -332,7 +360,8 @@
         </div>
     </div>
 
-    <button type="button" id="btnRanapBerkasFab" onclick="toggleRanapBerkasPanel()" title="Buka Rincian Kelengkapan Berkas Pasien Ranap">
+    <button type="button" id="btnRanapBerkasFab" onclick="toggleRanapBerkasPanel()"
+        title="Buka Rincian Kelengkapan Berkas Pasien Ranap">
         <i class="bi bi-folder-check"></i>
         <span>Berkas</span>
         <span class="ranap-fab-mini-bar"><span id="ranapFabMiniBarFill" style="width: 0%;"></span></span>
@@ -358,6 +387,7 @@
             const nextOpen = typeof forceState === 'boolean' ? forceState : !window._ranapBerkasBatchState.isOpen;
             window._ranapBerkasBatchState.isOpen = nextOpen;
             $('#ranapFloatingBerkasPanel').toggleClass('d-none', !nextOpen);
+            $('#ranapFloatingBerkasWrap').toggleClass('is-panel-open', nextOpen);
 
             // Tutup panel Monitoring Pulang jika sedang terbuka agar tidak bertumpuk
             if (nextOpen && typeof toggleRanapMonitorPanel === 'function') {
@@ -445,16 +475,16 @@
                     const barColor = b.required ? getProgressHexColor(b.percent) : '#64748b';
                     const optTag = b.required ? '' : ' <span class="text-muted">(Opt)</span>';
                     return `
-                        <div class="ranap-berkas-mini-chip" title="${b.label}: ${b.done} dari ${b.total} pasien (${b.percent}%)">
-                            <div class="d-flex justify-content-between align-items-center gap-1">
-                                <span class="fw-semibold text-dark text-truncate">${b.label}${optTag}</span>
-                                <span class="fw-bold" style="color:${barColor};">${b.percent}%</span>
+                            <div class="ranap-berkas-mini-chip" title="${b.label}: ${b.done} dari ${b.total} pasien (${b.percent}%)">
+                                <div class="d-flex justify-content-between align-items-center gap-1">
+                                    <span class="fw-semibold text-dark text-truncate">${b.label}${optTag}</span>
+                                    <span class="fw-bold" style="color:${barColor};">${b.percent}%</span>
+                                </div>
+                                <div class="ranap-berkas-mini-track">
+                                    <div class="ranap-berkas-mini-fill" style="width:${b.percent}%;background:${barColor};"></div>
+                                </div>
                             </div>
-                            <div class="ranap-berkas-mini-track">
-                                <div class="ranap-berkas-mini-fill" style="width:${b.percent}%;background:${barColor};"></div>
-                            </div>
-                        </div>
-                    `;
+                        `;
                 }).join('');
 
                 $('#ranapFloatPerBerkasChips').html(chipsHtml || '<div class="text-muted small">Tidak ada pasien pada filter aktif.</div>');
@@ -486,11 +516,11 @@
 
             if (!filtered.length) {
                 container.html(`
-                    <div class="text-center py-4 bg-white rounded-3 border">
-                        <i class="bi bi-check-circle-fill text-success fs-3 d-block mb-1"></i>
-                        <div class="fw-semibold text-dark small">Tidak ada data pada filter ini</div>
-                    </div>
-                `);
+                        <div class="text-center py-4 bg-white rounded-3 border">
+                            <i class="bi bi-check-circle-fill text-success fs-3 d-block mb-1"></i>
+                            <div class="fw-semibold text-dark small">Tidak ada data pada filter ini</div>
+                        </div>
+                    `);
                 return;
             }
 
@@ -502,38 +532,54 @@
                 const pctColor = getProgressHexColor(it.percent);
 
                 const docBtns = (it.berkas || []).map(function (b) {
-                    const cls = b.completed ? 'is-ok' : (b.required ? 'is-miss' : 'is-opt');
-                    const ico = b.completed ? 'bi-check2' : (b.required ? 'bi-x' : 'bi-dash');
-                    return `<button type="button" class="ranap-berkas-doc-btn ${cls}" onclick="bukaBerkasPasienDariFloat('${esc(it.no_rawat)}', '${esc(b.action)}')" title="Klik untuk membuka ${esc(b.short)}">
-                        <i class="bi ${ico}"></i> ${esc(b.short)}
-                    </button>`;
+                    const cls = b.completed
+                        ? (b.partial ? 'is-warn' : 'is-ok')
+                        : (b.required ? 'is-miss' : 'is-opt');
+                    const ico = b.completed
+                        ? (b.partial ? 'bi-exclamation-triangle' : 'bi-check2')
+                        : (b.required ? 'bi-x' : 'bi-dash');
+                    let titleText = `Klik untuk membuka ${b.short}`;
+                    if (b.key === 'surat_kontrol') {
+                        if (b.completed && b.no_surat_kontrol) {
+                            titleText = `SEP: ${b.no_sep || '-'} | SKRI: ${b.no_surat_kontrol}${b.tgl_rencana ? ' | Rencana: ' + b.tgl_rencana : ''}${b.tgl_mismatch ? ' (Tgl kontrol beda dengan Resume)' : ''}`;
+                        } else if (b.required) {
+                            titleText = b.no_sep
+                                ? `SEP ${b.no_sep} ditemukan, Surat Kontrol BPJS belum terbit`
+                                : 'Nomor SEP & Surat Kontrol BPJS belum ditemukan';
+                        } else {
+                            titleText = 'Pasien Non-BPJS (tidak wajib SKRI BPJS)';
+                        }
+                    }
+                    return `<button type="button" class="ranap-berkas-doc-btn ${cls}" onclick="bukaBerkasPasienDariFloat('${esc(it.no_rawat)}', '${esc(b.action)}')" title="${esc(titleText)}">
+                            <i class="bi ${ico}"></i> ${esc(b.short)}
+                        </button>`;
                 }).join(' ');
 
                 return `
-                    <div class="ranap-berkas-patient-card ${cardCls}">
-                        <div class="d-flex justify-content-between align-items-start gap-2">
-                            <div class="min-w-0">
-                                <div class="fw-bold text-dark text-truncate">${esc(it.nm_pasien)}</div>
-                                <div class="text-muted" style="font-size: 10.5px;">
-                                    RM: <strong>${esc(it.no_rkm_medis)}</strong> &bull; ${esc(it.nm_bangsal)} &bull; ${esc(it.tipe_pasien)}
+                        <div class="ranap-berkas-patient-card ${cardCls}">
+                            <div class="d-flex justify-content-between align-items-start gap-2">
+                                <div class="min-w-0">
+                                    <div class="fw-bold text-dark text-truncate">${esc(it.nm_pasien)}</div>
+                                    <div class="text-muted" style="font-size: 10.5px;">
+                                        RM: <strong>${esc(it.no_rkm_medis)}</strong> &bull; ${esc(it.nm_bangsal)} &bull; ${esc(it.tipe_pasien)}
+                                    </div>
+                                </div>
+                                <div class="text-end flex-shrink-0">
+                                    <div class="fw-bold" style="color:${pctColor};font-size:12.5px;">${it.percent}%</div>
+                                    <div class="text-muted" style="font-size:9.5px;">${it.required_completed}/${it.required_total} wajib</div>
                                 </div>
                             </div>
-                            <div class="text-end flex-shrink-0">
-                                <div class="fw-bold" style="color:${pctColor};font-size:12.5px;">${it.percent}%</div>
-                                <div class="text-muted" style="font-size:9.5px;">${it.required_completed}/${it.required_total} wajib</div>
+                            <div class="ranap-berkas-track my-1" style="height: 6px;">
+                                <div class="ranap-berkas-fill ${barCls}" style="width: ${it.percent}%;"></div>
+                            </div>
+                            <div class="d-flex flex-wrap gap-1 mt-2">${docBtns}</div>
+                            <div class="mt-2 pt-1 border-top d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" style="font-size: 10.5px;" onclick="bukaBerkasPasienDariFloat('${esc(it.no_rawat)}', 'cppt_berkas')">
+                                    <i class="bi bi-folder-check me-1"></i>Buka CPPT &amp; Checklist
+                                </button>
                             </div>
                         </div>
-                        <div class="ranap-berkas-track my-1" style="height: 6px;">
-                            <div class="ranap-berkas-fill ${barCls}" style="width: ${it.percent}%;"></div>
-                        </div>
-                        <div class="d-flex flex-wrap gap-1 mt-2">${docBtns}</div>
-                        <div class="mt-2 pt-1 border-top d-flex justify-content-end">
-                            <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" style="font-size: 10.5px;" onclick="bukaBerkasPasienDariFloat('${esc(it.no_rawat)}', 'cppt_berkas')">
-                                <i class="bi bi-folder-check me-1"></i>Buka CPPT &amp; Checklist
-                            </button>
-                        </div>
-                    </div>
-                `;
+                    `;
             }).join('');
 
             container.html(html);
@@ -587,6 +633,22 @@
                 case 'resume_medis':
                     if (typeof resumeMedis === 'function') resumeMedis(noRawat);
                     break;
+                case 'surat_kontrol': {
+                    const patient = (window._ranapBerkasBatchState.items || []).find((x) => x.no_rawat === noRawat);
+                    const skItem = patient ? (patient.berkas || []).find((b) => b.key === 'surat_kontrol') : null;
+                    if (skItem && typeof tampilkanDetailSuratKontrolBerkas === 'function') {
+                        tampilkanDetailSuratKontrolBerkas(skItem, noRawat);
+                    } else if (skItem && skItem.no_surat_kontrol) {
+                        window.open(`/erm/rencanaKontrol/print/${encodeURIComponent(skItem.no_surat_kontrol)}`, '_blank');
+                    } else if (typeof showModalSoapRanap === 'function') {
+                        showModalSoapRanap(noRawat);
+                        setTimeout(function () {
+                            const tabEl = document.getElementById('tabKelengkapanBerkas');
+                            if (tabEl) bootstrap.Tab.getOrCreateInstance(tabEl).show();
+                        }, 250);
+                    }
+                    break;
+                }
                 case 'penunjang':
                     if (typeof modalPemeriksaanPenunjang === 'function') modalPemeriksaanPenunjang(noRawat);
                     break;

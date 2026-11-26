@@ -1,122 +1,342 @@
 @extends('index')
+@push('style')
+    <style>
+        /* ======================================================
+           RANAP KPI SUMMARY CARDS & MODERN FILTER UX
+           ====================================================== */
+        .ranap-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        .ranap-kpi-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #2563eb;
+            border-radius: 12px;
+            padding: 11px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+            text-align: left;
+        }
+
+        .ranap-kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+        }
+
+        .ranap-kpi-card.is-active {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+        }
+
+        .ranap-kpi-card.is-dirawat { border-left-color: #2563eb; }
+        .ranap-kpi-card.is-masuk   { border-left-color: #16a34a; }
+        .ranap-kpi-card.is-pulang  { border-left-color: #d97706; }
+        .ranap-kpi-card.is-rujuk   { border-left-color: #dc2626; }
+
+        .ranap-kpi-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .ranap-kpi-card.is-dirawat .ranap-kpi-icon { background: #eff6ff; color: #2563eb; }
+        .ranap-kpi-card.is-masuk   .ranap-kpi-icon { background: #f0fdf4; color: #16a34a; }
+        .ranap-kpi-card.is-pulang  .ranap-kpi-icon { background: #fffbeb; color: #d97706; }
+        .ranap-kpi-card.is-rujuk   .ranap-kpi-icon { background: #fef2f2; color: #dc2626; }
+
+        .ranap-kpi-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.35px;
+            color: #64748b;
+        }
+
+        .ranap-kpi-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.15;
+            margin: 2px 0;
+        }
+
+        .ranap-kpi-sub {
+            font-size: 10.5px;
+            color: #64748b;
+        }
+
+        .ranap-filter-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .ranap-filter-header {
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 9px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ranap-filter-body {
+            padding: 12px 14px;
+        }
+
+        .ranap-status-pills {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            background: #f1f5f9;
+            padding: 3px;
+            border-radius: 9px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ranap-status-pills .btn {
+            border-radius: 7px !important;
+            border: 0 !important;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 5px 11px;
+            color: #475569;
+            background: transparent;
+        }
+
+        .ranap-status-pills .btn-check:checked + .btn {
+            background: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.28);
+        }
+
+        .ranap-status-pills .btn-check:checked + .btn.is-masuk-pill {
+            background: #16a34a;
+            box-shadow: 0 2px 6px rgba(22, 163, 74, 0.28);
+        }
+
+        .ranap-status-pills .btn-check:checked + .btn.is-pulang-pill {
+            background: #d97706;
+            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.28);
+        }
+
+        .ranap-status-pills .btn-check:checked + .btn.is-rujuk-pill {
+            background: #dc2626;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.28);
+        }
+
+        .ranap-filter-lbl {
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        @media (max-width: 991.98px) {
+            .ranap-kpi-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .ranap-kpi-card {
+                padding: 9px 10px;
+            }
+            .ranap-kpi-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+            .ranap-kpi-value {
+                font-size: 18px;
+            }
+        }
+    </style>
+@endpush
 @section('contents')
-    <div class="card my-3">
-        <div class="card-body">
-            <form action="" id="formFilterRanap" class="mb-3">
-                <div class="form-group mb-2">
-                    <div class="row gy-2">
-                        <div class="col-lg-2 col-md-12 col-sm-12">
-                            <div class="input-group">
-                                <div class="row gy-2">
-                                    <div class="col col-sm-12">
-                                        <div class="form-radio form-radio-inline">
-                                            <input class="form-radio-input" type="radio" id="belum" name="stts_pulang"
-                                                value="Belum Pulang">
-                                            <label class="form-radio-label" for="belum">Belum
-                                                Pulang</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-12 col-sm-12">
-                            <div class="row gy-2">
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <div class="form-radio form-radio-inline">
-                                        <input class="form-radio-input" type="radio" id="pulang" name="stts_pulang"
-                                            value="pulang">
-                                        <label class="form-radio-label" for="pulang">Pulang</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-12">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
-                                            id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off" disabled>
-                                        <span class="input-group-text"><label for="">s/d</label></span>
-                                        <input type="text" class="form-control form-control-sm tanggal tgl_pulang"
-                                            id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off" disabled>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-12 col-sm-12">
-                            <div class="row gy-2">
-                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <div class="form-radio form-radio-inline">
-                                        <input class="form-radio-input" type="radio" id="masuk" name="stts_pulang"
-                                            value="masuk">
-                                        <label class="form-radio-label" for="masuk">Masuk</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8 col-md-4 col-sm-12">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                            id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off" disabled>
+    {{-- Display Statistik Pasien Rawat Inap (Otomatis mengikuti tanggal & filter tabel) --}}
+    <div class="ranap-kpi-grid" id="ranapStatDisplay">
+        <button type="button" class="ranap-kpi-card is-dirawat is-active" id="kpiCardDirawat" onclick="pilihStatusRanapCepat('-')" title="Klik untuk menampilkan pasien yang sedang dirawat">
+            <div class="min-w-0">
+                <div class="ranap-kpi-title">Sedang Dirawat</div>
+                <div class="ranap-kpi-value text-primary" id="statRanapDirawat">-</div>
+                <div class="ranap-kpi-sub">Pasien aktif di bangsal</div>
+            </div>
+            <div class="ranap-kpi-icon"><i class="bi bi-hospital"></i></div>
+        </button>
 
-                                        <span class="input-group-text"><label for="">s/d</label></span>
-                                        <input type="text" class="form-control form-control-sm tanggal tgl_masuk"
-                                            id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off" disabled>
+        <button type="button" class="ranap-kpi-card is-masuk" id="kpiCardMasuk" onclick="pilihStatusRanapCepat('Masuk')" title="Klik untuk menampilkan pasien baru masuk pada periode ini">
+            <div class="min-w-0">
+                <div class="ranap-kpi-title">Pasien Baru Masuk</div>
+                <div class="ranap-kpi-value text-success" id="statRanapMasuk">-</div>
+                <div class="ranap-kpi-sub ranap-stat-periode-label">Hari ini</div>
+            </div>
+            <div class="ranap-kpi-icon"><i class="bi bi-box-arrow-in-right"></i></div>
+        </button>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-12 col-sm-12">
-                            <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-success btn-sm" id="cari">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
+        <button type="button" class="ranap-kpi-card is-pulang" id="kpiCardPulang" onclick="pilihStatusRanapCepat('Pulang')" title="Klik untuk menampilkan pasien pulang pada periode ini">
+            <div class="min-w-0">
+                <div class="ranap-kpi-title">Pasien Pulang</div>
+                <div class="ranap-kpi-value text-warning-emphasis" id="statRanapPulang">-</div>
+                <div class="ranap-kpi-sub ranap-stat-periode-label">Hari ini</div>
+            </div>
+            <div class="ranap-kpi-icon"><i class="bi bi-box-arrow-right"></i></div>
+        </button>
+
+        <button type="button" class="ranap-kpi-card is-rujuk" id="kpiCardRujuk" onclick="pilihStatusRanapCepat('Rujuk')" title="Klik untuk menampilkan pasien rujuk pada periode ini">
+            <div class="min-w-0">
+                <div class="ranap-kpi-title">Pasien Rujuk</div>
+                <div class="ranap-kpi-value text-danger" id="statRanapRujuk">-</div>
+                <div class="ranap-kpi-sub ranap-stat-periode-label">Hari ini</div>
+            </div>
+            <div class="ranap-kpi-icon"><i class="bi bi-send-exclamation-fill"></i></div>
+        </button>
+    </div>
+
+    {{-- Modern Filter Panel Rawat Inap --}}
+    <div class="ranap-filter-card">
+        <div class="ranap-filter-header">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="fw-bold text-dark d-inline-flex align-items-center gap-1" style="font-size: 12.5px;">
+                    <i class="bi bi-funnel-fill text-primary"></i>
+                    <span>Filter Pasien Rawat Inap</span>
+                </span>
+                <span class="badge text-bg-light border text-secondary" id="ranapActivePeriodBadge" style="font-size: 10.5px;">
+                    <i class="bi bi-calendar3 me-1"></i>Hari Ini
+                </span>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <a href="{{ route('ranap.pemeriksaan-ranap.index') }}" target="_blank"
+                    class="btn btn-outline-primary btn-sm text-nowrap py-1 px-2" style="font-size: 11.5px;">
+                    <i class="bi bi-journal-text me-1"></i>CPPT Harian
+                </a>
+                <button type="button" class="btn btn-outline-danger btn-sm text-nowrap py-1 px-2" style="font-size: 11.5px;"
+                    onclick="showTabelHasilKritis()" title="Monitoring Pelaporan Nilai Kritis">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i>Nilai Kritis
+                </button>
+            </div>
+        </div>
+
+        <div class="ranap-filter-body">
+            <form action="" id="formFilterRanap" class="mb-0">
+                {{-- Baris 1: Status Pasien (Segmented Pills) + Rentang Tanggal --}}
+                <div class="row g-2 align-items-end mb-2 pb-2 border-bottom">
+                    <div class="col-12 col-lg-auto">
+                        <span class="ranap-filter-lbl">Status Perawatan</span>
+                        <div class="ranap-status-pills" role="group" aria-label="Status Rawat Inap">
+                            <input class="btn-check" type="radio" id="belum" name="stts_pulang" value="Belum Pulang" checked autocomplete="off">
+                            <label class="btn" for="belum"><i class="bi bi-hospital me-1"></i>Belum Pulang</label>
+
+                            <input class="btn-check" type="radio" id="masuk" name="stts_pulang" value="masuk" autocomplete="off">
+                            <label class="btn is-masuk-pill" for="masuk"><i class="bi bi-box-arrow-in-right me-1"></i>Masuk</label>
+
+                            <input class="btn-check" type="radio" id="pulang" name="stts_pulang" value="pulang" autocomplete="off">
+                            <label class="btn is-pulang-pill" for="pulang"><i class="bi bi-box-arrow-right me-1"></i>Pulang</label>
+
+                            <input class="btn-check" type="radio" id="rujuk" name="stts_pulang" value="rujuk" autocomplete="off">
+                            <label class="btn is-rujuk-pill" for="rujuk"><i class="bi bi-send-exclamation me-1"></i>Rujuk</label>
                         </div>
                     </div>
+
+                    {{-- Grup Tanggal Masuk (juga jadi periode referensi saat Belum Pulang) --}}
+                    <div class="col-12 col-md-6 col-lg-4" id="wrapTglMasuk">
+                        <label for="tgl_masuk_awal" class="ranap-filter-lbl" id="lblTglMasuk">Periode Tanggal (Statistik &amp; Masuk)</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-light"><i class="bi bi-calendar-event text-primary"></i></span>
+                            <input type="text" class="form-control tanggal tgl_masuk"
+                                id="tgl_masuk_awal" name="tgl_masuk_awal" autocomplete="off">
+                            <span class="input-group-text">s/d</span>
+                            <input type="text" class="form-control tanggal tgl_masuk"
+                                id="tgl_masuk_akhir" name="tgl_masuk_akhir" autocomplete="off">
+                        </div>
+                    </div>
+
+                    {{-- Grup Tanggal Pulang / Rujuk --}}
+                    <div class="col-12 col-md-6 col-lg-4 d-none" id="wrapTglPulang">
+                        <label for="tgl_pulang_awal" class="ranap-filter-lbl" id="lblTglPulang">Periode Tanggal Pulang / Rujuk</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-light"><i class="bi bi-calendar-check text-warning"></i></span>
+                            <input type="text" class="form-control tanggal tgl_pulang"
+                                id="tgl_pulang_awal" name="tgl_pulang_awal" autocomplete="off" disabled>
+                            <span class="input-group-text">s/d</span>
+                            <input type="text" class="form-control tanggal tgl_pulang"
+                                id="tgl_pulang_akhir" name="tgl_pulang_akhir" autocomplete="off" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-auto ms-lg-auto d-flex align-items-center gap-1 flex-wrap">
+                        <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2" onclick="setQuickRanapDate(0)" style="font-size: 11px;">Hari Ini</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2" onclick="setQuickRanapDate(2)" style="font-size: 11px;">3 Hari</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2" onclick="setQuickRanapDate(6)" style="font-size: 11px;">7 Hari</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <div class="row gy-2">
-                        <div class="col-lg-3 col-md-12 col-sm-12">
-                            <label for="spesialis">Pilih Spesialis</label>
-                            <select name="spesialis" id="spesialis" class="form-select form-select-sm select2"
-                                style="width:100%">
-                                <option value="" selected>Semua Spesialis</option>
-                                <option value="S0001">Spesialis Kebidanan & Kandungan</option>
-                                <option value="S0003">Spesialis Anak</option>
-                            </select>
+
+                {{-- Baris 2: Filter Spesialis, Dokter DPJP, Bangsal/Kamar & Tombol Aksi --}}
+                <div class="row g-2 align-items-end">
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <label for="spesialis" class="ranap-filter-lbl">Spesialis</label>
+                        <select name="spesialis" id="spesialis" class="form-select form-select-sm select2" style="width:100%">
+                            <option value="" selected>Semua Spesialis</option>
+                            <option value="S0001">Spesialis Kebidanan &amp; Kandungan</option>
+                            <option value="S0003">Spesialis Anak</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-4">
+                        <label for="dokter" class="ranap-filter-lbl">Dokter DPJP</label>
+                        <select name="dokter" id="dokter" class="form-select form-select-sm select2" style="width:100%">
+                            <option value="" selected>Semua Dokter</option>
+                            <option value="1.113.1023" class="S0001">dr. Achmad Dahlan Kadir, Sp.OG</option>
+                            <option value="1.101.1112" class="S0003">dr. Himawan Budityastomo, Sp.OG</option>
+                            <option value="1.109.1119" class="S0003">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
+                            <option value="1.116.0926" class="S0003">dr. Ilham Rizka Putra, Sp.OG</option>
+                            <option value="1.111.1221" class="S0001">dr. Rendy Yoga Ardian, Sp.A</option>
+                            <option value="1.227.0824" class="S0001">dr. Alifa Nofia Febriani, Sp.A</option>
+                            <option value="1.210.0825" class="S0001">dr. Hanif Hary Setyawan, Sp.A</option>
+                            <option value="1.107.0317" class="S0001">dr. Dwi Riyanto, Sp.A</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <label for="cari-kamar" class="ranap-filter-lbl">Cari Bangsal / Kamar</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-light"><i class="bi bi-door-open text-secondary"></i></span>
+                            <input type="search" id="cari-kamar" name="cari-kamar" class="form-control"
+                                placeholder="Ketik nama bangsal..." autocomplete="off">
                         </div>
-                        <div class="col-lg-3 col-md-12 col-sm-12">
-                            <label for="dokter ">Pilih Dokter DPJP</label>
-                            <select name="dokter" id="dokter" class="form-select form-select-sm select2"
-                                style="width:100%">
-                                <option value="" selected>Semua Dokter</option>
-                                <option value="1.113.1023" class="S0001">dr. Achmad Dahlan Kadir, Sp.OG</option>
-                                <option value="1.101.1112" class="S0003">dr. Himawan Budityastomo, Sp.OG</option>
-                                <option value="1.109.1119" class="S0003">dr. Siti Pattihatun Nasyiroh, Sp.OG</option>
-                                <option value="1.116.0926" class="S0003"> dr. Ilham Rizka Putra, Sp.OG</option>
-                                <option value="1.111.1221" class="S0001">dr. Rendy Yoga Ardian, Sp.A</option>
-                                <option value="1.227.0824" class="S0001">dr. Alifa Nofia Febriani, Sp.A</option>
-                                <option value="1.210.0825" class="S0001">dr. Hanif Hary Setyawan, Sp.A</option>
-                                <option value="1.107.0317" class="S0001">dr. Dwi Riyanto, Sp.A</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-12 col-sm-12">
-                            <label for="cari-kamar" class="">Cari Kamar
-                                : </label>
-                            <input type="search" id="cari-kamar" name="cari-kamar" class="form-control form-control-sm"
-                                width="100%" autocomplete="off">
-                        </div>
-                        <div class="col-lg-3 col-md-12 col-sm-12 my-4 d-flex gap-2">
-                            <a href="{{ route('ranap.pemeriksaan-ranap.index') }}" target="_blank"
-                                class="btn btn-primary btn-sm text-nowrap" type="button">
-                                <i class="bi bi-search"></i> CPPT Harian
-                            </a>
-                            <button type="button" class="btn btn-outline-danger btn-sm text-nowrap"
-                                onclick="showTabelHasilKritis()" title="Monitoring Pelaporan Nilai Kritis">
-                                <i class="bi bi-exclamation-triangle-fill"></i> Nilai Kritis
-                            </button>
-                        </div>
+                    </div>
+                    <div class="col-12 col-lg-2 d-flex gap-2">
+                        <button type="button" class="btn btn-success btn-sm flex-grow-1 fw-semibold" id="cari">
+                            <i class="bi bi-search me-1"></i>Terapkan
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnResetFilterRanap" onclick="resetFilterRanap()" title="Reset semua filter">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    @include('content.ranap.partials.dropdown_aksi_ranap')
     @include('content.ranap.partials.floating_kelengkapan_berkas')
 
     <table class="table table-hover text-sm table-sm" id="tb_ranap" width="100%">
@@ -375,6 +595,8 @@
 
             $('#cari-kamar').val(kamar)
             $('.tanggal').datepicker('setDate', dateStart)
+            syncRanapFilterDateVisibility();
+            loadStatistikRanap();
 
             let isDokter = "{{ session()->get('pegawai')->dokter }}"
 
@@ -498,59 +720,187 @@
             }
         })
 
+        function syncRanapFilterDateVisibility() {
+            const isKeluarMode = (stts_pulang === 'Pulang' || stts_pulang === 'Rujuk');
+            $('#wrapTglPulang').toggleClass('d-none', !isKeluarMode);
+            $('#wrapTglMasuk').toggleClass('d-none', isKeluarMode);
+            $('.tgl_pulang').prop('disabled', !isKeluarMode);
+            $('.tgl_masuk').prop('disabled', isKeluarMode);
+
+            if (stts_pulang === 'Masuk') {
+                $('#lblTglMasuk').text('Periode Tanggal Masuk');
+            } else if (stts_pulang === '-') {
+                $('#lblTglMasuk').text('Periode Statistik (Masuk / Pulang / Rujuk)');
+            } else if (stts_pulang === 'Rujuk') {
+                $('#lblTglPulang').text('Periode Tanggal Rujuk');
+            } else {
+                $('#lblTglPulang').text('Periode Tanggal Pulang');
+            }
+
+            // Highlight kartu KPI aktif
+            $('.ranap-kpi-card').removeClass('is-active');
+            if (stts_pulang === '-') $('#kpiCardDirawat').addClass('is-active');
+            else if (stts_pulang === 'Masuk') $('#kpiCardMasuk').addClass('is-active');
+            else if (stts_pulang === 'Pulang') $('#kpiCardPulang').addClass('is-active');
+            else if (stts_pulang === 'Rujuk') $('#kpiCardRujuk').addClass('is-active');
+        }
+
+        function getActiveRanapDateRange() {
+            const isKeluarMode = (stts_pulang === 'Pulang' || stts_pulang === 'Rujuk');
+            const a = isKeluarMode ? $('#tgl_pulang_awal').val() : $('#tgl_masuk_awal').val();
+            const b = isKeluarMode ? $('#tgl_pulang_akhir').val() : $('#tgl_masuk_akhir').val();
+            return {
+                awalDmy: a || '',
+                akhirDmy: b || '',
+                awalYmd: a ? splitTanggal(a) : '',
+                akhirYmd: b ? splitTanggal(b) : '',
+            };
+        }
+
+        function loadStatistikRanap() {
+            const rng = getActiveRanapDateRange();
+            $.ajax({
+                url: '/erm/ranap/statistik',
+                method: 'GET',
+                dataType: 'JSON',
+                ermSilent: true,
+                data: {
+                    tgl_pertama: rng.awalYmd,
+                    tgl_kedua: rng.akhirYmd,
+                    kd_dokter: kd_dokter || '',
+                    spesialis: sps || '',
+                    kamar: kamar || '',
+                },
+            }).done(function (res) {
+                if (!res || !res.success) return;
+                const st = res.stats || {};
+                const per = res.periode || {};
+
+                $('#statRanapDirawat').text(st.sedang_dirawat ?? 0);
+                $('#statRanapMasuk').text(st.baru_masuk ?? 0);
+                $('#statRanapPulang').text(st.pulang ?? 0);
+                $('#statRanapRujuk').text(st.rujuk ?? 0);
+
+                let periodeLabel = 'Hari ini';
+                if (!per.is_today && per.awal && per.akhir) {
+                    periodeLabel = (per.awal === per.akhir)
+                        ? splitTanggal(per.awal)
+                        : `${splitTanggal(per.awal)} s/d ${splitTanggal(per.akhir)}`;
+                }
+                $('.ranap-stat-periode-label').text(periodeLabel);
+                $('#ranapActivePeriodBadge').html(`<i class="bi bi-calendar3 me-1"></i>${periodeLabel}`);
+            });
+        }
+
+        function setQuickRanapDate(daysBack) {
+            const end = new Date();
+            const start = new Date();
+            start.setDate(end.getDate() - Number(daysBack || 0));
+
+            const fmt = (d) => `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
+            const startStr = fmt(start);
+            const endStr = fmt(end);
+
+            $('#tgl_masuk_awal, #tgl_pulang_awal').datepicker('setDate', startStr);
+            $('#tgl_masuk_akhir, #tgl_pulang_akhir').datepicker('setDate', endStr);
+            $('#cari').trigger('click');
+        }
+
+        function pilihStatusRanapCepat(statusKey) {
+            if (statusKey === '-') {
+                $('#belum').prop('checked', true);
+                stts_pulang = '-';
+            } else if (statusKey === 'Masuk') {
+                $('#masuk').prop('checked', true);
+                stts_pulang = 'Masuk';
+            } else if (statusKey === 'Pulang') {
+                $('#pulang').prop('checked', true);
+                stts_pulang = 'Pulang';
+            } else if (statusKey === 'Rujuk') {
+                $('#rujuk').prop('checked', true);
+                stts_pulang = 'Rujuk';
+            }
+            syncRanapFilterDateVisibility();
+            $('#cari').trigger('click');
+        }
+
+        function resetFilterRanap() {
+            $('#belum').prop('checked', true);
+            stts_pulang = '-';
+            sps = '';
+            kd_dokter = '';
+            kamar = '';
+            localStorage.removeItem('spesialis');
+            localStorage.removeItem('dokter');
+            localStorage.removeItem('kamar');
+            $('#spesialis').val('');
+            $('#dokter').val(null).trigger('change.select2');
+            $('#cari-kamar').val('');
+            setQuickRanapDate(0);
+            syncRanapFilterDateVisibility();
+        }
+
         $('#pulang').on('click', function() {
             stts_pulang = 'Pulang';
-            if ($('#pulang').is(':checked')) {
-                $('.tgl_pulang').prop('disabled', false)
-                $('.tgl_masuk').prop('disabled', true)
-            } else {
-                $('.tgl_pulang').prop('disabled', true)
-                $('.tgl_masuk').prop('disabled', false)
+            // Sinkronkan tanggal dari input masuk agar tidak loncat saat pindah tab status
+            const a = $('#tgl_masuk_awal').val();
+            const b = $('#tgl_masuk_akhir').val();
+            if (a && b) {
+                $('#tgl_pulang_awal').datepicker('setDate', a);
+                $('#tgl_pulang_akhir').datepicker('setDate', b);
             }
-        })
+            syncRanapFilterDateVisibility();
+        });
+
+        $('#rujuk').on('click', function() {
+            stts_pulang = 'Rujuk';
+            const a = $('#tgl_masuk_awal').val();
+            const b = $('#tgl_masuk_akhir').val();
+            if (a && b) {
+                $('#tgl_pulang_awal').datepicker('setDate', a);
+                $('#tgl_pulang_akhir').datepicker('setDate', b);
+            }
+            syncRanapFilterDateVisibility();
+        });
+
         $('#masuk').on('click', function() {
             stts_pulang = 'Masuk';
-            if ($('#masuk').is(':checked')) {
-                $('.tgl_pulang').prop('disabled', true)
-                $('.tgl_masuk').prop('disabled', false)
-            } else {
-                $('.tgl_pulang').prop('disabled', false)
-                $('.tgl_masuk').prop('disabled', true)
+            const a = $('#tgl_pulang_awal').val();
+            const b = $('#tgl_pulang_akhir').val();
+            if (a && b) {
+                $('#tgl_masuk_awal').datepicker('setDate', a);
+                $('#tgl_masuk_akhir').datepicker('setDate', b);
             }
-        })
-
+            syncRanapFilterDateVisibility();
+        });
 
         $('#belum').on('click', function() {
             stts_pulang = '-';
-            $('.tgl_pulang').prop('disabled', true)
-            $('.tgl_masuk').prop('disabled', true)
+            syncRanapFilterDateVisibility();
         });
 
         $('#cari').on('click', function() {
-            let a = '';
-            let b = '';
-            if (stts_pulang === 'Pulang') {
-                a = $('#tgl_pulang_awal').val();
-                b = $('#tgl_pulang_akhir').val();
-            } else if (stts_pulang === 'Masuk') {
-                a = $('#tgl_masuk_awal').val();
-                b = $('#tgl_masuk_akhir').val();
-            }
-
-            tgl_awal = splitTanggal(a)
-            tgl_akhir = splitTanggal(b)
+            const rng = getActiveRanapDateRange();
+            tgl_awal = rng.awalYmd;
+            tgl_akhir = rng.akhirYmd;
 
             $('#tb_ranap').DataTable().destroy();
             tb_ranap();
+            loadStatistikRanap();
 
             if (typeof loadMonitoringPulangRanap === 'function') {
-                if (stts_pulang === 'Pulang') {
+                if (stts_pulang === 'Pulang' || stts_pulang === 'Rujuk') {
                     setRanapMonitorRange('filter');
                 } else {
                     loadMonitoringPulangRanap();
                 }
             }
-        })
+        });
+
+        // Otomatis sinkronkan KPI Display setiap kali tabel #tb_ranap memuat ulang (dari filter spesialis, dokter, kamar, dll.)
+        $(document).on('xhr.dt', '#tb_ranap', function () {
+            loadStatistikRanap();
+        });
 
         function tb_ranap() {
             $('#tb_ranap').DataTable({
@@ -1206,108 +1556,7 @@
             }
         });
 
-        function buildCategorizedMenuRanap(data, row) {
-            const kdSps = row.reg_periksa?.dokter?.kd_sps;
-            const isDokter = "{{ session()->get('pegawai')->departemen }}";
-            const grupAksesPoc = ['DM7', 'Direksi', 'SPS', '-', 'CSM'];
-            const grupAksesResume = ['Direksi', 'SPS', '-', 'CSM'];
-
-            // 1. KATEGORI: ASESMEN & SKRINING
-            let menuAsesmen = '';
-            menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalAsmedUgd('${data.no_rawat}')"><i class="bi bi-hospital text-danger me-1"></i> Asesmen Medis IGD ${cekList(row.asmed_igd || (row.reg_periksa ? row.reg_periksa.asmed_igd : null))}</a></li>`;
-
-            if (kdSps === 'S0003') {
-                menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="asmedRanapAnak('${data.no_rawat}')"><i class="bi bi-person-badge text-primary me-1"></i> Asesmen Medis Anak ${cekList(row.reg_periksa.asmed_ranap_anak)}</a></li>`;
-                menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhAnak('${data.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Anak</a></li>`;
-                if (data.sttsumur === 'Hr') {
-                    menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="askepRanapNeonatus('${data.no_rawat}')"><i class="bi bi-heart-pulse text-danger me-1"></i> Asesmen Keperawatan Neonatus ${cekList(row.reg_periksa.askep_ranap_neonatus)}</a></li>`;
-                } else {
-                    menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="askepRanapAnak('${data.no_rawat}')"><i class="bi bi-clipboard-pulse text-info me-1"></i> Asesmen Keperawatan Anak ${cekList(row.reg_periksa.askep_ranap_anak)}</a></li>`;
-                }
-            } else if (kdSps === 'S0001') {
-                menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="asmedRanapKandungan('${data.no_rawat}')"><i class="bi bi-gender-female text-danger me-1"></i> Asesmen Medis Kandungan ${cekList(row.reg_periksa.asmed_ranap_kandungan)}</a></li>`;
-                menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="askepRanapKandungan('${data.no_rawat}')"><i class="bi bi-balloon-heart text-danger me-1"></i> Asesmen Keperawatan Kandungan ${cekList(row.reg_periksa.askep_ranap_kandungan)}</a></li>`;
-                menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalAsesmenResikoJatuhDewasa('${data.no_rawat}')"><i class="bi bi-person-exclamation text-danger me-1"></i> Asesmen Resiko Jatuh Dewasa</a></li>`;
-            }
-
-            menuAsesmen += renderListsAsesmenNyeri(data.pasien.tgl_lahir, data.tgl_registrasi, data.no_rawat);
-            menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalAsesmenGeriatri('${data.no_rawat}')"><i class="bi bi-person-heart text-success me-1"></i> Asesmen Awal Geriatri ${cekList(row.asesmen_geriatri)}</a></li>`;
-            menuAsesmen += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="skoringTb('${data.no_rawat}')"><i class="bi bi-lungs text-danger me-1"></i> Skoring & Skrining TB ${cekList(row.skrining_tb)}</a></li>`;
-
-            // 2. KATEGORI: ASUHAN & PENUNJANG
-            let menuAsuhan = '';
-            menuAsuhan += `<li><a class="dropdown-item py-1 fw-bold text-primary" href="javascript:void(0)" data-kd-dokter="${row.reg_periksa.kd_dokter}" onclick="showModalSoapRanap('${data.no_rawat}')"><i class="bi bi-journal-medical text-primary me-1"></i> CPPT (SOAP)</a></li>`;
-            if (grupAksesPoc.includes(isDokter)) {
-                menuAsuhan += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPlanOfCare('${data.no_rawat}')"><i class="bi bi-clipboard-data text-primary me-1"></i> <i>Plan of Care</i> ${cekList(row.reg_periksa.poc)}</a></li>`;
-            }
-            menuAsuhan += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPemeriksaanPenunjang('${data.no_rawat}')"><i class="bi bi-file-earmark-medical text-primary me-1"></i> Pemeriksaan Penunjang</a></li>`;
-            menuAsuhan += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="hasilKritis('${data.no_rawat}')" data-id="${data.no_rawat}"><i class="bi bi-exclamation-triangle text-danger me-1"></i> Hasil Kritis</a></li>`;
-            menuAsuhan += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="detailPeriksa('${data.no_rawat}', 'Ranap')"><i class="bi bi-upload text-secondary me-1"></i> Upload Berkas Penunjang</a></li>`;
-
-            // 3. KATEGORI: TERAPI OBAT & GIZI
-            let menuObat = '';
-            menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPermintaanObatRanap('${data.no_rawat}')"><i class="bi bi-cart-plus text-success me-1"></i> Permintaan Obat Harian (Ranap)</a></li>`;
-            menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="modalPemberianObatRanap('${data.no_rawat}')"><i class="bi bi-capsule-pill text-primary me-1"></i> Jadwal & Pemberian Obat (E-MAR)</a></li>`;
-            menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="bukaModalReturObatRanap('${data.no_rawat}')"><i class="bi bi-arrow-return-left text-primary me-1"></i> Retur Obat Pasien</a></li>`;
-            menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalMonitoringCairan('${data.no_rawat}')"><i class="bi bi-droplet text-info me-1"></i> Monitoring Cairan Pasien</a></li>`;
-            menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalSkriningGizi('${data.no_rawat}')"><i class="bi bi-clipboard2-check text-success me-1"></i> Form Skrining Gizi ${cekList(row.rsia_skrining_gizi || row.skrining_gizi)}</a></li>`;
-            menuObat += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalPermintaanDiet('${data.no_rawat}')"><i class="fa-solid fa-utensils text-success me-1"></i> Permintaan Diet Pasien</a></li>`;
-
-            // 4. KATEGORI: PROSEDUR & KEPULANGAN
-            let menuPulang = '';
-            menuPulang += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalTransferPasien('${data.no_rawat}')"><i class="bi bi-arrow-left-right text-primary me-1"></i> Transfer Pasien Antar Ruang</a></li>`;
-            menuPulang += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalPersetujuanAnestesi('${data.no_rawat}')"><i class="bi bi-file-earmark-medical text-primary me-1"></i> Informed Consent RA / Anestesi</a></li>`;
-            menuPulang += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="catatanEdukasiPasien('${data.no_rawat}')"><i class="bi bi-person-video3 text-warning me-1"></i> Catatan Edukasi Pasien</a></li>`;
-            menuPulang += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalDischargePlanning('${data.no_rawat}')"><i class="bi bi-box-arrow-right text-warning me-1"></i> Discharge Planning ${cekList(row.discharge_planning)}</a></li>`;
-            menuPulang += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="bukaModalPermintaanResepPulang('${data.no_rawat}')"><i class="bi bi-prescription2 text-primary me-1"></i> Permintaan Resep Pulang</a></li>`;
-            menuPulang += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="showModalObatPulang('${data.no_rawat}')"><i class="bi bi-capsule text-danger me-1"></i> Edukasi Obat Pulang ${cekList(row.edukasi_obat_pulang)}</a></li>`;
-            if (grupAksesResume.includes(isDokter)) {
-                const iconCheck = row.resume ? '<i class="bi bi-check-circle text-success ms-1"></i>' : '';
-                menuPulang += `<li><a class="dropdown-item py-1" href="#" onclick="resumeMedis('${data.no_rawat}')"><i class="bi bi-file-text text-dark me-1"></i> Resume Medis ${iconCheck}</a></li>`;
-            }
-            menuPulang += `<li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="listRiwayatPasien('${data.no_rkm_medis}')" data-id="${data.no_rkm_medis}"><i class="bi bi-clock-history text-secondary me-1"></i> Riwayat Pemeriksaan</a></li>`;
-
-            // SUSUN DALAM 4 SECTION HEADER YANG RAPI & JELAS
-            let html = '';
-
-            // Section 1
-            html += `<li class="dropdown-header text-uppercase fw-bold text-danger px-3 py-1 my-0 border-bottom border-light" style="font-size:10px; background-color:#fff5f5; letter-spacing:0.5px">`;
-            html += `<i class="bi bi-clipboard2-pulse me-1"></i> 1. Asesmen & Skrining</li>`;
-            html += menuAsesmen;
-
-            // Section 2
-            html += `<li><hr class="dropdown-divider my-1"></li>`;
-            html += `<li class="dropdown-header text-uppercase fw-bold text-primary px-3 py-1 my-0 border-bottom border-light" style="font-size:10px; background-color:#f0f7ff; letter-spacing:0.5px">`;
-            html += `<i class="bi bi-journal-medical me-1"></i> 2. Asuhan & Penunjang</li>`;
-            html += menuAsuhan;
-
-            // Section 3
-            html += `<li><hr class="dropdown-divider my-1"></li>`;
-            html += `<li class="dropdown-header text-uppercase fw-bold text-success px-3 py-1 my-0 border-bottom border-light" style="font-size:10px; background-color:#f2fbf5; letter-spacing:0.5px">`;
-            html += `<i class="bi bi-capsule-pill me-1"></i> 3. Terapi Obat & Gizi</li>`;
-            html += menuObat;
-
-            // Section 4
-            html += `<li><hr class="dropdown-divider my-1"></li>`;
-            html += `<li class="dropdown-header text-uppercase fw-bold text-warning-emphasis px-3 py-1 my-0 border-bottom border-light" style="font-size:10px; background-color:#fffdf0; letter-spacing:0.5px">`;
-            html += `<i class="bi bi-box-arrow-right me-1"></i> 4. Prosedur & Kepulangan</li>`;
-            html += menuPulang;
-
-            return html;
-        }
-
-        function buildDropdownButton(rowIndex, noRawat, listItems) {
-            return `
-                <div class="dropdown-center">
-                    <button class="btn btn-primary btn-sm dropdown-toggle shadow-sm px-2 py-1" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownAksi${rowIndex}" data-id="${noRawat}">
-                        <i class="bi bi-list-task"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-lg" style="font-size:11px; max-height:450px; overflow-y:auto; min-width:260px; border-radius:8px; border:1px solid rgba(0,0,0,0.08);">
-                        ${listItems}
-                    </ul>
-                </div>
-            `;
-        }
+        // Komponen dropdown aksi dipisahkan di: resources/views/content/ranap/partials/dropdown_aksi_ranap.blade.php
 
         function getResumeMenuBayi(row) {
             const isDokter = "{{ session()->get('pegawai')->departemen }}";

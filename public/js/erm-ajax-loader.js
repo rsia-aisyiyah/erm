@@ -37,6 +37,7 @@
         '/ranap/monitoring-pulang',
         '/ranap/kelengkapan-berkas',
         '/ranap/kelengkapan-berkas-batch',
+        '/ranap/statistik',
     ];
 
     const stateMap = new WeakMap();
