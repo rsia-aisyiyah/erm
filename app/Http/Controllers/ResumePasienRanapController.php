@@ -62,8 +62,8 @@ class ResumePasienRanapController extends Controller
             $update = $this->resume->where('no_rawat', $data['no_rawat'])->update($data);
             if ($update) {
                 $this->track->updateSql($this->resume, $data, ['no_rawat', $data['no_rawat']]);
-                $this->syncOrderSuratKontrol($data);
             }
+            $this->syncOrderSuratKontrol($data);
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
