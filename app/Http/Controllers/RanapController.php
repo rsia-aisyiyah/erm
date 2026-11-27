@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KamarInap;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -832,75 +833,94 @@ class RanapController extends Controller
         $sttsPulang = $request->input('stts_pulang', '-');
         $tglAwal = $request->input('tgl_pertama');
         $tglAkhir = $request->input('tgl_kedua');
+        $kdDokter = $request->input('kd_dokter');
+        $spesialis = $request->input('spesialis');
+        $kamar = $request->input('kamar');
+        $forceRefresh = $request->boolean('force_refresh') || $request->input('force') == 1;
 
-        $query = DB::table('kamar_inap as ki')
-            ->join('reg_periksa as rp', 'rp.no_rawat', '=', 'ki.no_rawat')
-            ->join('pasien as p', 'p.no_rkm_medis', '=', 'rp.no_rkm_medis')
-            ->leftJoin('dokter as d', 'd.kd_dokter', '=', 'rp.kd_dokter')
-            ->leftJoin('penjab as pj', 'pj.kd_pj', '=', 'rp.kd_pj')
-            ->leftJoin('kamar as k', 'k.kd_kamar', '=', 'ki.kd_kamar')
-            ->leftJoin('bangsal as b', 'b.kd_bangsal', '=', 'k.kd_bangsal')
-            ->select([
-                'ki.no_rawat',
-                'ki.tgl_masuk',
-                'ki.tgl_keluar',
-                'ki.stts_pulang',
-                'rp.no_rkm_medis',
-                'rp.tgl_registrasi',
-                'rp.sttsumur',
-                'rp.kd_dokter',
-                'rp.kd_pj',
-                'p.nm_pasien',
-                'p.tgl_lahir',
-                'd.nm_dokter',
-                'd.kd_sps',
-                'pj.png_jawab',
-                'b.nm_bangsal',
-            ])
-            ->orderByDesc('ki.no_rawat');
+        // Caching server-side selama 3 menit untuk meringankan beban CPU & memori database
+        $cacheKey = 'ranap_berkas_batch_' . md5(json_encode([
+            $sttsPulang,
+            $tglAwal,
+            $tglAkhir,
+            $kdDokter,
+            $spesialis,
+            $kamar,
+        ]));
 
-        if ($sttsPulang === '-') {
-            $query->where('ki.stts_pulang', '-');
-        } elseif ($sttsPulang === 'Masuk' && $tglAwal && $tglAkhir) {
-            $query->whereBetween('ki.tgl_masuk', [$tglAwal, $tglAkhir])
-                ->where('ki.stts_pulang', '!=', 'Pindah Kamar');
-        } elseif ($sttsPulang === 'Pulang' && $tglAwal && $tglAkhir) {
-            $query->whereBetween('ki.tgl_keluar', [$tglAwal, $tglAkhir])
-                ->whereNotIn('ki.stts_pulang', ['-', 'Pindah Kamar']);
-        } elseif ($sttsPulang === 'Rujuk' && $tglAwal && $tglAkhir) {
-            $query->whereBetween('ki.tgl_keluar', [$tglAwal, $tglAkhir])
-                ->where('ki.stts_pulang', 'like', '%Rujuk%');
-        } else {
-            $query->where('ki.stts_pulang', '-');
+        if ($forceRefresh) {
+            Cache::forget($cacheKey);
         }
 
-        if ($request->filled('kd_dokter')) {
-            $query->where('rp.kd_dokter', $request->kd_dokter);
-        }
-        if ($request->filled('spesialis')) {
-            $query->where('d.kd_sps', $request->spesialis);
-        }
-        if ($request->filled('kamar')) {
-            $query->where('b.nm_bangsal', 'like', '%' . $request->kamar . '%');
-        }
+        $result = Cache::remember($cacheKey, 180, function () use ($request, $sttsPulang, $tglAwal, $tglAkhir, $kdDokter, $spesialis, $kamar) {
+            $query = DB::table('kamar_inap as ki')
+                ->join('reg_periksa as rp', 'rp.no_rawat', '=', 'ki.no_rawat')
+                ->join('pasien as p', 'p.no_rkm_medis', '=', 'rp.no_rkm_medis')
+                ->leftJoin('dokter as d', 'd.kd_dokter', '=', 'rp.kd_dokter')
+                ->leftJoin('penjab as pj', 'pj.kd_pj', '=', 'rp.kd_pj')
+                ->leftJoin('kamar as k', 'k.kd_kamar', '=', 'ki.kd_kamar')
+                ->leftJoin('bangsal as b', 'b.kd_bangsal', '=', 'k.kd_bangsal')
+                ->select([
+                    'ki.no_rawat',
+                    'ki.tgl_masuk',
+                    'ki.tgl_keluar',
+                    'ki.stts_pulang',
+                    'rp.no_rkm_medis',
+                    'rp.tgl_registrasi',
+                    'rp.sttsumur',
+                    'rp.kd_dokter',
+                    'rp.kd_pj',
+                    'p.nm_pasien',
+                    'p.tgl_lahir',
+                    'd.nm_dokter',
+                    'd.kd_sps',
+                    'pj.png_jawab',
+                    'b.nm_bangsal',
+                ])
+                ->orderByDesc('ki.no_rawat');
 
-        $rows = $query->limit(250)->get()->unique('no_rawat')->values();
+            if ($sttsPulang === '-') {
+                $query->where('ki.stts_pulang', '-');
+            } elseif ($sttsPulang === 'Masuk' && $tglAwal && $tglAkhir) {
+                $query->whereBetween('ki.tgl_masuk', [$tglAwal, $tglAkhir])
+                    ->where('ki.stts_pulang', '!=', 'Pindah Kamar');
+            } elseif ($sttsPulang === 'Pulang' && $tglAwal && $tglAkhir) {
+                $query->whereBetween('ki.tgl_keluar', [$tglAwal, $tglAkhir])
+                    ->whereNotIn('ki.stts_pulang', ['-', 'Pindah Kamar']);
+            } elseif ($sttsPulang === 'Rujuk' && $tglAwal && $tglAkhir) {
+                $query->whereBetween('ki.tgl_keluar', [$tglAwal, $tglAkhir])
+                    ->where('ki.stts_pulang', 'like', '%Rujuk%');
+            } else {
+                $query->where('ki.stts_pulang', '-');
+            }
 
-        if ($rows->isEmpty()) {
-            return response()->json([
-                'success' => true,
-                'summary' => [
-                    'total_pasien' => 0,
-                    'avg_percent' => 0,
-                    'lengkap_penuh' => 0,
-                    'belum_lengkap' => 0,
-                    'per_berkas' => [],
-                ],
-                'items' => [],
-            ]);
-        }
+            if ($request->filled('kd_dokter')) {
+                $query->where('rp.kd_dokter', $request->kd_dokter);
+            }
+            if ($request->filled('spesialis')) {
+                $query->where('d.kd_sps', $request->spesialis);
+            }
+            if ($request->filled('kamar')) {
+                $query->where('b.nm_bangsal', 'like', '%' . $request->kamar . '%');
+            }
 
-        $noRawats = $rows->pluck('no_rawat')->all();
+            $rows = $query->limit(250)->get()->unique('no_rawat')->values();
+
+            if ($rows->isEmpty()) {
+                return [
+                    'success' => true,
+                    'summary' => [
+                        'total_pasien' => 0,
+                        'avg_percent' => 0,
+                        'lengkap_penuh' => 0,
+                        'belum_lengkap' => 0,
+                        'per_berkas' => [],
+                    ],
+                    'items' => [],
+                ];
+            }
+
+            $noRawats = $rows->pluck('no_rawat')->all();
 
         $fetchSet = function (string $table) use ($noRawats): array {
             try {
@@ -1208,7 +1228,7 @@ class RanapController extends Controller
             ];
         }
 
-        return response()->json([
+        return [
             'success' => true,
             'summary' => [
                 'total_pasien' => $totalPasien,
@@ -1218,8 +1238,11 @@ class RanapController extends Controller
                 'per_berkas' => $perBerkasList,
             ],
             'items' => $items,
-        ]);
-    }
+        ];
+    });
+
+    return response()->json($result);
+}
 
     /**
      * Ringkasan KPI Rawat Inap sesuai rentang tanggal & filter tabel aktif:

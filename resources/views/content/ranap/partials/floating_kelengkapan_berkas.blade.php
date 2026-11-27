@@ -361,11 +361,11 @@
     </div>
 
     <button type="button" id="btnRanapBerkasFab" onclick="toggleRanapBerkasPanel()"
-        title="Buka Rincian Kelengkapan Berkas Pasien Ranap">
+        title="Buka &amp; Cek Rincian Kelengkapan Berkas Pasien Ranap (Klik untuk memuat)">
         <i class="bi bi-folder-check"></i>
         <span>Berkas</span>
         <span class="ranap-fab-mini-bar"><span id="ranapFabMiniBarFill" style="width: 0%;"></span></span>
-        <span class="badge rounded-pill bg-white text-primary fw-bold px-2" id="ranapFabBerkasPct">0%</span>
+        <span class="badge rounded-pill bg-white text-primary fw-bold px-2" id="ranapFabBerkasPct">Cek</span>
     </button>
 </div>
 
@@ -376,7 +376,20 @@
             filter: 'missing',
             isOpen: false,
             chipsHidden: false,
+            isLoading: false,
+            lastParamsKey: '',
         };
+
+        function getRanapBerkasParamsKey() {
+            return [
+                typeof stts_pulang !== 'undefined' ? stts_pulang : '-',
+                typeof tgl_awal !== 'undefined' ? tgl_awal : '',
+                typeof tgl_akhir !== 'undefined' ? tgl_akhir : '',
+                typeof kd_dokter !== 'undefined' ? (kd_dokter || '') : '',
+                typeof sps !== 'undefined' ? (sps || '') : '',
+                typeof kamar !== 'undefined' ? (kamar || '') : '',
+            ].join('|');
+        }
 
         function toggleRanapBerkasChips() {
             window._ranapBerkasBatchState.chipsHidden = !window._ranapBerkasBatchState.chipsHidden;
@@ -393,8 +406,13 @@
             if (nextOpen && typeof toggleRanapMonitorPanel === 'function') {
                 toggleRanapMonitorPanel(false);
             }
-            if (nextOpen && window._ranapBerkasBatchState.items.length === 0) {
-                loadKelengkapanBerkasBatchRanap();
+
+            // LAZY LOAD: Muat data kelengkapan berkas HANYA saat panel dibuka oleh pengguna
+            if (nextOpen) {
+                const currentKey = getRanapBerkasParamsKey();
+                if (window._ranapBerkasBatchState.items.length === 0 || window._ranapBerkasBatchState.lastParamsKey !== currentKey) {
+                    loadKelengkapanBerkasBatchRanap();
+                }
             }
         }
 
@@ -419,7 +437,10 @@
             return '#dc2626';
         }
 
-        function loadKelengkapanBerkasBatchRanap() {
+        function loadKelengkapanBerkasBatchRanap(forceRefresh = false) {
+            if (window._ranapBerkasBatchState.isLoading) return;
+            window._ranapBerkasBatchState.isLoading = true;
+
             const params = {
                 stts_pulang: typeof stts_pulang !== 'undefined' ? stts_pulang : '-',
                 tgl_pertama: typeof tgl_awal !== 'undefined' ? tgl_awal : '',
@@ -427,9 +448,17 @@
                 kd_dokter: typeof kd_dokter !== 'undefined' ? (kd_dokter || '') : '',
                 spesialis: typeof sps !== 'undefined' ? (sps || '') : '',
                 kamar: typeof kamar !== 'undefined' ? (kamar || '') : '',
+                force_refresh: forceRefresh ? 1 : 0,
             };
 
             $('#ranapFloatBerkasRefreshIcon').addClass('ranap-mon-spin');
+            if (window._ranapBerkasBatchState.items.length === 0) {
+                $('#ranapBerkasPanelBody').html(`
+                    <div class="text-center text-muted py-5 small">
+                        <span class="spinner-border spinner-border-sm me-2 text-primary"></span>Memeriksa kelengkapan 18 berkas rekam medis pasien...
+                    </div>
+                `);
+            }
 
             $.ajax({
                 url: '/erm/ranap/kelengkapan-berkas-batch',
@@ -447,6 +476,7 @@
                 const belum = s.belum_lengkap || 0;
 
                 window._ranapBerkasBatchState.items = res.items || [];
+                window._ranapBerkasBatchState.lastParamsKey = getRanapBerkasParamsKey();
 
                 // Update Sticky Floating Progress Bar di atas #tb_ranap
                 $('#ranapFloatTotalPasien').text(`${total} Pasien`);
@@ -493,8 +523,17 @@
             }).fail(function (xhr) {
                 if (xhr.status === 401) {
                     alertSessionExpired(xhr.status);
+                } else {
+                    $('#ranapBerkasPanelBody').html(`
+                        <div class="text-center text-danger py-4 small">
+                            <i class="bi bi-exclamation-triangle-fill d-block fs-3 mb-1"></i>
+                            Gagal memuat status kelengkapan berkas.<br>
+                            <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="loadKelengkapanBerkasBatchRanap(true)">Coba Lagi</button>
+                        </div>
+                    `);
                 }
             }).always(function () {
+                window._ranapBerkasBatchState.isLoading = false;
                 $('#ranapFloatBerkasRefreshIcon').removeClass('ranap-mon-spin');
             });
         }
@@ -665,18 +704,20 @@
         }
 
         $(document).ready(function () {
-            // Otomatis sinkron setiap kali tabel #tb_ranap selesai memuat data dari filter apapun
+            // Lazy load: Sinkronkan hanya JIKA panel berkas sedang terbuka saat filter DataTable berganti
             $(document).on('xhr.dt', '#tb_ranap', function () {
-                loadKelengkapanBerkasBatchRanap();
+                if (window._ranapBerkasBatchState && window._ranapBerkasBatchState.isOpen) {
+                    loadKelengkapanBerkasBatchRanap();
+                } else if (window._ranapBerkasBatchState) {
+                    // Invalidate cache key agar data terbaru diambil saat user membuka panel
+                    window._ranapBerkasBatchState.lastParamsKey = '';
+                }
             });
 
-            // Fallback load awal
-            setTimeout(loadKelengkapanBerkasBatchRanap, 600);
-
-            // Auto-refresh saat modal berkas ditutup (bila kembali ke halaman tabel Ranap)
+            // Auto-refresh saat modal selesai ditutup HANYA jika panel rincian berkas sedang dalam posisi terbuka
             $(document).on('hidden.bs.modal', '.modal', function () {
-                if (!$('.modal.show').length) {
-                    loadKelengkapanBerkasBatchRanap();
+                if (!$('.modal.show').length && window._ranapBerkasBatchState && window._ranapBerkasBatchState.isOpen) {
+                    loadKelengkapanBerkasBatchRanap(true);
                 }
             });
         });
