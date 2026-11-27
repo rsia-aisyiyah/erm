@@ -147,6 +147,85 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Center Showcase: Glass Container for optimal readability over bright photo -->
+            {{-- <div class="relative z-10 my-auto py-8 max-w-xl">
+                <div class="p-6 sm:p-8 rounded-2xl bg-slate-950/50 backdrop-blur-md border border-white/15 shadow-2xl">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 backdrop-blur-md mb-4">
+                        <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        <span>Elektronik Rekam Medis (ERM)</span>
+                    </div>
+
+                    <h1 class="text-2xl xl:text-3xl font-extrabold tracking-tight text-white leading-snug">
+                        Pelayanan Medis yang Cepat, Akurat, & Terintegrasi.
+                    </h1>
+
+                    <p class="mt-3 text-sm text-slate-200 leading-relaxed font-normal">
+                        Platform rekam medis terpadu untuk efisiensi dokumentasi klinis, riwayat CPPT, asuhan
+                        keperawatan, serta integrasi langsung ke ekosistem SatuSehat Kemenkes dan BPJS Kesehatan.
+                    </p>
+
+                    <!-- Feature Badges (Shadcn style micro-cards) -->
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="p-3 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md">
+                            <div class="text-emerald-400 mb-1">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xs font-semibold text-white">Ranap & Rajal</h4>
+                            <p class="text-[11px] text-slate-300 mt-0.5">CPPT, SOAP, Resume</p>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md">
+                            <div class="text-emerald-400 mb-1">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xs font-semibold text-white">SatuSehat & BPJS</h4>
+                            <p class="text-[11px] text-slate-300 mt-0.5">VClaim & Bridging</p>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md">
+                            <div class="text-emerald-400 mb-1">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xs font-semibold text-white">Audit & Keamanan</h4>
+                            <p class="text-[11px] text-slate-300 mt-0.5">Enkripsi & Privasi Data</p>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+
+            <!-- Bottom Footer: Hospital Motto & Copyright (Tanpa Unsur Akreditasi) -->
+            <div class="relative z-10 flex items-center justify-between pt-5 border-t border-white/15">
+                {{-- <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-emerald-500/25 border border-emerald-400/30 flex items-center justify-center text-emerald-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold text-slate-100">Pelayanan Kesehatan Terpadu</p>
+                        <p class="text-[11px] text-slate-300">Ramah, Cepat, Amanah, dan Profesional</p>
+                    </div>
+                </div> --}}
+
+                <p class="text-xs text-slate-300 font-medium">&copy; {{ date('Y') }} RSIA Aisyiyah Pekajangan</p>
+            </div>
         </div>
 
 
