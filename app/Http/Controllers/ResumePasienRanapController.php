@@ -153,24 +153,35 @@ class ResumePasienRanapController extends Controller
             $noSuratKontrol = null;
         }
 
+        $payloadOrder = [
+            'no_rkm_medis' => $regPeriksa->no_rkm_medis ?? $sep->nomr,
+            'no_sep' => $sep->no_sep,
+            'tgl_kontrol_resume' => $tglKontrol,
+            'kd_dokter_dpjp' => $kdDokter,
+            'kd_dokter_bpjs' => $mapDokter->kd_dokter_bpjs ?? null,
+            'nm_dokter_bpjs' => $mapDokter->nm_dokter_bpjs ?? null,
+            'kd_poli_rs' => $kdPoliRs,
+            'kd_poli_bpjs' => $mapPoli->kd_poli_bpjs ?? null,
+            'nm_poli_bpjs' => $mapPoli->nm_poli_bpjs ?? null,
+            'tgl_pulang_sep' => $tglPulangSep,
+            'batas_maksimal_h1' => $batasMaksimalH1,
+            'status_order' => $statusOrder,
+            'no_surat_kontrol' => $noSuratKontrol,
+            'created_by' => session()->get('pegawai.nik') ?? ($kdDokter ?: 'Dokter'),
+        ];
+
+        // Trigger antrean outbox WA jika order baru atau tanggal kontrol di Resume berubah
+        if (!$existingOrder || $existingOrder->status_order === 'BATAL') {
+            $payloadOrder['wa_event'] = 'NEW_ORDER';
+            $payloadOrder['wa_notified_at'] = null;
+        } elseif ($existingOrder->tgl_kontrol_resume !== $tglKontrol) {
+            $payloadOrder['wa_event'] = 'UPDATED_DATE';
+            $payloadOrder['wa_notified_at'] = null;
+        }
+
         RsiaOrderSuratKontrolRanap::updateOrCreate(
             ['no_rawat' => $noRawat],
-            [
-                'no_rkm_medis' => $regPeriksa->no_rkm_medis ?? $sep->nomr,
-                'no_sep' => $sep->no_sep,
-                'tgl_kontrol_resume' => $tglKontrol,
-                'kd_dokter_dpjp' => $kdDokter,
-                'kd_dokter_bpjs' => $mapDokter->kd_dokter_bpjs ?? null,
-                'nm_dokter_bpjs' => $mapDokter->nm_dokter_bpjs ?? null,
-                'kd_poli_rs' => $kdPoliRs,
-                'kd_poli_bpjs' => $mapPoli->kd_poli_bpjs ?? null,
-                'nm_poli_bpjs' => $mapPoli->nm_poli_bpjs ?? null,
-                'tgl_pulang_sep' => $tglPulangSep,
-                'batas_maksimal_h1' => $batasMaksimalH1,
-                'status_order' => $statusOrder,
-                'no_surat_kontrol' => $noSuratKontrol,
-                'created_by' => session()->get('pegawai.nik') ?? ($kdDokter ?: 'Dokter'),
-            ]
+            $payloadOrder
         );
     }
 }
